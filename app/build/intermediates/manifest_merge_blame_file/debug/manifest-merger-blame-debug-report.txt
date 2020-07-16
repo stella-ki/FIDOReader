@@ -77,6 +77,17 @@
 45-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:28:9-30:20
 45-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:29:13-50
 46        </activity>
-47    </application>
-48
-49</manifest>
+47
+48        <provider
+48-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:23:9-27:43
+49            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+49-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:24:13-79
+50            android:authorities="com.syki.fidoreader.lifecycle-process"
+50-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:25:13-69
+51            android:exported="false"
+51-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:26:13-37
+52            android:multiprocess="true" />
+52-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:27:13-40
+53    </application>
+54
+55</manifest>

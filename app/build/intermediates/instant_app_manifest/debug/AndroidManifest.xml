@@ -45,6 +45,12 @@
         </activity>
         <activity android:name="com.syki.fidoreader.ApduSenderContactLess" >
         </activity>
+
+        <provider
+            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+            android:authorities="com.syki.fidoreader.lifecycle-process"
+            android:exported="false"
+            android:multiprocess="true" />
     </application>
 
 </manifest>
