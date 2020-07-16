@@ -392,10 +392,6 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-xxhdpi-v4\\abc_menu_hardkey_panel_mtrl_mult.9.png"
     },
     {
-        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_page1.xml.flat",
-        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\fragment_page1.xml"
-    },
-    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable_mtrl_ic_arrow_drop_down.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\drawable\\mtrl_ic_arrow_drop_down.xml"
     },
@@ -852,6 +848,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-xxhdpi-v4\\abc_switch_track_mtrl_alpha.9.png"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_item_list.xml.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\fragment_item_list.xml"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_list_selector_disabled_holo_dark.9.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-xxhdpi-v4\\abc_list_selector_disabled_holo_dark.9.png"
     },
@@ -946,6 +946,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\color_mtrl_outlined_icon_tint.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\color\\mtrl_outlined_icon_tint.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_reader.xml.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\fragment_reader.xml"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_btn_check_to_on_mtrl_000.png.flat",
@@ -1568,10 +1572,6 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable\\abc_item_background_holo_dark.xml"
     },
     {
-        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_page2.xml.flat",
-        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\fragment_page2.xml"
-    },
-    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_text_view_without_line_height.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\layout\\text_view_without_line_height.xml"
     },
@@ -1830,6 +1830,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_design_layout_snackbar_include.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\layout\\design_layout_snackbar_include.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_authenticator.xml.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\fragment_authenticator.xml"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\color_mtrl_navigation_item_text_color.xml.flat",

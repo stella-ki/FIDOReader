@@ -6,12 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.tabs.TabLayout;
-import com.syki.fidoreader.fagment.page1;
-import com.syki.fidoreader.fagment.page2;
+import com.syki.fidoreader.fagment.Credential_item;
+import com.syki.fidoreader.fagment.ReaderFragment;
+import com.syki.fidoreader.fagment.AuthenticatorFragment;
 
 public class MainActivity extends AppCompatActivity {
-    Fragment page1;
-    Fragment page2;
+    ReaderFragment page1;
+    AuthenticatorFragment page2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         //프래그먼트 선언
-        page1 = new page1();
-        page2 = new page2();
+        page1 = new ReaderFragment();
+        page2 = new AuthenticatorFragment();
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container,page1).commit();
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 //탭을 선택 한것에 따라 프래그먼트를 바꾼다.
                 Fragment selected = null;
                 if(position == 0){
+                    page1.addCredentialItem(new Credential_item("test1", "test2", R.drawable.ic_icc_off));
                     selected = page1;
                 }
                 else if(position == 1){

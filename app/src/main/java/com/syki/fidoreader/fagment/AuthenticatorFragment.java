@@ -1,7 +1,5 @@
 package com.syki.fidoreader.fagment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,10 +13,10 @@ import android.view.ViewGroup;
 import com.syki.fidoreader.R;
 
 
-public class page2 extends Fragment {
+public class AuthenticatorFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_page2, container, false);
+        return inflater.inflate(R.layout.fragment_authenticator, container, false);
     }
 }

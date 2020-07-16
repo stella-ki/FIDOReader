@@ -1237,6 +1237,7 @@ dimen subtitle_outline_width
 dimen subtitle_shadow_offset
 dimen subtitle_shadow_radius
 dimen test_mtrl_calendar_day_cornerSize
+dimen text_margin
 dimen tooltip_corner_radius
 dimen tooltip_horizontal_padding
 dimen tooltip_margin
@@ -1535,6 +1536,7 @@ id ifRoom
 id image
 id imageCard
 id imageNfc
+id imageView
 id info
 id invisible
 id italic
@@ -1548,6 +1550,7 @@ id line3
 id linearLayout1
 id listMode
 id list_item
+id listview
 id masked
 id media_actions
 id message
@@ -1673,6 +1676,8 @@ id textNfc
 id textSpacerNoButtons
 id textSpacerNoTitle
 id textStart
+id textView
+id textView2
 id text_input_end_icon
 id text_input_start_icon
 id textinput_counter
@@ -1778,8 +1783,9 @@ layout design_navigation_menu
 layout design_navigation_menu_item
 layout design_text_input_end_icon
 layout design_text_input_start_icon
-layout fragment_page1
-layout fragment_page2
+layout fragment_authenticator
+layout fragment_item_list
+layout fragment_reader
 layout main
 layout mtrl_alert_dialog
 layout mtrl_alert_dialog_actions
