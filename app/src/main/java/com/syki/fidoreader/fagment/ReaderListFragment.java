@@ -1,6 +1,8 @@
 package com.syki.fidoreader.fagment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +13,76 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.syki.fidoreader.MainActivity;
 import com.syki.fidoreader.R;
 
 import java.util.ArrayList;
 
 
 public class ReaderListFragment extends Fragment {
+    public final static String TAG = "ReaderListFragment";
+    MainActivity mainActivity;
+
     ListView listView;
     singerAdapter sa = new singerAdapter();
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reader, container, false);
+        Log.v(TAG, "onCreateView");
+        View view = inflater.inflate(R.layout.fragment_readerlist, container, false);
         listView = view.findViewById(R.id.listview);
         listView.setAdapter(sa);
         return view;
+    }
+
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.v(TAG, "onResume");
+        mainActivity.getCredentialList();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.v(TAG, "onPause");
+
+    }
+
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.v(TAG, "onStop");
+    }
+
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        Log.v(TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        Log.v(TAG, "onDestroy");
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mainActivity = (MainActivity)getActivity();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mainActivity = null;
+        Log.v(TAG, "onDetach");
     }
 
     public void addCredentialItem(Credential_item ci){

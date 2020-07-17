@@ -58,13 +58,10 @@ public class ApduSenderContactLess extends Activity
 
     static HexadecimalKbd mHexKbd;
 
-    private static CheckBox mCheckRaw;
     private static CheckBox mCheckResp;
 
     private Button mSendAPDUButton;
     private Button mClearLogButton;
-    private Button mSetNFCButton;
-    private Button mPasteButton;
 
     static ImageView icoNfc;
     static ImageView icoCard;
@@ -72,25 +69,8 @@ public class ApduSenderContactLess extends Activity
     static TextView TextNfc;
     static TextView TextCard;
 
-    static TextView txtCLA;
-    static TextView txtINS;
-    static TextView txtP1;
-    static TextView txtP2;
-    static TextView txtLc;
-    static TextView txtDataIn;
-    static TextView txtLe;
-
-    static EditText editCLA;
-    static EditText editINS;
-    static EditText editP1;
-    static EditText editP2;
-    static EditText editLc;
-    static EditText editDataIn;
-    static EditText editLe;
-
     static TextView txtLog;
-    
-    private Spinner mCommandsSpinner;
+
 
     private NfcAdapter mAdapter=null;
     private PendingIntent mPendingIntent;
@@ -147,15 +127,7 @@ public class ApduSenderContactLess extends Activity
                 {
                     icoCard.setImageResource(R.drawable.ic_icc_off);
                     clearlog();
-                    TextCard.setText("PLEASE TAP CARD"); 
-                    editCLA.setText("");
-                    editINS.setText("");
-                    editP1.setText("");
-                    editP2.setText("");
-                    editLc.setText("");
-                    editLe.setText("");
-                    editDataIn.setText("");
-                    editCLA.requestFocus();
+                    TextCard.setText("PLEASE TAP CARD");
                     mSendAPDUButton.setEnabled(false);
                 }
             }
@@ -183,14 +155,6 @@ public class ApduSenderContactLess extends Activity
                 {
                     icoCard.setImageResource(R.drawable.ic_icc_off);
                     TextCard.setText("PLEASE TAP CARD");
-                    editCLA.setText("");
-                    editINS.setText("");
-                    editP1.setText("");
-                    editP2.setText("");
-                    editLc.setText("");
-                    editLe.setText("");
-                    editDataIn.setText("");
-                    editCLA.requestFocus();
                     mSendAPDUButton.setEnabled(false);
                 }
                 clearlog();
@@ -277,210 +241,10 @@ public class ApduSenderContactLess extends Activity
                 }
             }
         });
-        
-        
-        final String[] commadsTableNames = { 
-            "Built-in APDUs...",
-            "SELECT PSE", 
-            "SELECT PPSE",
-            "SELECT VISA AID",
-            "SELECT VISA ELECTRON AID",
-            "SELECT MASTERCARD AID",
-            "SELECT AMEX AID",
-            "SELECT DINERS/DISCOVER AID",
-            "SELECT INTERAC AID",
-            "SELECT CUP AID",
-            "READ RECORD SFI:01 R:01",
-            "READ RECORD SFI:01 R:02",
-            "READ RECORD SFI:02 R:01",
-            "READ RECORD SFI:02 R:02",
-            "GET ATC",
-            "GET LAST ONLINE ATC",
-            "GET PIN TRY COUNTER"
-            };
-        ArrayAdapter<String> commadsTable = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, commadsTableNames);
-        mCommandsSpinner = (Spinner) findViewById(R.id.APDU_spinner_table);
-        mCommandsSpinner.setAdapter(commadsTable);
-        mCommandsSpinner.setSelection(0);
-        mCommandsSpinner.setOnItemSelectedListener(new OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3)
-            {
-                
-                int CommandAPDU = mCommandsSpinner.getSelectedItemPosition();
-                switch (CommandAPDU)
-                {
-                    case 0:
-                    	
-                    mCheckRaw.setChecked(false);
-                    editCLA.setText("");
-                    editINS.setText("");
-                    editP1.setText("");
-                    editP2.setText("");
-                    editLc.setText("");
-                    editLe.setText("");
-                    editDataIn.setText("");
 
-                    txtCLA.setEnabled(true);
-                    txtINS.setEnabled(true);
-                    txtP1.setEnabled(true);
-                    txtP2.setEnabled(true);
-                    txtLc.setEnabled(true);
-                    txtDataIn.setEnabled(true);
-                    txtLe.setEnabled(true);
-                    txtLe.setEnabled(true);
-                    editCLA.setEnabled(true);
-                    editINS.setEnabled(true);
-                    editP1.setEnabled(true);
-                    editP2.setEnabled(true);
-                    editLc.setEnabled(true);
-                    editDataIn.setEnabled(true);
-                    txtDataIn.setText("Data:");
-                    editLe.setEnabled(true);
-                    editCLA.requestFocus();
-                    
-                    break;
-                    case 1: //SELECT PSE
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A404000E315041592E5359532E4444463031");
-                        HideKbd();
-                        vShowGeneralMesg("Payment System Environment");
-                    break;
-                    case 2: //SELECT PPSE
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A404000E325041592E5359532E4444463031");
-                        HideKbd();
-                        vShowGeneralMesg("Proximity Payment System Environment");
-                    break;
-                    case 3: //SELECT VISA AID
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A4040007A0000000031010");
-                        HideKbd();
-                        vShowGeneralMesg("Visa credit or debit");
-                    break;
-                    case 4: //SELECT VISA ELECTRON AID
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A4040007A0000000032010");
-                        HideKbd();
-                        vShowGeneralMesg("Visa Electron");
-                    break;
-                    case 5: //SELECT MASTERCARD AID
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A4040007A0000000041010");
-                        HideKbd();
-                        vShowGeneralMesg("MasterCard credit or debit");
-                    break;
-                    case 6: //SELECT AMEX AID
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A4040006A00000002501");
-                        HideKbd();
-                        vShowGeneralMesg("American Express");
-                    break;
-                    case 7: //SELECT DINERS/DISCOVER AID
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A4040007A0000001523010");
-                        HideKbd();
-                        vShowGeneralMesg("Diners Club/Discover");
-                    break;
-                    case 8: //SELECT INTERAC AID
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A4040007A0000002771010");
-                        HideKbd();
-                        vShowGeneralMesg("Interac Debit card");
-                    break;
-                    case 9: //SELECT CUP AID
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00A4040008A000000333010101");
-                        HideKbd();
-                        vShowGeneralMesg("UnionPay Debit");
-                    break;
-                    case 10: //READRECORD SFI:01 R:01
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00B2010C00");
-                        HideKbd();
-                        vShowGeneralMesg("SFI:01 R:01");
-                    break;
-                    case 11: //READRECORD SFI:01 R:02
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00B2020C00");
-                        HideKbd();
-                        vShowGeneralMesg("SFI:01 R:02");
-                    break;
-                    case 12: //READRECORD SFI:02 R:01
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00B2011400");
-                        HideKbd();
-                        vShowGeneralMesg("SFI:02 R:01");
-                    break;
-                    case 13: //READRECORD SFI:02 R:02
-                        vSetBuiltinCommand();
-                        editDataIn.setText("00B2021400");
-                        HideKbd();
-                        vShowGeneralMesg("SFI:02 R:02");
-                    break;
-                    case 14: //GET ATC
-                        vSetBuiltinCommand();
-                        editDataIn.setText("80CA9F3600");
-                        HideKbd();
-                        vShowGeneralMesg("Get Tag 9F36");
-                    break;
-                    case 15: //GET LAST ONLINE ATC
-                        vSetBuiltinCommand();
-                        editDataIn.setText("80CA9F1300");
-                        HideKbd();
-                        vShowGeneralMesg("Get Tag 9F13");
-                    break;
-                    case 16: //GET PIN TRY COUNTER
-                        vSetBuiltinCommand();
-                        editDataIn.setText("80CA9F1700");
-                        HideKbd();
-                        vShowGeneralMesg("Get Tag 9F17");
-                    break;
-                    
-                    
-                    default:
-                    break;
-                }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0)
-            {
-                return;
-            }
-        });
-
-     
         mSendAPDUButton.setEnabled(false);
         mClearLogButton.setEnabled(true);
-        mSetNFCButton.setEnabled(true);
-        mCommandsSpinner.setEnabled(true);
 
-        editCLA.setText("");
-        editINS.setText("");
-        editP1.setText("");
-        editP2.setText("");
-        editLc.setText("");
-        editLe.setText("");
-        editDataIn.setText("");
-
-        txtCLA.setEnabled(true);
-        txtINS.setEnabled(true);
-        txtP1.setEnabled(true);
-        txtP2.setEnabled(true);
-        txtLc.setEnabled(true);
-        txtDataIn.setEnabled(true);
-        txtLe.setEnabled(true);
-        txtLe.setEnabled(true);
-        editCLA.setEnabled(true);
-        editINS.setEnabled(true);
-        editP1.setEnabled(true);
-        editP2.setEnabled(true);
-        editLc.setEnabled(true);
-        editDataIn.setEnabled(true);
-        txtDataIn.setText("Data:");
-        editLe.setEnabled(true);
-        editCLA.requestFocus();
 
         resolveIntent(getIntent());
 
@@ -530,15 +294,6 @@ public class ApduSenderContactLess extends Activity
                 clearlog();
                 TextCard.setText("PLEASE TAP CARD");
                 mSendAPDUButton.setEnabled(false);
-                mSetNFCButton.setEnabled(false);
-                editCLA.setText("");
-                editINS.setText("");
-                editP1.setText("");
-                editP2.setText("");
-                editLc.setText("");
-                editLe.setText("");
-                editDataIn.setText("");
-                editCLA.requestFocus();
                 print("    No NFC hardware found.");
                 print("    Program will NOT function.");
             }
@@ -551,18 +306,9 @@ public class ApduSenderContactLess extends Activity
             {
                 clearlog();
                 TextCard.setText("PLEASE TAP CARD");
-                editCLA.setText("");
-                editINS.setText("");
-                editP1.setText("");
-                editP2.setText("");
-                editLc.setText("");
-                editLe.setText("");
-                editDataIn.setText("");
-                editCLA.requestFocus();
                 mSendAPDUButton.setEnabled(false);
                 print("    NFC hardware has been disabled.");
                 print("    Please enable it first.");
-                mSetNFCButton.setEnabled(true);
                 icoNfc.setImageResource(R.drawable.ic_nfc_off);
                 TextNfc.setText("NO READER DETECTED");
             }
@@ -585,15 +331,6 @@ public class ApduSenderContactLess extends Activity
             TextNfc.setText("NO READER DETECTED");
             TextCard.setText("PLEASE TAP CARD");
             mSendAPDUButton.setEnabled(false);
-            mSetNFCButton.setEnabled(false);
-            editCLA.setText("");
-            editINS.setText("");
-            editP1.setText("");
-            editP2.setText("");
-            editLc.setText("");
-            editLe.setText("");
-            editDataIn.setText("");
-            editCLA.requestFocus();
             print("    No NFC hardware found.");
             print("    Program will NOT function.");
         }
@@ -698,73 +435,8 @@ public class ApduSenderContactLess extends Activity
     {
         HideKbd();
 
-        String StringAPDU = null;
+        String StringAPDU = "00A4040007A0000000032010";
 
-        String StringCLA = editCLA.getText().toString();
-        String StringINS = editINS.getText().toString();
-        String StringP1 = editP1.getText().toString();
-        String StringP2 = editP2.getText().toString();
-        String StringLc = editLc.getText().toString();
-        String StringDataIn = editDataIn.getText().toString();
-        String StringLe = editLe.getText().toString();
-
-        if (!mCheckRaw.isChecked())
-        {
-            if ( (StringCLA.length()==0)||(StringINS.length()==0)||(StringP1.length()==0)||(StringP2.length()==0)||( (StringDataIn.length()%2)!=0 ) )
-            {
-                return false;
-            }
-            if(!StringLc.contentEquals(""))
-            {
-                if( StringDataIn.length() != (((int) Long.parseLong(StringLc, 16))*2) )
-                {
-                    return false;
-                }
-            }
-            if ( StringLe.length() == 1 )
-            {
-                StringLe = "0"+ StringLe;
-                editLe.setText(StringLe);
-            }
-            if ( StringLc.length() == 1 )
-            {
-                StringLc = "0"+ StringLc;
-                editLc.setText(StringLc);
-            }
-            if ( StringP2.length() == 1 )
-            {
-                StringP2 = "0"+ StringP2;
-                editP2.setText(StringP2);
-            }
-            if ( StringP1.length() == 1 )
-            {
-                StringP1 = "0"+ StringP1;
-                editP1.setText(StringP1);
-            }
-            if ( StringINS.length() == 1 )
-            {
-                StringINS = "0"+ StringINS;
-                editINS.setText(StringINS);
-            }
-            if ( StringCLA.length() == 1 )
-            {
-            StringCLA = "0"+ StringCLA;
-            editCLA.setText(StringCLA);
-            }
-        }
-
-        if (mCheckRaw.isChecked())
-        {
-            StringAPDU = editDataIn.getText().toString();
-            if ( ((StringAPDU.length()%2)!=0)|| (StringAPDU.length()<1) )
-            {
-                return false;
-            }
-        }
-        else
-        {
-            StringAPDU = StringCLA + StringINS + StringP1 + StringP2 + StringLc + StringDataIn + StringLe; 
-        }
 
         byteAPDU = atohex(StringAPDU);
         respAPDU = transceives(byteAPDU);
@@ -835,31 +507,8 @@ public class ApduSenderContactLess extends Activity
 
                 mSendAPDUButton.setEnabled(true);
                 clearlog(); 
-                txtCLA.setEnabled(true);
-                txtINS.setEnabled(true);
-                txtP1.setEnabled(true);
-                txtP2.setEnabled(true);
-                txtLc.setEnabled(true);
-                txtDataIn.setEnabled(true);
-                txtLe.setEnabled(true);
 
-                editCLA.setEnabled(true);
-                editINS.setEnabled(true);
-                editP1.setEnabled(true);
-                editP2.setEnabled(true);
-                editLc.setEnabled(true);
-                editDataIn.setEnabled(true);
-                editLe.setEnabled(true);
-                editCLA.setText("");
-                editINS.setText("");
-                editP1.setText("");
-                editP2.setText("");
-                editLc.setText("");
-                editLe.setText("");
-                editDataIn.setText("");
-                mCheckRaw.setChecked(false);
                 mCheckResp.setChecked(false);
-                editCLA.requestFocus();
             }
             else
             {
@@ -886,32 +535,7 @@ public class ApduSenderContactLess extends Activity
     private void vSetBuiltinCommand()
     {
     	clearlog();
-    	
-        editCLA.setText("");
-        editINS.setText("");
-        editP1.setText("");
-        editP2.setText("");
-        editLc.setText("");
-        editLe.setText("");
-        editDataIn.setText("");
 
-        txtCLA.setEnabled(false);
-        txtINS.setEnabled(false);
-        txtP1.setEnabled(false);
-        txtP2.setEnabled(false);
-        txtLc.setEnabled(false);
-        txtLe.setEnabled(false);
-        editCLA.setEnabled(false);
-        editINS.setEnabled(false);
-        editP1.setEnabled(false);
-        editP2.setEnabled(false);
-        editLc.setEnabled(false);
-        editLe.setEnabled(false);
-        editDataIn.setEnabled(true);
-        txtDataIn.setEnabled(true);
-        txtDataIn.setText("APDU:");
-        mCheckRaw.setChecked(true);
-               
         return;
     }
 

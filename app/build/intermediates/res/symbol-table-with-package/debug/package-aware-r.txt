@@ -1522,6 +1522,7 @@ id filter_chip
 id fitToContents
 id fixed
 id forever
+id fragment_reader
 id ghost_view
 id ghost_view_holder
 id gone
@@ -1607,7 +1608,9 @@ id progress_circular
 id progress_horizontal
 id radio
 id readerActivationBtn
-id readerActivationText
+id readerActivationText1
+id readerActivationText2
+id readerActivationText3
 id right
 id right_icon
 id right_side
@@ -1788,6 +1791,7 @@ layout design_text_input_start_icon
 layout fragment_authenticator
 layout fragment_item_list
 layout fragment_reader
+layout fragment_readerlist
 layout main
 layout mtrl_alert_dialog
 layout mtrl_alert_dialog_actions
