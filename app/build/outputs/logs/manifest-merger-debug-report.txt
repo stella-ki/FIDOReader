@@ -48,7 +48,7 @@ INJECTED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.x
 INJECTED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:2:1-35:12
 INJECTED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:2:1-35:12
 	package
-		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:3:5-34
+		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:3:5-39
 		INJECTED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml
 		INJECTED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml
 	android:versionName
@@ -95,7 +95,7 @@ MERGED from [androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\
 		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:10:9-46
 	android:theme
 		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:9:9-56
-activity#com.syki.fidoreader.MainActivity
+activity#com.challenge.fidoreader.MainActivity
 ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:13:9-28:20
 	android:screenOrientation
 		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:17:13-49
@@ -104,7 +104,7 @@ ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:
 	android:theme
 		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:15:13-69
 	android:name
-		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:14:13-41
+		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:14:13-65
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
 ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:18:13-21:29
 action#android.intent.action.MAIN
@@ -131,10 +131,10 @@ ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:
 		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:73-112
 	android:name
 		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:24-72
-activity#com.syki.fidoreader.ApduSenderContactLess
+activity#com.challenge.fidoreader.ApduSenderContactLess
 ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:30:9-32:25
 	android:name
-		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:13-50
+		ADDED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:13-74
 uses-sdk
 INJECTED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml

@@ -5,11 +5,16 @@ import android.util.Log;
 
 import com.challenge.fidoreader.Util.Util;
 import com.challenge.fidoreader.fagment.Credential_item;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Authenticator {
+    public final static String TAG = "Authenticator";
 
     public static final byte cp_sub_getPINRetries	            = 0x01;
     public static final byte cp_sub_getKeyAgreement	            = 0x02;
@@ -40,8 +45,15 @@ public class Authenticator {
         data = new Data();
     }
 
-    public ArrayList<Credential_item> getCredentialList() {
+    public void setTag(IsoDep myTag) {
+        this.myTag = myTag;
+    }
+
+    public ArrayList<Credential_item> getCredentialList() throws Exception{
+        Log.v(TAG, "getCredentialList");
         ArrayList<Credential_item> list = new ArrayList<Credential_item>();
+
+
         bSendAPDU("00A4040008A0000006472F000100");
         getInfo();
         ClientPINparse(bSendAPDU(ClientPIN(Authenticator.cp_sub_getKeyAgreement)));
@@ -52,22 +64,25 @@ public class Authenticator {
         return list;
     }
 
-    public String getInfo(){
-        /* Test - kelee
+    public String getInfo() throws Exception{
+        Log.v(TAG, "getInfo");
+
+        //  Test - kelee
         String result = bSendAPDU("80100000010400");
 
-        ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
-        *//* CBOR decode - use jackson Library *//*
+        Log.v(TAG, "getInfo result " + result);
+
+        /*ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
+
         CBORFactory cf = new CBORFactory();
         ObjectMapper mapper = new ObjectMapper(cf);
         try {
-            *//* CBOR 을 JsonNode로 변환 *//*
             JsonNode jnode = mapper.readValue(bais, JsonNode.class);
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-*/
+        }*/
+
 
         return "80100000010400";
     }

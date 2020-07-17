@@ -120,6 +120,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\e9dab9c67c1ee3668e0bbf86c6d8cbd8\\core-1.1.0\\res\\layout-v21\\notification_template_custom_big.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_02.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_02.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable_mtrl_dialog_background.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\drawable\\mtrl_dialog_background.xml"
     },
@@ -160,12 +164,12 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-xhdpi-v4\\abc_ic_star_half_black_48dp.png"
     },
     {
-        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_big_media_narrow_custom.xml.flat",
-        "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\767612e54049c1347a891905a7e9d5e4\\media-1.0.0\\res\\layout\\notification_template_big_media_narrow_custom.xml"
-    },
-    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_scrubber_control_to_pressed_mtrl_005.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-mdpi-v4\\abc_scrubber_control_to_pressed_mtrl_005.png"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_notification_template_big_media_narrow_custom.xml.flat",
+        "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\767612e54049c1347a891905a7e9d5e4\\media-1.0.0\\res\\layout\\notification_template_big_media_narrow_custom.xml"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\anim_design_snackbar_in.xml.flat",
@@ -224,6 +228,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\color\\mtrl_navigation_item_icon_tint.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_11.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_11.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_star_half_black_48dp.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-hdpi-v4\\abc_ic_star_half_black_48dp.png"
     },
@@ -258,6 +266,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_textfield_activated_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-mdpi-v4\\abc_textfield_activated_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_04.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_04.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_text_select_handle_right_mtrl_light.png.flat",
@@ -428,6 +440,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-xhdpi-v4\\abc_scrubber_primary_mtrl_alpha.9.png"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable_frame_loading.xml.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable\\frame_loading.xml"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_activity_chooser_view_list_item.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\layout\\abc_activity_chooser_view_list_item.xml"
     },
@@ -596,6 +612,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-ldrtl-hdpi-v17\\abc_ic_menu_copy_mtrl_am_alpha.png"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_08.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_08.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable_abc_btn_radio_material.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable\\abc_btn_radio_material.xml"
     },
@@ -638,6 +658,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_mtrl_picker_text_input_date_range.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\layout\\mtrl_picker_text_input_date_range.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_16.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_16.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_design_navigation_menu.xml.flat",
@@ -932,6 +956,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\layout\\abc_expanded_menu_layout.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_07.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_07.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\anim_btn_radio_to_on_mtrl_dot_group_animation.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\anim\\btn_radio_to_on_mtrl_dot_group_animation.xml"
     },
@@ -950,6 +978,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_reader.xml.flat",
         "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\fragment_reader.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_17.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_17.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_btn_check_to_on_mtrl_000.png.flat",
@@ -1064,6 +1096,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-hdpi-v4\\abc_btn_radio_to_on_mtrl_000.png"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_05.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_05.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\anim_abc_slide_out_bottom.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\anim\\abc_slide_out_bottom.xml"
     },
@@ -1086,6 +1122,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_scrubber_track_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-xxhdpi-v4\\abc_scrubber_track_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_21.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_21.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_ic_star_black_36dp.png.flat",
@@ -1116,8 +1156,16 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\e9dab9c67c1ee3668e0bbf86c6d8cbd8\\core-1.1.0\\res\\layout-v21\\notification_action_tombstone.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_19.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_19.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v21_abc_action_bar_item_background_material.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-v21\\abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_06.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_06.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_commit_search_api_mtrl_alpha.png.flat",
@@ -1182,6 +1230,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_action_bar_up_container.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\layout\\abc_action_bar_up_container.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_18.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_18.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_mtrl_picker_dialog.xml.flat",
@@ -1288,6 +1340,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-hdpi-v4\\abc_scrubber_control_to_pressed_mtrl_005.png"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_20.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_20.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\interpolator_btn_radio_to_off_mtrl_animation_interpolator_0.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\interpolator\\btn_radio_to_off_mtrl_animation_interpolator_0.xml"
     },
@@ -1302,6 +1358,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\animator_mtrl_extended_fab_hide_motion_spec.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\animator\\mtrl_extended_fab_hide_motion_spec.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_01.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_01.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\color_mtrl_tabs_ripple_color.xml.flat",
@@ -1772,6 +1832,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\e9dab9c67c1ee3668e0bbf86c6d8cbd8\\core-1.1.0\\res\\drawable\\notification_bg.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_03.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_03.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_cab_background_top_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-hdpi-v4\\abc_cab_background_top_mtrl_alpha.9.png"
     },
@@ -1786,6 +1850,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_list_longpressed_holo.9.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-hdpi-v4\\abc_list_longpressed_holo.9.png"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_progress_loading.xml.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\progress_loading.xml"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_textfield_search_activated_mtrl_alpha.9.png.flat",
@@ -1892,6 +1960,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\color\\mtrl_btn_bg_color_selector.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_10.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_10.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_calendar_black_24dp.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\drawable\\ic_calendar_black_24dp.xml"
     },
@@ -1964,6 +2036,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\xml\\standalone_badge.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_09.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_09.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_abc_ic_menu_share_mtrl_alpha.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-mdpi-v4\\abc_ic_menu_share_mtrl_alpha.png"
     },
@@ -1974,6 +2050,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_btn_switch_to_on_mtrl_00012.9.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-xxhdpi-v4\\abc_btn_switch_to_on_mtrl_00012.9.png"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_15.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_15.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_mtrl_alert_dialog_actions.xml.flat",
@@ -2014,6 +2094,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\anim_btn_radio_to_on_mtrl_ring_outer_path_animation.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\anim\\btn_radio_to_on_mtrl_ring_outer_path_animation.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_14.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_14.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_abc_scrubber_control_to_pressed_mtrl_005.png.flat",
@@ -2360,6 +2444,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\anim\\mtrl_card_lowers_interpolator.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_12.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_12.png"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\color_mtrl_choice_chip_background_color.xml.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\5d52d9573d8a8f70a8462cc8f8a42ce9\\material-1.1.0\\res\\color\\mtrl_choice_chip_background_color.xml"
     },
@@ -2418,6 +2506,10 @@
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_ic_star_half_black_36dp.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-hdpi-v4\\abc_ic_star_half_black_36dp.png"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi_frame_loading_13.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-xhdpi\\frame_loading_13.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\animator_mtrl_fab_hide_motion_spec.xml.flat",

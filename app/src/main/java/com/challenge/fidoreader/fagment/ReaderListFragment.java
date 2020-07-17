@@ -42,7 +42,6 @@ public class ReaderListFragment extends Fragment {
     public void onResume(){
         super.onResume();
         Log.v(TAG, "onResume");
-        mainActivity.getCredentialList();
     }
 
     @Override

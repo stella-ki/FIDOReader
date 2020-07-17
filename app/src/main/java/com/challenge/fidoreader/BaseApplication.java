@@ -20,6 +20,9 @@ public class BaseApplication extends Application {
     AppCompatDialog progressDialog;
 
     public static BaseApplication getInstance() {
+        if(baseApplication == null){
+            baseApplication = new BaseApplication();
+        }
         return baseApplication;
     }
 

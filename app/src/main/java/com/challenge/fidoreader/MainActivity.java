@@ -196,22 +196,38 @@ public class MainActivity  extends BaseActivity {
 
     public void onChangeFragment(){
         Log.v(TAG, "onchangeFragment");
-        getSupportFragmentManager().beginTransaction().replace(R.id.container,page1_2).commit();
+        try{
+            getCredentialList();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,page1_2).commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
-    public void getCredentialList() {
-        Log.v(TAG, "getCredentialList");
-        progressON("Loading...");
+    public void getCredentialList() throws Exception{
 
-        ArrayList<Credential_item> list = authenticator.getCredentialList();
+        try{
+            Log.v(TAG, "getCredentialList");
+            progressON("Loading...");
 
-        for (int i = 0; i< list.size(); i++){
-            page1_2.addCredentialItem(list.get(i));
+            authenticator.setTag(myTag);
 
+            ArrayList<Credential_item> list = authenticator.getCredentialList();
+
+            for (int i = 0; i< list.size(); i++){
+                page1_2.addCredentialItem(list.get(i));
+
+            }
+
+            progressOFF();
+
+        }catch (Exception e){
+            progressOFF();
+            e.printStackTrace();
+            throw e;
         }
 
-        progressOFF();
 
     }
 /*
