@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.syki.fidoreader">
+    package="com.challenge.fidoreader">
 
     <uses-permission android:name="android.permission.NFC"/>
     <uses-feature android:name="android.hardware.nfc" android:required="true" />
@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name=".MainActivity"
+            android:name="com.challenge.fidoreader.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -26,8 +26,9 @@
             <meta-data android:name="android.nfc.action.TAG_DISCOVERED" android:resource="@xml/nfc_tech_filter" />
 
         </activity>
+
         <activity
-            android:name=".ApduSenderContactLess">
+            android:name="com.challenge.fidoreader.ApduSenderContactLess">
              </activity>
     </application>
 
