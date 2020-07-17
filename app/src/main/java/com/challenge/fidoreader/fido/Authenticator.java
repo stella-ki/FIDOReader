@@ -53,7 +53,8 @@ public class Authenticator {
     }
 
     public String getInfo(){
-        /*String result = bSendAPDU("80100000010400");
+        /* Test - kelee
+        String result = bSendAPDU("80100000010400");
 
         ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
         *//* CBOR decode - use jackson Library *//*
