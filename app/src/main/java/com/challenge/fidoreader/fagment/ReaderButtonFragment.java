@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
 
+import org.w3c.dom.Text;
+
 public class ReaderButtonFragment extends Fragment {
     public final static String TAG = "ReaderButtonFragment";
 
@@ -25,6 +27,8 @@ public class ReaderButtonFragment extends Fragment {
     TextView txtView2;
     TextView txtView3;
     Button btn;
+    Button getInfobtn;
+    TextView getInfoText;
 
     MainActivity mainActivity;
     private ReaderButtonViewModel mViewModel;
@@ -55,9 +59,23 @@ public class ReaderButtonFragment extends Fragment {
         });
         btn.setEnabled(false);
 
+        getInfobtn = (Button)view.findViewById(R.id.KonaBIOPASSGetInfoBtn);
+        getInfobtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        getInfobtn.setEnabled(false);
+
+
         txtView1 = (TextView)view.findViewById(R.id.readerActivationText1);
         txtView2 = (TextView)view.findViewById(R.id.readerActivationText2);
         txtView3 = (TextView)view.findViewById(R.id.readerActivationText3);
+
+        getInfoText = (TextView)view.findViewById(R.id.KonaBIOPASSGetInfoTextView);
+        getInfoText.setText("GET INFO RESPONSE");
 
         setTextview1("");
         setTextview2("");
@@ -69,6 +87,7 @@ public class ReaderButtonFragment extends Fragment {
     public void setEnabled(){
         Log.v(TAG, "setEnabled");
         btn.setEnabled(true);
+        getInfobtn.setEnabled(true);
     }
     public void setTextview1(String txt){
         Log.v(TAG, "1 : " + txt);
