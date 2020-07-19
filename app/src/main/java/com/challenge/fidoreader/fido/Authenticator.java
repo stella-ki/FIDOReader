@@ -134,15 +134,21 @@ public class Authenticator {
         return null;
     }
 
+    public void ClientPIN(byte sub) throws Exception{
+        String result = ClientPIN_cmd(sub);
+        ClientPINparse(sub, result);
+    }
 
-    public String ClientPIN(byte sub) throws Exception{
-        String result = "";
+
+    public String ClientPIN_cmd(byte sub) throws Exception{
+        String cmd = "";
 
         switch (sub){
             case cp_sub_getPINRetries              :
                 break;
             case cp_sub_getKeyAgreement            :
-                return "801000000606A20101020200";
+                cmd = "801000000606A20101020200";
+                break;
             case cp_sub_setPIN                     :
                 break;
             case cp_sub_changePIN                  :
@@ -156,6 +162,8 @@ public class Authenticator {
         }
 
         String pin = "0000";
+
+        String result = bSendAPDU(cmd);
 
 
         return result;
@@ -177,6 +185,7 @@ public class Authenticator {
                 String a_publickey = "";//TODO get authenticator public key
 
                 sso.generateSharedSecret(a_publickey);
+                Log.d(TAG, sso.toString());
 
                 return "801000000606A20101020200";
             case cp_sub_setPIN                     :
@@ -185,7 +194,7 @@ public class Authenticator {
                 break;
             case cp_sub_getPinUvAuthTokenUsingPin  :
                 String keyAggreement = "A5010203262001215820" + sso.getPublickey().substring(0,64) + "225820" + sso.getPublickey().substring(64);
-                String pinHashEnc = Util.aes_cbc(Util.sha_256("0000"), sso.sharedSecret);
+                String pinHashEnc = Util.aes_cbc(Util.sha_256("0000"), sso.getSharedSecret());
 
                 break;
             case cp_sub_getPinUvAuthTokenUsingUv   :

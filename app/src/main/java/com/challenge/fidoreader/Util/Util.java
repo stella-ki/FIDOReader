@@ -18,9 +18,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.challenge.fidoreader.Util;
 
+import android.util.Base64;
+
 import org.bouncycastle.jcajce.provider.symmetric.AES;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Util
 {
@@ -99,14 +112,47 @@ public class Util
     }
 
 
-    public static byte[] aes_cbc(byte[] plainText, byte[] keyText) throws Exception{
-        //TODO
-        return plainText;
+    public static byte[] aes_cbc(byte[] keyData, byte[] str) throws Exception{
+
+        String IV = Util.getHexString(keyData).substring(0, 16);
+
+        SecretKey secureKey = new SecretKeySpec(keyData, "AES");
+
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        c.init(Cipher.ENCRYPT_MODE, secureKey, new IvParameterSpec(IV.getBytes()));
+
+        byte[] encrypted = c.doFinal(str);
+
+        return encrypted;
     }
 
 
-    public static String aes_cbc(String plainText, String keyText) throws Exception{
-        return Util.getHexString(aes_cbc(Util.atohex(plainText), Util.atohex(keyText)));
+    // Encryption
+    public static String aes_cbc(String key, String str) throws Exception {
+
+        byte[] keyData = key.getBytes();
+        byte[] encrypted = aes_cbc(keyData, str.getBytes());
+        String enStr = new String(Base64.encode(encrypted, 2));
+
+        return enStr;
+    }
+
+
+    // Decryption
+
+    public static String AES_Decode(String key, String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+
+        byte[] keyData = key.getBytes();
+        String IV = key.substring(0, 16);
+
+        SecretKey secureKey = new SecretKeySpec(keyData, "AES");
+        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        c.init(Cipher.DECRYPT_MODE, secureKey, new IvParameterSpec(IV.getBytes("UTF-8")));
+
+        byte[] byteStr = Base64.decode(str.getBytes(), 2);
+
+        return new String(c.doFinal(byteStr), "UTF-8");
+
     }
 
 }

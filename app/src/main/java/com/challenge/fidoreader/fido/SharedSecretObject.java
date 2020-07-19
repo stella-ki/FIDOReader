@@ -1,5 +1,7 @@
 package com.challenge.fidoreader.fido;
 
+import androidx.annotation.NonNull;
+
 import com.challenge.fidoreader.Util.Util;
 
 import org.bouncycastle.jce.ECNamedCurveTable;
@@ -18,12 +20,10 @@ import javax.crypto.KeyAgreement;
 
 public class SharedSecretObject {
 
-    boolean isSharedSecretReady = false;
-    String sharedSecret;
-    String publickey;
-    String privatekey;
-
-    public SharedSecretObject(){}
+    private boolean isSharedSecretReady = false;
+    private String sharedSecret;
+    private String publickey;
+    private String privatekey;
 
     public void init(){
         publickey = "";
@@ -76,5 +76,19 @@ public class SharedSecretObject {
         sharedSecret = Util.getHexString(Util.sha_256(b_sharedSecret));
 
         isSharedSecretReady = true;
+    }
+
+    public String getSharedSecret() {
+        return sharedSecret;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "SharedSecretObject{" +
+                "sharedSecret='" + sharedSecret + '\'' +
+                ", publickey='" + publickey + '\'' +
+                ", privatekey='" + privatekey + '\'' +
+                '}';
     }
 }
