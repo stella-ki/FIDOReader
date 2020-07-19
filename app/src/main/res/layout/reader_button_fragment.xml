@@ -30,4 +30,16 @@
         android:layout_height="wrap_content"
         android:text="Button" />
 
+    <Button
+        android:id="@+id/KonaBIOPASSGetInfoBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GetInfo" />
+
+    <TextView
+        android:id="@+id/KonaBIOPASSGetInfoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="" />
+
 </LinearLayout>
