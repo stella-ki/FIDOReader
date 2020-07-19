@@ -64,7 +64,12 @@ public class ReaderButtonFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-
+                try {
+                    mainActivity.authenticator.setTag(mainActivity.myTag);
+                    getInfoText.setText(mainActivity.authenticator.getInfo(getInfoText));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         getInfobtn.setEnabled(false);
@@ -75,7 +80,7 @@ public class ReaderButtonFragment extends Fragment {
         txtView3 = (TextView)view.findViewById(R.id.readerActivationText3);
 
         getInfoText = (TextView)view.findViewById(R.id.KonaBIOPASSGetInfoTextView);
-        getInfoText.setText("GET INFO RESPONSE");
+        // getInfoText.setText("GET INFO RESPONSE");
 
         setTextview1("");
         setTextview2("");
