@@ -32,62 +32,61 @@
 21-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:11:9-41
 22        android:supportsRtl="true"
 22-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:12:9-35
-23        android:testOnly="true"
-24        android:theme="@android:style/Theme.Holo.Light" >
-24-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:9:9-56
-25        <activity
-25-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:13:9-28:20
-26            android:name="com.challenge.fidoreader.MainActivity"
-26-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:14:13-65
-27            android:label="@string/app_name"
-27-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:16:13-45
-28            android:screenOrientation="portrait"
-28-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:17:13-49
-29            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
-29-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:15:13-69
-30            <intent-filter>
-30-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:18:13-21:29
-31                <action android:name="android.intent.action.MAIN" />
-31-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:19:17-69
-31-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:19:25-66
-32
-33                <category android:name="android.intent.category.LAUNCHER" />
-33-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:20:17-77
-33-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:20:27-74
-34            </intent-filter>
-35            <intent-filter>
-35-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:22:13-25:29
-36                <action android:name="android.nfc.action.TAG_DISCOVERED" />
-36-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:23:17-75
-36-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:23:25-73
-37
-38                <category android:name="android.intent.category.DEFAULT" />
-38-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:24:17-76
-38-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:24:27-73
-39            </intent-filter>
-40
-41            <meta-data
-41-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:13-115
-42                android:name="android.nfc.action.TAG_DISCOVERED"
-42-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:24-72
-43                android:resource="@xml/nfc_tech_filter" />
-43-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:73-112
-44        </activity>
-45        <activity android:name="com.challenge.fidoreader.ApduSenderContactLess" >
-45-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:30:9-32:25
-45-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:13-74
-46        </activity>
-47
-48        <provider
-48-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:23:9-27:43
-49            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-49-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:24:13-79
-50            android:authorities="com.syki.fidoreader.lifecycle-process"
-50-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:25:13-69
-51            android:exported="false"
-51-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:26:13-37
-52            android:multiprocess="true" />
-52-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:27:13-40
-53    </application>
-54
-55</manifest>
+23        android:theme="@android:style/Theme.Holo.Light" >
+23-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:9:9-56
+24        <activity
+24-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:13:9-28:20
+25            android:name="com.challenge.fidoreader.MainActivity"
+25-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:14:13-65
+26            android:label="@string/app_name"
+26-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:16:13-45
+27            android:screenOrientation="portrait"
+27-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:17:13-49
+28            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+28-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:15:13-69
+29            <intent-filter>
+29-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:18:13-21:29
+30                <action android:name="android.intent.action.MAIN" />
+30-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:19:17-69
+30-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:19:25-66
+31
+32                <category android:name="android.intent.category.LAUNCHER" />
+32-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:20:17-77
+32-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:20:27-74
+33            </intent-filter>
+34            <intent-filter>
+34-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:22:13-25:29
+35                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+35-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:23:17-75
+35-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:23:25-73
+36
+37                <category android:name="android.intent.category.DEFAULT" />
+37-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:24:17-76
+37-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:24:27-73
+38            </intent-filter>
+39
+40            <meta-data
+40-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:13-115
+41                android:name="android.nfc.action.TAG_DISCOVERED"
+41-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:24-72
+42                android:resource="@xml/nfc_tech_filter" />
+42-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:73-112
+43        </activity>
+44        <activity android:name="com.challenge.fidoreader.ApduSenderContactLess" >
+44-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:30:9-32:25
+44-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:13-74
+45        </activity>
+46
+47        <provider
+47-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:23:9-27:43
+48            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+48-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:24:13-79
+49            android:authorities="com.syki.fidoreader.lifecycle-process"
+49-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:25:13-69
+50            android:exported="false"
+50-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:26:13-37
+51            android:multiprocess="true" />
+51-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:27:13-40
+52    </application>
+53
+54</manifest>

@@ -119,7 +119,7 @@ public class MainActivity  extends BaseActivity {
         page1_1.setTextview2("");
         page1_1.setTextview3("");
 
-        authenticator = new Authenticator(myTag);
+        authenticator = new Authenticator();
 
     }
 

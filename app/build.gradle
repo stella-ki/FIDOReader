@@ -31,6 +31,7 @@ dependencies {
 
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.9.8'
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.56'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'

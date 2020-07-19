@@ -18,6 +18,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.challenge.fidoreader.Util;
 
+import org.bouncycastle.jcajce.provider.symmetric.AES;
+
+import java.security.MessageDigest;
+
 public class Util
 {
 
@@ -83,5 +87,26 @@ public class Util
         return hex;
     }
 
+    public static byte[] sha_256(byte[] plainText) throws Exception{
+        MessageDigest sha = MessageDigest.getInstance("SHA-256");
+        sha.update(plainText);
+        return sha.digest();
+    }
+
+
+    public static String sha_256(String plainText) throws Exception{
+        return Util.getHexString(sha_256(Util.atohex(plainText)));
+    }
+
+
+    public static byte[] aes_cbc(byte[] plainText, byte[] keyText) throws Exception{
+        //TODO
+        return plainText;
+    }
+
+
+    public static String aes_cbc(String plainText, String keyText) throws Exception{
+        return Util.getHexString(aes_cbc(Util.atohex(plainText), Util.atohex(keyText)));
+    }
 
 }
