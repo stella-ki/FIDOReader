@@ -3,6 +3,7 @@ package com.challenge.fidoreader.fido;
 import android.nfc.tech.IsoDep;
 import android.util.Log;
 
+import com.challenge.fidoreader.Util.MapList;
 import com.challenge.fidoreader.Util.Util;
 import com.challenge.fidoreader.fagment.Credential_item;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,17 +16,7 @@ import org.bouncycastle.jce.spec.ECPublicKeySpec;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.MessageDigest;
-import java.security.Security;
-import java.security.interfaces.ECPrivateKey;
-import java.security.interfaces.ECPublicKey;
 import java.util.ArrayList;
-
-import javax.crypto.KeyAgreement;
 
 public class Authenticator {
     public final static String TAG = "Authenticator";
@@ -52,28 +43,15 @@ public class Authenticator {
 
 
     SharedSecretObject sso;
+    MapList<String, RPs> rps;
 
     public Authenticator(){
         sso = new SharedSecretObject();
+        rps = new MapList<String, RPs>();
     }
 
     public void setTag(IsoDep myTag) {
         this.myTag = myTag;
-    }
-
-    public ArrayList<Credential_item> getCredentialList() throws Exception{
-        Log.v(TAG, "getCredentialList");
-        ArrayList<Credential_item> list = new ArrayList<Credential_item>();
-
-
-        bSendAPDU("00A4040008A0000006472F000100");
-        getInfo();
-        /*ClientPINparse(bSendAPDU(ClientPIN(Authenticator.cp_sub_getKeyAgreement)));
-        ClientPINparse(bSendAPDU(ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin)));
-        CredentialManagementparse(bSendAPDU(CredentialManagement(Authenticator.cm_sub_enumerateRPsBegin)));
-        CredentialManagementparse(bSendAPDU(CredentialManagement(Authenticator.cp_sub_getKeyAgreement)));
-*/
-        return list;
     }
 
     public String getInfo() throws Exception{
@@ -206,18 +184,65 @@ public class Authenticator {
         return "80100000010400";
     }
 
+    public ArrayList<Credential_item> getCredentialList() throws Exception{
+        Log.v(TAG, "getCredentialList");
+        ArrayList<Credential_item> list = new ArrayList<Credential_item>();
 
-    public String CredentialManagement(byte sub){
+
+        bSendAPDU("00A4040008A0000006472F000100");
+        getInfo();
+        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+        int num = 0;
+
+        CredentialManagement(Authenticator.cm_sub_enumerateRPsBegin);
+        for (; num < rps.expectedSize(); num++){
+            CredentialManagement(Authenticator.cm_sub_enumerateRPsGetNextRP);
+        }
+
+        num = 0;
+        String rp = (String) rps.getKey(num++); //get First key value which is rp
+        CredentialManagement(Authenticator.cm_sub_enumerateCredentialsBegin, rp);
+        for (; num < rps.getSize(); num++){
+            rp = (String) rps.getKey(num); //get First key value which is rp
+            CredentialManagement(Authenticator.cm_sub_enumerateCredentialsGetNextCredential, rp);
+        }
+
+
+        return list;
+    }
+
+    public void CredentialManagement(byte sub, String... param) throws Exception{
+        String result = CredentialManagement_cmd(sub, param);
+        CredentialManagement_parse(sub, result);
+    }
+
+    public String CredentialManagement_cmd(byte sub, String... param) throws Exception{
         String result = "";
+
+        String rp = "";
+        String rpIDHash = "";
 
         switch (sub){
             case cm_sub_getCredsMetadata	                  :
                 break;
             case cm_sub_enumerateRPsBegin	                  :
+                rps.clear();
+                rp = ""; //TODO
+                rpIDHash = ""; //TODO
+                int totalRpCount = 0;
+                rps.add(rp, new RPs(rp, rpIDHash));
+                rps.setExpectedSize(totalRpCount);
                 break;
             case cm_sub_enumerateRPsGetNextRP	              :
+                rp = ""; //TODO
+                rpIDHash = ""; //TODO
+                rps.add(rp, new RPs(rp, rpIDHash));
                 break;
             case cm_sub_enumerateCredentialsBegin	          :
+                rp = param[0];
+
+
                 break;
             case cm_sub_enumerateCredentialsGetNextCredential :
                 break;
@@ -232,7 +257,7 @@ public class Authenticator {
     }
 
 
-    public String CredentialManagementparse(String res){
+    public String CredentialManagement_parse(byte sub, String res){
         if(res.equals("")){
             return "";
         }
