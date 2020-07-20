@@ -6,6 +6,12 @@ public class Credential {
     String credentialID;
     String publicKey;
     String credProtect;
+    
+    public Credential(String user, String credentialID, String publicKey){
+        this.user = user;
+        this.credentialID = credentialID;
+        this.publicKey = publicKey;
+    }
 
     public String getUser() {
         return user;
