@@ -234,6 +234,12 @@ public class Authenticator {
         
         switch (sub){
             case cm_sub_getCredsMetadata	                  :
+                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "01").substring(0, 16*2);
+                cmd = "A3" 
+                    + "01" + "01" //subcommand index
+                    + "03" + "01" // pinUvAuthProtocol
+                    + "04" + "58"+ Util.toHex(pinUvAuthParam.length/2) + pinUvAuthParam; //pinUvAuthParam
+                cmd = "41" + cmd;
                 break;
             case cm_sub_enumerateRPsBegin	                  :
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "02").substring(0, 16*2);
@@ -243,8 +249,7 @@ public class Authenticator {
                     + "04" + "58"+ Util.toHex(pinUvAuthParam.length/2) + pinUvAuthParam; //pinUvAuthParam
                 cmd = "41" + cmd;
                 break;
-            case cm_sub_enumerateRPsGetNextRP	              :
-                
+            case cm_sub_enumerateRPsGetNextRP	              :                
                 cmd = "A1" 
                     + "01" + "03"; //subcommand index
                 cmd = "41" + cmd;
@@ -271,7 +276,21 @@ public class Authenticator {
                 cmd = "41" + cmd;                
                 break;
             case cm_sub_deleteCredential	                  :
+                String credentialID = param[0];
+                credentialID = "A1" + "02" + "A2" + "64" + "74797065" + "6A" + "7075626C69632D6B6579" + "62" + "6964" + "58" + Util.toHex(credentialID.length/2) + credentialID;
+                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "06" + credentialID).substring(0, 16*2);
+               
+                cmd = "A4" 
+                    + "01" + "06"; //subcommand index     
+                    + "02" + credentialID //subcommand params
+                    + "03" + "01" // pinUvAuthProtocol
+                    + "04" + "58"+ Util.toHex(pinUvAuthParam.length/2) + pinUvAuthParam; //pinUvAuthParam                        
+                cmd = "41" + cmd;                
                 break;
+            default : 
+                throws new Exception("Subcommand value is wrong");
+                break;
+                
         }
 
         String pin = "0000";
