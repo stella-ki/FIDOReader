@@ -29,12 +29,12 @@ public class Authenticator {
     public static final byte cp_sub_getPinUvAuthTokenUsingUv	= 0x06;
     public static final byte cp_sub_getUVRetries	            = 0x07;
 
-    public static final byte cm_sub_getCredsMetadata	                  =  0x01 ;
-    public static final byte cm_sub_enumerateRPsBegin	                  =  0x02 ;
-    public static final byte cm_sub_enumerateRPsGetNextRP	              =  0x03 ;
-    public static final byte cm_sub_enumerateCredentialsBegin	          =  0x04 ;
-    public static final byte cm_sub_enumerateCredentialsGetNextCredential =	0x05  ;
-    public static final byte cm_sub_deleteCredential	                  =  0x06 ;
+    public static final String cm_sub_getCredsMetadata	                    =  "1" ;
+    public static final String cm_sub_enumerateRPsBegin	                    =  "2" ;
+    public static final String cm_sub_enumerateRPsGetNextRP	                =  "3" ;
+    public static final String cm_sub_enumerateCredentialsBegin	            =  "4" ;
+    public static final String cm_sub_enumerateCredentialsGetNextCredential =  "5" ;
+    public static final String cm_sub_deleteCredential	                    =  "6" ;
 
     IsoDep myTag;
 
@@ -199,70 +199,138 @@ public class Authenticator {
         for (; num < rps.expectedSize(); num++){
             CredentialManagement(Authenticator.cm_sub_enumerateRPsGetNextRP);
         }
-
-        num = 0;
-        String rp = (String) rps.getKey(num++); //get First key value which is rp
-        CredentialManagement(Authenticator.cm_sub_enumerateCredentialsBegin, rp);
-        for (; num < rps.getSize(); num++){
+        
+        String rp = ""; //get First key value which is rp
+        for (num = 0; num < rps.getSize(); num++){
             rp = (String) rps.getKey(num); //get First key value which is rp
-            CredentialManagement(Authenticator.cm_sub_enumerateCredentialsGetNextCredential, rp);
+            CredentialManagement(Authenticator.cm_sub_enumerateCredentialsBegin, rp);
+            int credCunt = 0; //TODO            
+            for (int j = 0; j < credCunt; j++){
+                CredentialManagement(Authenticator.cm_sub_enumerateCredentialsGetNextCredential, rp);
+            }    
         }
-
-
+        
+        for (num = 0; num < rps.getSize(); num++){
+            RPs tmprps = rps.getvalue(num);
+            for (int j = 0; j < tmprps.getCredentials().size(); j++){
+                list.add(new Credential_item(tmprps.getCredential(j), tmprps.getRp()));
+            }            
+        }
         return list;
     }
 
-    public void CredentialManagement(byte sub, String... param) throws Exception{
+    public JsonNode CredentialManagement(byte sub, String... param) throws Exception{
         String result = CredentialManagement_cmd(sub, param);
-        CredentialManagement_parse(sub, result);
+        JsonNode jnode = CredentialManagement_parse(sub, result);
+        return jnode;
     }
 
-    public String CredentialManagement_cmd(byte sub, String... param) throws Exception{
-        String result = "";
+    public String CredentialManagement_cmd(String sub, String... param) throws Exception{
+        String pinUvAuthParam = "";
+        String cmd = "";
 
         String rp = "";
         String rpIDHash = "";
-
+        
         switch (sub){
             case cm_sub_getCredsMetadata	                  :
                 break;
             case cm_sub_enumerateRPsBegin	                  :
-                rps.clear();
-                rp = ""; //TODO
-                rpIDHash = ""; //TODO
-                int totalRpCount = 0;
-                rps.add(rp, new RPs(rp, rpIDHash));
-                rps.setExpectedSize(totalRpCount);
+                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "02").substring(0, 16*2);
+                cmd = "A3" 
+                    + "01" + "02" //subcommand index
+                    + "03" + "01" // pinUvAuthProtocol
+                    + "04" + "58"+ Util.toHex(pinUvAuthParam.length/2) + pinUvAuthParam; //pinUvAuthParam
+                cmd = "41" + cmd;
                 break;
             case cm_sub_enumerateRPsGetNextRP	              :
-                rp = ""; //TODO
-                rpIDHash = ""; //TODO
-                rps.add(rp, new RPs(rp, rpIDHash));
+                
+                cmd = "A1" 
+                    + "01" + "03"; //subcommand index
+                cmd = "41" + cmd;
                 break;
             case cm_sub_enumerateCredentialsBegin	          :
                 rp = param[0];
-
+                rp = Util.convertTohex(rp);
+                rpIDHash = sha_256(rp);
+                rpIDHash = "A10158" + Util.toHex(rpIDHash.length/2) + rpIDHash;
+                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "04" + rpIDHash).substring(0, 16*2);
+                
+                cmd = "A4" 
+                    + "01" + "04"; //subcommand index     
+                    + "02" + rpIDHash //subcommand params
+                    + "03" + "01" // pinUvAuthProtocol
+                    + "04" + "58"+ Util.toHex(pinUvAuthParam.length/2) + pinUvAuthParam; //pinUvAuthParam
+                        
+                cmd = "41" + cmd;
 
                 break;
             case cm_sub_enumerateCredentialsGetNextCredential :
+                cmd = "A1" 
+                    + "01" + "05"; //subcommand index                        
+                cmd = "41" + cmd;                
                 break;
             case cm_sub_deleteCredential	                  :
                 break;
         }
 
         String pin = "0000";
-
+        String result = bSendAPDU(cmd);
 
         return result;
     }
 
 
-    public String CredentialManagement_parse(byte sub, String res){
+    public JsonNode CredentialManagement_parse(String sub, String... param, String res){
+        JsonNode jnode = getCBORData(res);
+        
         if(res.equals("")){
             return "";
         }
+        
+        String rp = "";
+        String rpIDHash = "";
+        String user = "";
+        String CredentialID = "";
+        String publicKey = "";
 
-        return "80100000010400";
+        switch (sub){
+            case cm_sub_getCredsMetadata	                  :
+                break;
+            case cm_sub_enumerateRPsBegin	                  :               
+                rps.clear();
+                rp = jnode.get("3");
+                rpIDHash = jnode.get("4");
+                int totalRpCount = jnode.get("5");
+                rps.add(rp, new RPs(rp, rpIDHash));
+                rps.setExpectedSize(totalRpCount);
+                break;
+            case cm_sub_enumerateRPsGetNextRP	              :
+                rp = jnode.get("3");
+                rpIDHash = jnode.get("4");
+                rps.add(rp, new RPs(rp, rpIDHash));
+                break;
+            case cm_sub_enumerateCredentialsBegin	          :
+                rp = param[0];
+                RPs tmpRPs = rps.get(rp);
+                user = jnode.get("6");
+                CredentialID = jnode.get("7");
+                publicKey = jnode.get("8");
+                tmpRPs.tmpRPs(new Credential(user, CredentialID, publicKey));      
+                break;
+            case cm_sub_enumerateCredentialsGetNextCredential :
+                rp = param[0];
+                RPs tmpRPs = rps.get(rp);
+                user = jnode.get("6");
+                CredentialID = jnode.get("7");
+                publicKey = jnode.get("8");
+                tmpRPs.tmpRPs(new Credential(user, CredentialID, publicKey));    
+                break;
+            case cm_sub_deleteCredential	                  :
+                break;
+        }
+
+        return jnode;
     }
 
 
