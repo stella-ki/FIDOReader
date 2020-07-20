@@ -154,5 +154,12 @@ public class Util
         return new String(c.doFinal(byteStr), "UTF-8");
 
     }
+    
+    public static String HMACSHA256(String key, String input) throws Exception){
+        Mac hasher = Mac.getInstance("HmacSHA256");
+        hasher.init(new SecretKeySpec(Util.atohex(key),"HmacSHA256"));
+        byte[] hash = hasher.doFinal(Util.atohex(input));
+        return Util.getHexString(hash);
+    }
 
 }
