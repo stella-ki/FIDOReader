@@ -10,6 +10,12 @@ public class Credential_item {
         this.rpid = rpid;
         this.resid = resid;
     }
+    
+    
+    public Credential_item(String credential_id, String rpid) {
+        this.credential_id = credential_id;
+        this.rpid = rpid;
+    }
 
     public String getCredential_id() {
         return credential_id;
