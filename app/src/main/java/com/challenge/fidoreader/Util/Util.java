@@ -161,5 +161,11 @@ public class Util
         byte[] hash = hasher.doFinal(Util.atohex(input));
         return Util.getHexString(hash);
     }
+    
+    public static String toHex(int value){
+        String s = Integer.toHexString(value).toUppercase();
+        n = (n.length % 2 == 1 ? "0" + n : n);
+        return n;
+    }
 
 }
