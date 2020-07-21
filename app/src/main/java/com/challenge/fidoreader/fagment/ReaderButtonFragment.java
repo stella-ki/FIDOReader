@@ -29,6 +29,7 @@ public class ReaderButtonFragment extends Fragment {
     Button btn;
     Button getInfobtn;
     TextView getInfoText;
+    Button clientpinbtn;
 
     MainActivity mainActivity;
     private ReaderButtonViewModel mViewModel;
@@ -60,6 +61,8 @@ public class ReaderButtonFragment extends Fragment {
         btn.setEnabled(false);
 
         getInfobtn = (Button)view.findViewById(R.id.KonaBIOPASSGetInfoBtn);
+        clientpinbtn = (Button)view.findViewById(R.id.KonaBIOPASSPINBtn);
+        clientpinbtn.setEnabled(false);
         getInfobtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -67,6 +70,14 @@ public class ReaderButtonFragment extends Fragment {
                 try {
                     mainActivity.authenticator.setTag(mainActivity.myTag);
                     getInfoText.setText(mainActivity.authenticator.getInfo(getInfoText));
+
+                    if(mainActivity.authenticator.hasclientPIN){
+                        clientpinbtn.setText("Change PIN");
+                    }
+                    else{
+                        clientpinbtn.setText("Set PIN");
+                    }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -74,6 +85,14 @@ public class ReaderButtonFragment extends Fragment {
         });
         getInfobtn.setEnabled(false);
 
+        clientpinbtn.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                SetNewPINFragment newDialogFragment = new SetNewPINFragment();
+                newDialogFragment.show(getFragmentManager(), "dialog");
+            }
+        });
 
         txtView1 = (TextView)view.findViewById(R.id.readerActivationText1);
         txtView2 = (TextView)view.findViewById(R.id.readerActivationText2);
@@ -93,6 +112,7 @@ public class ReaderButtonFragment extends Fragment {
         Log.v(TAG, "setEnabled");
         btn.setEnabled(true);
         getInfobtn.setEnabled(true);
+        clientpinbtn.setEnabled(true);
     }
     public void setTextview1(String txt){
         Log.v(TAG, "1 : " + txt);

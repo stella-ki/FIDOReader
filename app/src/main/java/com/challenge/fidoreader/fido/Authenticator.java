@@ -45,6 +45,8 @@ public class Authenticator {
     FIDO2_API cmd;
     Responses res;
 
+    public boolean hasclientPIN = false;
+
     public Authenticator(IsoDep myTag){
         this.myTag = myTag;
         data = new Data();
@@ -179,6 +181,7 @@ public class Authenticator {
                         }
                         if(options.get("clientPin")){
                             resultData += "\t[사용자 PIN] : [사용 가능]\n";
+                            hasclientPIN = true;
                         }
                         else{
                             resultData += "\t[사용자 PIN] : [미지원 or 사용장 PIN 미등록]\n";
