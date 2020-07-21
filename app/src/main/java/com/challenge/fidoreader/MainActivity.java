@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
+import com.challenge.fidoreader.Exception.UserException;
 import com.google.android.material.tabs.TabLayout;
 import com.challenge.fidoreader.Util.Util;
 import com.challenge.fidoreader.fagment.Credential_item;
@@ -201,6 +202,7 @@ public class MainActivity  extends BaseActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.container,page1_2).commit();
         }catch (Exception e){
             e.printStackTrace();
+
         }
     }
 
@@ -222,9 +224,13 @@ public class MainActivity  extends BaseActivity {
 
             progressOFF();
 
+        }catch (UserException ue){
+            Toast.makeText(this.getApplicationContext(),ue.getMessage(), Toast.LENGTH_SHORT).show();
+
         }catch (Exception e){
             progressOFF();
             e.printStackTrace();
+            Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
             throw e;
         }
 

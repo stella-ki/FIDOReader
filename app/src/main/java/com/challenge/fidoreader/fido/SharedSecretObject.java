@@ -4,9 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.challenge.fidoreader.Util.Util;
 
-import org.bouncycastle.jce.ECNamedCurveTable;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.jce.spec.ECPublicKeySpec;
+import org.spongycastle.jce.ECNamedCurveTable;
+import org.spongycastle.jce.spec.ECPublicKeySpec;
 
 import java.math.BigInteger;
 import java.security.KeyFactory;
@@ -56,11 +55,11 @@ public class SharedSecretObject {
         byte[] outPriK = ((ECPrivateKey)kp.getPrivate()).getS().toByteArray();
 
         //platform public key and private key
-        publickey = Util.getHexString(outPubK).substring(54);
-        privatekey = Util.getHexString(outPriK);
+        publickey = Util.byteArrayToHexString(outPubK).substring(54);
+        privatekey = Util.byteArrayToHexString(outPriK);
 
         //make agreementkey
-        Security.addProvider(new BouncyCastleProvider());
+        Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
         KeyFactory keyFactory = KeyFactory.getInstance("ECDSA");
         ECPublicKey pubkey = (ECPublicKey)keyFactory.generatePublic(
                 new ECPublicKeySpec(ECNamedCurveTable.getParameterSpec("secp256r1").getCurve().createPoint(
@@ -73,7 +72,7 @@ public class SharedSecretObject {
 
         byte[] b_sharedSecret = ka.generateSecret();
 
-        sharedSecret = Util.getHexString(Util.sha_256(b_sharedSecret));
+        sharedSecret = Util.byteArrayToHexString(Util.sha_256(b_sharedSecret));
 
         isSharedSecretReady = true;
     }

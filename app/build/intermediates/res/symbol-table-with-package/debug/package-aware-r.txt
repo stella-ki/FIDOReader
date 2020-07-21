@@ -1418,6 +1418,8 @@ id BOTTOM_END
 id BOTTOM_START
 id CTRL
 id FUNCTION
+id KonaBIOPASSGetInfoBtn
+id KonaBIOPASSGetInfoTextView
 id META
 id SHIFT
 id SYM

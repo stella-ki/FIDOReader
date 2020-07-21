@@ -20,23 +20,24 @@ package com.challenge.fidoreader.Util;
 
 import android.util.Base64;
 
-import org.bouncycastle.jcajce.provider.symmetric.AES;
-
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
+import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Util
 {
+    static byte[] ZERO =
+            {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+
 
     public static String szByteHex2String(byte datain)
     {
@@ -55,15 +56,51 @@ public class Util
         String szDataStr = "";
         for (int ii=0; ii < data.length; ii++)
         {
-            szDataStr += String.format("%02X ", data[ii] & 0xFF);
+            szDataStr += String.format("%02X", data[ii] & 0xFF);
         }
         return szDataStr;
+    }
+
+    public static byte[] hexStringToByteArray(String s) {
+        ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
+        Pattern p = Pattern.compile("[^\\s\\da-fA-F]");
+        Matcher m = p.matcher(s);
+        if(m.find()){
+            return null;
+        }
+        s = s.replaceAll("\\s+", "");
+        if(s.length()%2 != 0){
+            return null;
+        }
+        for(int i = 0; i<s.length(); i+=2){
+            bytestream.write(Integer.parseInt(s.substring(i,i+2), 16));
+
+        }
+        return bytestream.toByteArray();
+    }
+
+
+    public static String byteArrayToHexString(byte[] bytes){
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i< bytes.length; i++){
+
+            String tmp = Integer.toHexString(bytes[i] & 0xFF).toUpperCase();
+            if(tmp.length() == 1){
+                sb.append("0" + tmp);
+            }else{
+                sb.append(tmp);
+            }
+        }
+
+        return sb.toString();
     }
 
 
     public static String getATRLeString(byte[] data) throws Exception
     {
-        return String.format("%02X ", data.length | 0x80);
+        return String.format("%02X", data.length | 0x80);
     }
 
 
@@ -76,7 +113,7 @@ public class Util
         {
             Lrc = Lrc^(b[i] & 0xFF);
         }
-        return String.format("%02X ", Lrc);
+        return String.format("%02X", Lrc);
     }
 
 
@@ -108,64 +145,94 @@ public class Util
 
 
     public static String sha_256(String plainText) throws Exception{
-        return Util.getHexString(sha_256(Util.atohex(plainText)));
+        return Util.byteArrayToHexString
+                (sha_256(Util.hexStringToByteArray(plainText)));
     }
 
 
     public static byte[] aes_cbc(byte[] keyData, byte[] str) throws Exception{
+        SecretKey key;
+        Cipher cipher;
 
-        String IV = Util.getHexString(keyData).substring(0, 16);
+        byte[] cipherText = {(byte)0x00, };
 
-        SecretKey secureKey = new SecretKeySpec(keyData, "AES");
+        try{
+            key = new SecretKeySpec(keyData, "AES");
+            cipher = Cipher.getInstance("AES/CBC/NoPadding");
 
-        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        c.init(Cipher.ENCRYPT_MODE, secureKey, new IvParameterSpec(IV.getBytes()));
+            cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(ZERO));
 
-        byte[] encrypted = c.doFinal(str);
+            cipherText = cipher.doFinal(str);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-        return encrypted;
+        return cipherText;
     }
 
 
     // Encryption
     public static String aes_cbc(String key, String str) throws Exception {
 
-        byte[] keyData = key.getBytes();
-        byte[] encrypted = aes_cbc(keyData, str.getBytes());
-        String enStr = new String(Base64.encode(encrypted, 2));
+        byte[] keyData = Util.hexStringToByteArray(key);
+        byte[] encrypted = aes_cbc(keyData, Util.hexStringToByteArray(str));
 
-        return enStr;
+        return Util.byteArrayToHexString(encrypted);
     }
 
 
     // Decryption
+    public static byte[] aes_cbc_dec(byte[] keyData, byte[] str) throws Exception{
+        SecretKey key;
+        Cipher cipher;
 
-    public static String AES_Decode(String key, String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+        byte[] cipherText = {(byte)0x00, };
 
-        byte[] keyData = key.getBytes();
-        String IV = key.substring(0, 16);
+        try{
+            key = new SecretKeySpec(keyData, "AES");
+            cipher = Cipher.getInstance("AES/CBC/NoPadding");
 
-        SecretKey secureKey = new SecretKeySpec(keyData, "AES");
-        Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        c.init(Cipher.DECRYPT_MODE, secureKey, new IvParameterSpec(IV.getBytes("UTF-8")));
+            cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(ZERO));
 
-        byte[] byteStr = Base64.decode(str.getBytes(), 2);
+            cipherText = cipher.doFinal(str);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
-        return new String(c.doFinal(byteStr), "UTF-8");
+        return cipherText;
+    }
 
+
+    // Encryption
+    public static String aes_cbc_dec(String key, String str) throws Exception {
+
+        byte[] keyData = Util.hexStringToByteArray(key);
+        byte[] encrypted = aes_cbc_dec(keyData, Util.hexStringToByteArray(str));
+
+        return Util.byteArrayToHexString(encrypted);
     }
     
-    public static String HMACSHA256(String key, String input) throws Exception){
-        Mac hasher = Mac.getInstance("HmacSHA256");
-        hasher.init(new SecretKeySpec(Util.atohex(key),"HmacSHA256"));
-        byte[] hash = hasher.doFinal(Util.atohex(input));
-        return Util.getHexString(hash);
+    public static String HMACSHA256(String key, String input) throws Exception{
+        Mac hasher = javax.crypto.Mac.getInstance("HmacSHA256");
+        hasher.init(new SecretKeySpec(Util.hexStringToByteArray(key),"HmacSHA256"));
+        byte[] hash = hasher.doFinal(Util.hexStringToByteArray(input));
+        return Util.byteArrayToHexString(hash);
     }
     
     public static String toHex(int value){
-        String s = Integer.toHexString(value).toUppercase();
-        n = (n.length % 2 == 1 ? "0" + n : n);
+        String n = Integer.toHexString(value).toUpperCase();
+        n = (n.length() % 2 == 1 ? "0" + n : n);
         return n;
     }
 
+    public static String convertTohex(String bytes) {
+        String result = "";
+
+        for (int i = 0; i < bytes.length(); i++) {
+            result += String.format("%02X ", (int) bytes.charAt(i));
+        }
+
+        return result;
+
+    }
 }
