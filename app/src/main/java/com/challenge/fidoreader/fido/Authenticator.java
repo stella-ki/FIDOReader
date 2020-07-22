@@ -2,7 +2,6 @@ package com.challenge.fidoreader.fido;
 
 import android.nfc.tech.IsoDep;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.challenge.fidoreader.Util.Util;
 import com.challenge.fidoreader.fagment.Credential_item;
@@ -45,7 +44,6 @@ public class Authenticator {
     FIDO2_API cmd;
     Responses res;
 
-    public boolean hasclientPIN = false;
 
     public Authenticator(IsoDep myTag){
         this.myTag = myTag;
@@ -70,7 +68,7 @@ public class Authenticator {
 
         return list;
     }
-
+    /*
     public String getInfo() throws Exception{
         Log.v(TAG, "getInfo");
 
@@ -84,7 +82,7 @@ public class Authenticator {
 
         Log.v(TAG, "getInfo result " + result);
 
-        /*ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
+        ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
 
         CBORFactory cf = new CBORFactory();
         ObjectMapper mapper = new ObjectMapper(cf);
@@ -93,16 +91,17 @@ public class Authenticator {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
 
 
         return result;
     }
+    */
 
-    public String getInfo(TextView viewprint) throws Exception{
+    public String getInfo(){
         Log.v(TAG, "getInfo");
 
-        String resultData = "Start GetInfo Process" + "\n";
+        // String resultData = "Start GetInfo Process" + "\n";
 
         // viewprint.append("00A4040008A0000006472F000100");
         bSendAPDU("00A4040008A0000006472F000100");
@@ -113,118 +112,9 @@ public class Authenticator {
 
         result = result.substring(2, result.length() - 6);
 
-        ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
 
-        CBORFactory cf = new CBORFactory();
-        ObjectMapper mapper = new ObjectMapper(cf);
-        try {
-            // JsonNode jnode = mapper.readValue(bais, JsonNode.class);
-            CBORParser cborParser = cf.createParser(bais);
-            Map<String, Object> responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
-            });
-
-            ArrayList<String> version;
-            ArrayList<String> extensions;
-            byte[] aaguid;
-            LinkedHashMap<String, Boolean> options;
-            ArrayList<Integer> pinUvAuthProtocol;
-
-            for (String key : responseMap.keySet()) {
-//            System.out.println("key : " + key);
-                switch (key) {
-                    case "1":
-                        version = (ArrayList<String>) responseMap.get(key);
-                        resultData += "Version : \n";
-                        for(int index = 0 ; index < version.size() ; index++){
-                            resultData += "\t[" + version.get(index) + "]\n";
-                        }
-
-                        break;
-                    case "2":
-                        extensions = (ArrayList<String>) responseMap.get(key);
-                        resultData += "Extensions : \n";
-                        for(int index = 0 ; index < extensions.size() ; index++){
-                            resultData += "\t[" + extensions.get(index) + "]\n";
-                        }
-                        break;
-                    case "3":
-                        aaguid = (byte[]) responseMap.get(key);
-                        resultData += "AAGUID : \n";
-                        resultData += "\t[" + Util.getHexString(aaguid) + "]\n";
-                        break;
-                    case "4":
-                        options = (LinkedHashMap<String, Boolean>) responseMap.get(key);
-                        resultData += "Opionts : \n";
-                        if(options.get("rk")){
-                            resultData += "\t[Resident Key] : [지원]\n";
-                        }
-                        else{
-                            resultData += "\t[Resident Key] : [미지원]\n";
-                        }
-                        if(options.get("up")){
-                            resultData += "\t[User Presence] : [지원]\n";
-                        }
-                        else{
-                            resultData += "\t[User Presence] : [미지원]\n";
-                        }
-                        if(options.get("uv")){
-                            resultData += "\t[FingerPrint] : [사용 가능]\n";
-                        }
-                        else{
-                            resultData += "\t[FingerPrint] : [미지원 or 지문 미등록]\n";
-                        }
-                        if(!options.get("plat")){
-                            resultData += "\t[no Platform Device]\n";
-                        }
-                        else{
-                            resultData += "\t[Platform Device]\n";
-                        }
-                        if(options.get("clientPin")){
-                            resultData += "\t[사용자 PIN] : [사용 가능]\n";
-                            hasclientPIN = true;
-                        }
-                        else{
-                            resultData += "\t[사용자 PIN] : [미지원 or 사용장 PIN 미등록]\n";
-                        }
-                        if(options.get("credentialMgmtPreview")){
-                            resultData += "\t[Credential Management] : [지원]\n";
-                        }
-                        else{
-                            resultData += "\t[Credential Management] : [미지원]\n";
-                        }
-                        if(!options.get("userVerificationMgmtPreview")){
-                            resultData += "\t[FingerPrint Management] : [미지원 or 지문 미등록]\n";
-                        }
-                        else{
-                            resultData += "\t[FingerPrint Management : [지원]\n";
-                        }
-                        break;
-                    case "6":
-                        pinUvAuthProtocol = (ArrayList<Integer>) responseMap.get(key);
-                        resultData += "PinUvAuthProtocol : \n";
-                        for(int index = 0 ; index < pinUvAuthProtocol.size() ; index++){
-                            resultData += "\t[" + pinUvAuthProtocol.get(index) + "]\n";
-                        }
-                        break;
-                    case "7":
-                        resultData += "지원가능한 Credential 수 : \n";
-                        resultData += "\t[" + (Integer) responseMap.get(key) + " bytes]\n";
-                        break;
-                    case "8":
-                        resultData += "CredentialID 길이 : \n";
-                        resultData += "\t[" + (Integer) responseMap.get(key) + "]\n";
-                        break;
-                }
-            }
-
-
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 //        return "80100000010400";
-        return resultData;
+        return result;
     }
 
 

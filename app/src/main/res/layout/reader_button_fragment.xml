@@ -36,11 +36,16 @@
         android:layout_height="wrap_content"
         android:text="GetInfo" />
 
-    <TextView
-        android:id="@+id/KonaBIOPASSGetInfoTextView"
-        android:layout_width="wrap_content"
+    <TableLayout
+        android:id="@+id/KonaBIOPASSGetInfoTable"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:stretchColumns="*">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+    </TableLayout>
 
     <Button
         android:id="@+id/KonaBIOPASSPINBtn"
