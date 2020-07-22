@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -34,6 +36,16 @@ public class ReaderListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_readerlist, container, false);
         listView = view.findViewById(R.id.listview);
         listView.setAdapter(sa);
+
+        FloatingActionButton fab = view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              mainActivity.onChangeFragmentToMain();
+              sa.reset();
+            }
+        });
+
         return view;
     }
 
@@ -85,7 +97,7 @@ public class ReaderListFragment extends Fragment {
     }
 
     public void addCredentialItem(Credential_item ci){
-        sa.addItem(new Credential_item("test1", "testtest1", R.drawable.ic_icc_off));
+        sa.addItem(new Credential_item(ci.rpid, ci.credential_id, R.drawable.authenticator_key));
 
     }
 
@@ -126,6 +138,10 @@ public class ReaderListFragment extends Fragment {
             iff.setImage(cii.getResid());
 
             return iff;
+        }
+
+        public void reset(){
+            items.clear();
         }
     }
 }

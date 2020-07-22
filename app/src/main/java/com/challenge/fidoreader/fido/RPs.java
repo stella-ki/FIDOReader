@@ -1,18 +1,20 @@
 package com.challenge.fidoreader.fido;
 
+import com.challenge.fidoreader.Util.ArrayCustomList;
+
 import java.util.ArrayList;
 
 public class RPs {
     String rp;
     String rpIDHash;
-    ArrayList<Credential> credentials;
+    ArrayCustomList<Credential> credentials;
 
     private RPs() {
 
     }
 
     public RPs(String rp, String rpIDHash) {
-        this.credentials = new ArrayList<Credential>();
+        this.credentials = new ArrayCustomList<Credential>();
         this.rp = rp;
         this.rpIDHash = rpIDHash;
     }
@@ -42,8 +44,17 @@ public class RPs {
     }
 
     public Credential getCredential(int num){
-        return credentials.get(num);
+        return (Credential)credentials.get(num);
     }
+
+    public void setCredentialExpectedCnt(int num){
+        credentials.setExpectedCount(num);
+    }
+
+    public int getCredentialExpectedCnt(){
+        return credentials.getExpectedCount();
+    }
+
 
     @Override
     public String toString() {

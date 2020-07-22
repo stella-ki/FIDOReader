@@ -1,6 +1,7 @@
 package com.challenge.fidoreader.fagment;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.challenge.fidoreader.MainActivity;
@@ -23,7 +25,7 @@ public class ReaderButtonFragment extends Fragment {
     public final static String TAG = "ReaderButtonFragment";
 
 
-    TextView txtView1;
+    ImageView imageView;
     TextView txtView2;
     TextView txtView3;
     Button btn;
@@ -53,7 +55,7 @@ public class ReaderButtonFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.onChangeFragment();
+                mainActivity.onChangeFragmentToList();
 
             }
         });
@@ -70,14 +72,14 @@ public class ReaderButtonFragment extends Fragment {
         getInfobtn.setEnabled(false);
 
 
-        txtView1 = (TextView)view.findViewById(R.id.readerActivationText1);
+        imageView = (ImageView)view.findViewById(R.id.readerActivationImageView);
         txtView2 = (TextView)view.findViewById(R.id.readerActivationText2);
         txtView3 = (TextView)view.findViewById(R.id.readerActivationText3);
 
         getInfoText = (TextView)view.findViewById(R.id.KonaBIOPASSGetInfoTextView);
         getInfoText.setText("GET INFO RESPONSE");
 
-        setTextview1("");
+        setImageView(R.drawable.ic_icc_off);
         setTextview2("");
         setTextview3("");
 
@@ -89,22 +91,18 @@ public class ReaderButtonFragment extends Fragment {
         btn.setEnabled(true);
         getInfobtn.setEnabled(true);
     }
-    public void setTextview1(String txt){
-        Log.v(TAG, "1 : " + txt);
-        txtView1.setText(txt);
+    public void setImageView(int resource){
+        imageView.setImageResource(resource);
     }
 
     public void setTextview2(String txt){
-        Log.v(TAG, "2 : " + txt);
         txtView2.setText(txt);
     }
 
 
     public void setTextview3(String txt){
-        Log.v(TAG, "3 : " + txt);
         txtView3.setText(txt);
     }
-
 
     @Override
     public void onResume(){

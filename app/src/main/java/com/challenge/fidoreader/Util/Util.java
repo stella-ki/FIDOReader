@@ -226,13 +226,14 @@ public class Util
     }
 
     public static String convertTohex(String bytes) {
-        String result = "";
+        char[] chars = bytes.toCharArray();
 
-        for (int i = 0; i < bytes.length(); i++) {
-            result += String.format("%02X ", (int) bytes.charAt(i));
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < chars.length; i++){
+            sb.append(Integer.toHexString((int)chars[i]));
         }
 
-        return result;
+        return sb.toString().toUpperCase();
 
     }
 }

@@ -39,12 +39,12 @@ public class ExampleUnitTest {
 
 
         try {
-            authenticator.ClientPINparse(Authenticator.cp_sub_getKeyAgreement, testData);
+            //authenticator.ClientPINparse(Authenticator.cp_sub_getKeyAgreement, testData);
 
-            String input = "";
-            String key = "";
-            //authenticator.ClientPINparse(sub, result);
+            String input = "blueberryplum.niblueberryplum.ni";
+            String key = Util.convertTohex(input);
 
+            System.out.println(key);
         }catch (Exception e){
             e.printStackTrace();
         }

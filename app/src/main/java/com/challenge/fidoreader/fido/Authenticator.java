@@ -64,8 +64,6 @@ public class Authenticator {
         //  Test - kelee
         String result = bSendAPDU("80100000010400");
 
-        printLog("getInfo result " + result);
-
         /*ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
 
         CBORFactory cf = new CBORFactory();
@@ -103,7 +101,7 @@ public class Authenticator {
     public JsonNode getCBORDataFromResponse(String res) throws Exception{
         //printLog(res);
         res = res.replaceAll(" ", "");
-        res = res.substring(2, res.length()-4);
+        res = res.substring(2);
 
         //printLog(res);
         return getCBORData(res);
@@ -134,6 +132,12 @@ public class Authenticator {
 
     }
 
+    public void assertSW(String sw) throws Exception{
+        if(!sw.equals(getSW())){
+            throw new Exception("Excepted SW [ " + sw + " ], and return SW [ " + getSW() + " ]");
+        }
+    }
+
 
     public ArrayList<Credential_item> getCredentialList() throws Exception{
         printLog("getCredentialList");
@@ -141,9 +145,17 @@ public class Authenticator {
 
 
         bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
         getInfo();
+        assertSW("9000");
+
         ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+        assertSW("9000");
+
         ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+        assertSW("9000");
+
         int num = 0;
 
         String fido_result = CredentialManagement(Authenticator.cm_sub_enumerateRPsBegin);
@@ -153,12 +165,13 @@ public class Authenticator {
         for (; num < rps.expectedSize(); num++){
             CredentialManagement(Authenticator.cm_sub_enumerateRPsGetNextRP);
         }
-        /*
+
         String rp = ""; //get First key value which is rp
         for (num = 0; num < rps.getSize(); num++){
             rp = (String) rps.getKey(num); //get First key value which is rp
+            printLog("Read Credential about RP : " + rp);
             CredentialManagement(Authenticator.cm_sub_enumerateCredentialsBegin, rp);
-            int credCunt = 0; //TODO
+            int credCunt = rps.get(rp).getCredentialExpectedCnt();
             for (int j = 0; j < credCunt; j++){
                 CredentialManagement(Authenticator.cm_sub_enumerateCredentialsGetNextCredential, rp);
             }
@@ -169,30 +182,29 @@ public class Authenticator {
             for (int j = 0; j < tmprps.getCredentials().size(); j++){
                 list.add(new Credential_item(tmprps.getCredential(j).getCredentialID(), tmprps.getRp()));
             }
-        }*/
+        }
         return list;
     }
 
     public String ClientPIN_cmd(byte sub) throws Exception{
-        printLog("ClientPIN_cmd");
         String cmd = "";
 
         switch (sub){
             case cp_sub_getPINRetries              :
-                printLog("cp_sub_getPINRetries");
+                printLog("Send Client PIN : " + "getPINRetries");
                 break;
             case cp_sub_getKeyAgreement            :
-                printLog("cp_sub_getKeyAgreement");
+                printLog("Send Client PIN : " + "getKeyAgreement");
                 cmd = "06A20101020200";
                 break;
             case cp_sub_setPIN                     :
-                printLog("cp_sub_setPIN");
+                printLog("Send Client PIN : " + "setPIN");
                 break;
             case cp_sub_changePIN                  :
-                printLog("cp_sub_changePIN");
+                printLog("Send Client PIN : " + "changePIN");
                 break;
             case cp_sub_getPinUvAuthTokenUsingPin  :
-                printLog("cp_sub_getPinUvAuthTokenUsingPin");
+                printLog("Send Client PIN : " + "getPinUvAuthTokenUsingPin");
                 String keyAgreement = "A5010203262001215820" + sso.getPublickey().substring(0,64) + "225820" + sso.getPublickey().substring(64);
                 String sha = Util.sha_256("30303030").substring(0, 16 * 2);
                 printLog("sha : " + sha);
@@ -206,10 +218,10 @@ public class Authenticator {
                 cmd = "06" + cmd;
                 break;
             case cp_sub_getPinUvAuthTokenUsingUv   :
-                printLog("cp_sub_getPinUvAuthTokenUsingUv");
+                printLog("Send Client PIN : " + "getPinUvAuthTokenUsingUv");
                 break;
             case cp_sub_getUVRetries               :
-                printLog("cp_sub_getUVRetries");
+                printLog("Send Client PIN : " + "getUVRetries");
                 break;
         }
 
@@ -217,17 +229,14 @@ public class Authenticator {
 
         String result = makeCommand(cmd);
         //printLog(cmd);
-        //printLog(result);
+        printLog(result);
 
         return result;
     }
 
 
     public String ClientPINparse(byte sub, String res) throws Exception{
-        printLog("ClientPINparse");
         JsonNode jnode = getCBORDataFromResponse(res);
-        printLog(jnode.toString());
-        //printLog(TAG, jnode.toString());
 
         if(res.equals("") || jnode == null){
             return "";
@@ -271,9 +280,9 @@ public class Authenticator {
         String result = CredentialManagement_cmd(sub, param);
         fido_result = result.substring(0,2);
         if(fido_result.equals("00")){
-            CredentialManagement_parse(sub, result);
+            CredentialManagement_parse(sub, result, param);
         }else{
-            printLog("ClientPIN is not successful");
+            printLog("CredentialManagement is not successful");
         }
 
         return fido_result;
@@ -288,6 +297,7 @@ public class Authenticator {
         
         switch (sub){
             case cm_sub_getCredsMetadata	                  :
+                printLog("Send Credential Management : "+"getCredsMetadata");
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "01").substring(0, 16*2);
                 cmd = "A3" 
                     + "01" + "01" //subcommand index
@@ -296,6 +306,7 @@ public class Authenticator {
                 cmd = "41" + cmd;
                 break;
             case cm_sub_enumerateRPsBegin	                  :
+                printLog("Send Credential Management : "+"enumerateRPsBegin");
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "02").substring(0, 16*2);
                 cmd = "A3" 
                     + "01" + "02" //subcommand index
@@ -303,12 +314,14 @@ public class Authenticator {
                     + "04" + "58"+ Util.toHex(pinUvAuthParam.length()/2) + pinUvAuthParam; //pinUvAuthParam
                 cmd = "41" + cmd;
                 break;
-            case cm_sub_enumerateRPsGetNextRP	              :                
+            case cm_sub_enumerateRPsGetNextRP	              :
+                printLog("Send Credential Management : "+"enumerateRPsGetNextRP");
                 cmd = "A1" 
                     + "01" + "03"; //subcommand index
                 cmd = "41" + cmd;
                 break;
             case cm_sub_enumerateCredentialsBegin	          :
+                printLog("Send Credential Management : "+"enumerateCredentialsBegin");
                 rp = param[0];
                 rp = Util.convertTohex(rp);
                 rpIDHash = Util.sha_256(rp);
@@ -325,11 +338,13 @@ public class Authenticator {
 
                 break;
             case cm_sub_enumerateCredentialsGetNextCredential :
+                printLog("Send Credential Management : "+"enumerateCredentialsGetNextCredential");
                 cmd = "A1" 
                     + "01" + "05"; //subcommand index                        
                 cmd = "41" + cmd;                
                 break;
             case cm_sub_deleteCredential	                  :
+                printLog("Send Credential Management : "+"deleteCredential");
                 String credentialID = param[0];
                 credentialID = "A1" + "02" + "A2" + "64" + "74797065" + "6A" + "7075626C69632D6B6579" + "62" + "6964" + "58" + Util.toHex(credentialID.length()/2) + credentialID;
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "06" + credentialID).substring(0, 16*2);
@@ -355,6 +370,7 @@ public class Authenticator {
 
     public JsonNode CredentialManagement_parse(String sub, String res, String... param) throws Exception{
         JsonNode jnode = getCBORDataFromResponse(res);
+        //printLog(jnode.toString());
         
         if(res.equals("")){
             return null;
@@ -372,14 +388,14 @@ public class Authenticator {
                 break;
             case cm_sub_enumerateRPsBegin	                  :               
                 rps.clear();
-                rp = jnode.get("3").toString();
+                rp = jnode.get("3").get("id").toString().replaceAll("\"", "");
                 rpIDHash = jnode.get("4").toString();
                 int totalRpCount = Integer.parseInt(jnode.get("5").toString());
                 rps.add(rp, new RPs(rp, rpIDHash));
-                rps.setExpectedSize(totalRpCount);
+                rps.setExpectedSize(totalRpCount - 1);
                 break;
             case cm_sub_enumerateRPsGetNextRP	              :
-                rp = jnode.get("3").toString();
+                rp = jnode.get("3").get("id").toString().replaceAll("\"", "");
                 rpIDHash = jnode.get("4").toString();
                 rps.add(rp, new RPs(rp, rpIDHash));
                 break;
@@ -389,6 +405,8 @@ public class Authenticator {
                 user = jnode.get("6").toString();
                 CredentialID = jnode.get("7").toString();
                 publicKey = jnode.get("8").toString();
+                int totalcredCount = Integer.parseInt(jnode.get("9").toString());
+                tmpRPs.setCredentialExpectedCnt(totalcredCount - 1);
                 tmpRPs.addCredential(new Credential(user, CredentialID, publicKey));
                 break;
             case cm_sub_enumerateCredentialsGetNextCredential :
@@ -409,8 +427,7 @@ public class Authenticator {
     }
 
 
-    private byte[]  transceives (byte[] data){
-        printLog("transceives");
+    private byte[]  transceives (byte[] data) throws Exception{
 
         byte[] ra = null;
 
@@ -431,7 +448,7 @@ public class Authenticator {
             printLog("************************************");
             printLog("         NO CARD RESPONSE");
             printLog("************************************");
-
+            throw new Exception("No Card Response");
         }
         try{
             printLog("");
@@ -444,48 +461,60 @@ public class Authenticator {
         return (ra);
     }
 
-    private String makeCommand(String cData){
+    private String makeCommand(String cData) throws Exception{
         int len_cmd_data = cData.length();
         int off_data = 0;
         int len_remain_data = 0;
         String response = "";
+        String responseData = "";
+
+        boolean isLong = false;
+
         if(len_cmd_data <= 480){
             response = bSendAPDU("80100000" + Util.toHex(len_cmd_data/2) + cData + "00");
+            responseData = response.substring(0, response.length() - 4);
         }else{
             while(off_data < len_cmd_data - 480 - 2){
                 bSendAPDU("90100000" + Util.toHex(240) + cData.substring(off_data, 480));
                 off_data += 480;
+                isLong = true;
             }
 
             len_remain_data = len_cmd_data - off_data;
 
             response = bSendAPDU("80100000" + Util.toHex(len_remain_data / 2) + cData.substring(off_data, off_data + len_remain_data) + "");
-
+            responseData = response.substring(0, response.length() - 4);
 
 
         }
 
         while(getSW().equals("6100") || getSW().equals("6C00")){
-            response += bSendAPDU("80C0000000");
+            response = bSendAPDU("80C0000000");
+            responseData += response.substring(0, response.length() - 4);
         }
 
 
         if(!getSW().substring(2,4).equals("00")){
-            response += bSendAPDU("80C00000" + getSW().substring(2,4));
+            response = bSendAPDU("80C00000" + getSW().substring(2,4));
+            responseData += response.substring(0, response.length() - 4);
         }
 
         /*if(getSW().equals("9000")){
 
         }*/
 
-        return response;
+        if (isLong) {
+            printLog("Response - " + responseData);
+        }
+
+        return responseData;
     }
 
     public String getSW(){
         return sw;
     }
 
-    private String bSendAPDU(String StringAPDU){
+    private String bSendAPDU(String StringAPDU) throws Exception{
 
         //String StringAPDU = "00A4040008A0000006472F000100";
 

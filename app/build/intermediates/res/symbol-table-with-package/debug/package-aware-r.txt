@@ -254,6 +254,7 @@ attr cornerSizeBottomLeft
 attr cornerSizeBottomRight
 attr cornerSizeTopLeft
 attr cornerSizeTopRight
+attr corners
 attr counterEnabled
 attr counterMaxLength
 attr counterOverflowTextAppearance
@@ -261,6 +262,7 @@ attr counterOverflowTextColor
 attr counterTextAppearance
 attr counterTextColor
 attr customNavigationLayout
+attr custom_color
 attr dayInvalidStyle
 attr daySelectedStyle
 attr dayStyle
@@ -349,6 +351,7 @@ attr gapBetweenBars
 attr goIcon
 attr headerLayout
 attr height
+attr height_weight
 attr helperText
 attr helperTextEnabled
 attr helperTextTextAppearance
@@ -701,8 +704,10 @@ attr trackTintMode
 attr ttcIndex
 attr useCompatPadding
 attr useMaterialThemeColors
+attr use_gradient
 attr viewInflaterClass
 attr voiceIcon
+attr width_weight
 attr windowActionBar
 attr windowActionBarOverlay
 attr windowActionModeOverlay
@@ -746,6 +751,7 @@ color abc_tint_spinner
 color abc_tint_switch_track
 color accent_material_dark
 color accent_material_light
+color background
 color background_floating_material_dark
 color background_floating_material_light
 color background_material_dark
@@ -766,6 +772,8 @@ color checkbox_themeable_attribute_color
 color colorAccent
 color colorPrimary
 color colorPrimaryDark
+color darker_color
+color default_color
 color design_bottom_navigation_shadow_color
 color design_box_stroke_color
 color design_dark_default_color_background
@@ -915,6 +923,7 @@ color test_mtrl_calendar_day_selected
 color textview_color
 color tooltip_background_dark
 color tooltip_background_light
+color white
 dimen abc_action_bar_content_inset_material
 dimen abc_action_bar_content_inset_with_nav
 dimen abc_action_bar_default_height_material
@@ -1332,8 +1341,10 @@ drawable abc_textfield_search_activated_mtrl_alpha
 drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
+drawable authenticator_key
 drawable avd_hide_password
 drawable avd_show_password
+drawable back_btn
 drawable btn_checkbox_checked_mtrl
 drawable btn_checkbox_checked_to_unchecked_mtrl_animation
 drawable btn_checkbox_unchecked_mtrl
@@ -1537,6 +1548,7 @@ id enterAlwaysCollapsed
 id exitUntilCollapsed
 id expand_activities_button
 id expanded_menu
+id fab
 id fade
 id fill
 id fill_horizontal
@@ -1552,6 +1564,7 @@ id ghost_view_holder
 id gone
 id group_divider
 id groups
+id h_progressbar
 id hideable
 id home
 id homeAsUp
@@ -1634,7 +1647,7 @@ id progress_circular
 id progress_horizontal
 id radio
 id readerActivationBtn
-id readerActivationText1
+id readerActivationImageView
 id readerActivationText2
 id readerActivationText3
 id right
@@ -2747,6 +2760,7 @@ styleable View android_theme android_focusable paddingEnd paddingStart theme
 styleable ViewBackgroundHelper android_background backgroundTint backgroundTintMode
 styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
+styleable loader_view corners custom_color height_weight use_gradient width_weight
 xml hexkbd
 xml nfc_tech_filter
 xml standalone_badge

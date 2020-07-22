@@ -10,8 +10,11 @@ import android.nfc.tech.IsoDep;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.challenge.fidoreader.Exception.UserException;
@@ -26,9 +29,11 @@ import com.challenge.fidoreader.fido.Authenticator;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity  extends BaseActivity {
+public class MainActivity  extends AppCompatActivity {
     public final static String TAG = "MainActivity";
 
+    private ProgressBar pgsBar;
+    Fragment[] pages;
     ReaderButtonFragment page1_1;
     ReaderListFragment page1_2;
     AuthenticatorFragment page2;
@@ -59,7 +64,21 @@ public class MainActivity  extends BaseActivity {
         page1_2 = new ReaderListFragment();
         page2 = new AuthenticatorFragment();
 
+        pages = new Fragment[3];
+        pages[0] = page1_1;
+        pages[1] = page1_2;
+        pages[2] = page2;
+
         getSupportFragmentManager().beginTransaction().add(R.id.container,page1_1).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container,page1_2).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.container,page2).commit();
+
+        getSupportFragmentManager().beginTransaction().hide(page1_1).commit();
+        getSupportFragmentManager().beginTransaction().hide(page1_2).commit();
+        getSupportFragmentManager().beginTransaction().hide(page2).commit();
+
+        getSupportFragmentManager().beginTransaction().show(page1_1).commit();
+
         //탭 레이아웃 호출 후 탭 추가
         TabLayout tabs = (TabLayout) findViewById(R.id.tabLayout);
         tabs.addTab(tabs.newTab().setText("Authenticators"));
@@ -69,21 +88,15 @@ public class MainActivity  extends BaseActivity {
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                //몇번째 탭을 선택했는지 가져옴
                 int position = tab.getPosition();
 
-                //탭을 선택 한것에 따라 프래그먼트를 바꾼다.
-                Fragment selected = null;
                 if(position == 0){
-                    //
-                    selected = page1_1;
+                    onChangeFragment(page1_1);
                 }
                 else if(position == 1){
-                    selected = page2;
+                    onChangeFragment(page2);
                 }
 
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,selected).commit();
             }
 
             @Override
@@ -96,6 +109,10 @@ public class MainActivity  extends BaseActivity {
 
             }
         });
+
+        pgsBar = (ProgressBar) findViewById(R.id.h_progressbar);
+        //pgsBar.setIndeterminate(true);
+        pgsBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -116,7 +133,7 @@ public class MainActivity  extends BaseActivity {
         mFilters = new IntentFilter[] { ndef, };
         mTechLists = new String[][] { new String[] { IsoDep.class.getName() } };
 
-        page1_1.setTextview1("");
+        page1_1.setImageView(R.drawable.ic_icc_off);
         page1_1.setTextview2("");
         page1_1.setTextview3("");
 
@@ -131,14 +148,14 @@ public class MainActivity  extends BaseActivity {
 
         if(  (mFirstDetected==true) && (myTag.isConnected()) ){
             if(mShowAtr==true){
-                page1_1.setTextview1("R.drawable.ic_icc_on_atr");
+                page1_1.setImageView(R.drawable.ic_icc_on_atr);
             }
             else{
-                page1_1.setTextview1("R.drawable.ic_icc_on");
+                page1_1.setImageView(R.drawable.ic_icc_on);
             }
         }
         else{
-            page1_1.setTextview1("R.drawable.ic_icc_off");
+            page1_1.setImageView(R.drawable.ic_icc_off);
         }
 
         if( (mAdapter == null) || (!mAdapter.isEnabled()) ) {
@@ -174,14 +191,14 @@ public class MainActivity  extends BaseActivity {
 
         if( (mFirstDetected==true) && (myTag.isConnected()) ){
             if(mShowAtr==true){
-                page1_1.setTextview1("R.drawable.ic_icc_on_atr");
+                page1_1.setImageView(R.drawable.ic_icc_on_atr);
             }
             else{
-                page1_1.setTextview1("R.drawable.ic_icc_on");
+                page1_1.setImageView(R.drawable.ic_icc_on);
             }
         }
         else{
-            page1_1.setTextview1("R.drawable.ic_icc_off");
+            page1_1.setImageView(R.drawable.ic_icc_off);
         }
         mAdapter.disableForegroundDispatch(this);
 
@@ -195,23 +212,44 @@ public class MainActivity  extends BaseActivity {
         resolveIntent(intent);
     }
 
-    public void onChangeFragment(){
-        Log.v(TAG, "onchangeFragment");
-        try{
-            getCredentialList();
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,page1_2).commit();
-        }catch (Exception e){
-            e.printStackTrace();
+    public void onChangeFragment(Fragment frgmt){
+        for (int i = 0; i <pages.length; i++){
+            if(!frgmt.equals(pages[i])){
+                getSupportFragmentManager().beginTransaction().hide(pages[i]).commit();
+            }else{
+                getSupportFragmentManager().beginTransaction().show(pages[i]).commit();
+            }
 
         }
     }
+
+    public void onChangeFragmentToMain(){
+        onChangeFragment(page1_1);
+    }
+
+    public void onChangeFragmentToList(){
+        Log.v(TAG, "onchangeFragment");
+        try{
+            pgsBar.setVisibility(View.VISIBLE);
+            getCredentialList();
+
+            onChangeFragment(page1_2);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            pgsBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+
 
 
     public void getCredentialList() throws Exception{
 
         try{
             Log.v(TAG, "getCredentialList");
-            progressON("Loading...");
+            //progressON("Loading...");
 
             authenticator.setTag(myTag);
 
@@ -222,16 +260,14 @@ public class MainActivity  extends BaseActivity {
 
             }
 
-            progressOFF();
-
         }catch (UserException ue){
             Toast.makeText(this.getApplicationContext(),ue.getMessage(), Toast.LENGTH_SHORT).show();
-
         }catch (Exception e){
-            progressOFF();
             e.printStackTrace();
             Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
             throw e;
+        }finally {
+            //progressOFF();
         }
 
 
@@ -274,11 +310,11 @@ public class MainActivity  extends BaseActivity {
             }
             if( myTag.isConnected() ){
                 if(mShowAtr == true){
-                    page1_1.setTextview1("R.drawable.ic_icc_on_atr");
+                    page1_1.setImageView(R.drawable.ic_icc_on_atr);
                     page1_1.setEnabled();
                 }
                 else{
-                    page1_1.setTextview1("R.drawable.ic_icc_on");
+                    page1_1.setImageView(R.drawable.ic_icc_on);
                 }
 
                 vShowCardRemovalInfo();
@@ -286,7 +322,7 @@ public class MainActivity  extends BaseActivity {
                 String szATR = null;
                 try{
                     mShowAtr=true;
-                    szATR =" 3B " + Util.getATRLeString(myTag.getHistoricalBytes())+ "80 01 " + Util.getHexString(myTag.getHistoricalBytes())+""+ Util.getATRXorString(myTag.getHistoricalBytes());
+                    szATR =" 3B" + Util.getATRLeString(myTag.getHistoricalBytes())+ "8001" + Util.getHexString(myTag.getHistoricalBytes())+""+ Util.getATRXorString(myTag.getHistoricalBytes());
                 }
                 catch (Exception e){
                     mShowAtr=false;
@@ -298,19 +334,19 @@ public class MainActivity  extends BaseActivity {
                 }
             }
             else{
-                page1_1.setTextview1("R.drawable.ic_icc_off");
+                page1_1.setImageView(R.drawable.ic_icc_off);
             }
         }
         if( mFirstDetected==true && myTag.isConnected() ){
             if(mShowAtr==true){
-                page1_1.setTextview1("R.drawable.ic_icc_on_atr");
+                page1_1.setImageView(R.drawable.ic_icc_on_atr);
             }
             else{
-                page1_1.setTextview1("R.drawable.ic_icc_on");
+                page1_1.setImageView(R.drawable.ic_icc_on);
             }
         }
         else{
-            page1_1.setTextview1("R.drawable.ic_icc_off");
+            page1_1.setImageView(R.drawable.ic_icc_off);
         }
     }
 

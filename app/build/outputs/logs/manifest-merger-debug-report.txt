@@ -11,6 +11,7 @@ MERGED from [androidx.legacy:legacy-support-v4:1.0.0] C:\Users\neato\.gradle\cac
 MERGED from [androidx.viewpager2:viewpager2:1.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\056634285937b2535ff256884ac7cf86\viewpager2-1.0.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\a53596bdd308807993a20732db231575\recyclerview-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.lifecycle:lifecycle-extensions:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\e71d59022806682985be2942fcbccbfb\lifecycle-extensions-2.0.0\AndroidManifest.xml:17:1-25:12
+MERGED from [com.elyeproj.libraries:loaderviewlibrary:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\da02a327f68ffb7855ae6bbcbd2475d4\loaderviewlibrary-2.0.0\AndroidManifest.xml:2:1-11:12
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\0362ff4d8672321347a402c32368f192\fragment-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.1.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\ddf6a25e6e3e5e2af441269b48288beb\appcompat-resources-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\ec593f8d91037f6ef1bbcd6a177afa1c\legacy-support-core-ui-1.0.0\AndroidManifest.xml:17:1-22:12
@@ -153,6 +154,8 @@ MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\neato\.gradle\ca
 MERGED from [androidx.recyclerview:recyclerview:1.1.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\a53596bdd308807993a20732db231575\recyclerview-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.lifecycle:lifecycle-extensions:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\e71d59022806682985be2942fcbccbfb\lifecycle-extensions-2.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.lifecycle:lifecycle-extensions:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\e71d59022806682985be2942fcbccbfb\lifecycle-extensions-2.0.0\AndroidManifest.xml:20:5-44
+MERGED from [com.elyeproj.libraries:loaderviewlibrary:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\da02a327f68ffb7855ae6bbcbd2475d4\loaderviewlibrary-2.0.0\AndroidManifest.xml:7:5-9:41
+MERGED from [com.elyeproj.libraries:loaderviewlibrary:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\da02a327f68ffb7855ae6bbcbd2475d4\loaderviewlibrary-2.0.0\AndroidManifest.xml:7:5-9:41
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\0362ff4d8672321347a402c32368f192\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.fragment:fragment:1.1.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\0362ff4d8672321347a402c32368f192\fragment-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.appcompat:appcompat-resources:1.1.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\ddf6a25e6e3e5e2af441269b48288beb\appcompat-resources-1.1.0\AndroidManifest.xml:20:5-22:41
