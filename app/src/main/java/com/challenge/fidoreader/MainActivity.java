@@ -44,11 +44,11 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
     private PendingIntent mPendingIntent;
     private String[][] mTechLists;
     private IntentFilter[] mFilters;
-    static IsoDep myTag;
+    public static IsoDep myTag;
     boolean mFirstDetected=false;
     boolean mShowAtr=false;
 
-    Authenticator authenticator;
+    public Authenticator authenticator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
