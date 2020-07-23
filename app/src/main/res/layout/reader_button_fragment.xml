@@ -58,10 +58,28 @@
         android:layout_gravity="center"
         android:text="GetInfo" />
 
-    <TextView
-        android:id="@+id/KonaBIOPASSGetInfoTextView"
+    <Button
+        android:id="@+id/KonaBIOPASSPINBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:layout_gravity="center"
+        android:text="ClientPIN"/>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TableLayout
+            android:id="@+id/KonaBIOPASSGetInfoTable"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+        </TableLayout>
+
+    </ScrollView>
 
 </LinearLayout>
+

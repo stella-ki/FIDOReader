@@ -55,7 +55,11 @@ public class Authenticator {
         this.myTag = myTag;
     }
 
-    public String getInfo() throws Exception{
+    public String getInfo() throws Exception {
+
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
         printLog("getInfo");
 
         sso.init();
@@ -63,20 +67,12 @@ public class Authenticator {
 
         //  Test - kelee
         String result = bSendAPDU("80100000010400");
+        assertSW("9000");
 
-        /*ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
+        result = result.substring(2, result.length() - 4);
 
-        CBORFactory cf = new CBORFactory();
-        ObjectMapper mapper = new ObjectMapper(cf);
-        try {
-            JsonNode jnode = mapper.readValue(bais, JsonNode.class);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-
-        return "80100000010400";
+//        return "80100000010400";
+        return result;
     }
 
     public JsonNode getInfo_parse(String result) throws Exception{
@@ -144,8 +140,8 @@ public class Authenticator {
         ArrayList<Credential_item> list = new ArrayList<Credential_item>();
 
 
-        bSendAPDU("00A4040008A0000006472F000100");
-        assertSW("9000");
+        // bSendAPDU("00A4040008A0000006472F000100");
+        // assertSW("9000");
 
         getInfo();
         assertSW("9000");
