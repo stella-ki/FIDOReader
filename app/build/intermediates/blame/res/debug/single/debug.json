@@ -624,6 +624,10 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable\\abc_btn_radio_material.xml"
     },
     {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_setnewpin_popup.xml.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\setnewpin_popup.xml"
+    },
+    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_scrubber_track_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\6119d746697059b7e1b74aab4d181f56\\appcompat-1.1.0\\res\\drawable-hdpi-v4\\abc_scrubber_track_mtrl_alpha.9.png"
     },

@@ -1482,7 +1482,8 @@ id BOTTOM_START
 id CTRL
 id FUNCTION
 id KonaBIOPASSGetInfoBtn
-id KonaBIOPASSGetInfoTextView
+id KonaBIOPASSGetInfoTable
+id KonaBIOPASSPINBtn
 id META
 id SHIFT
 id SYM
@@ -1574,6 +1575,8 @@ id clip_horizontal
 id clip_vertical
 id collapseActionView
 id confirm_button
+id confrimPINEditText
+id confrimPINView
 id container
 id content
 id contentPanel
@@ -1675,6 +1678,8 @@ id mtrl_picker_title_text
 id multiply
 id navigation_header_container
 id never
+id newPINEditText
+id newPINView
 id noScroll
 id none
 id normal
@@ -1700,6 +1705,7 @@ id readerActivationBtn
 id readerActivationImageView
 id readerActivationText2
 id readerActivationText3
+id resultSetView
 id right
 id right_icon
 id right_side
@@ -1932,6 +1938,7 @@ layout progress_loading
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
+layout setnewpin_popup
 layout support_simple_spinner_dropdown_item
 layout test_action_chip
 layout test_design_checkbox
