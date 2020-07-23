@@ -1260,12 +1260,12 @@
         "source": "C:\\Users\\neato\\.gradle\\caches\\transforms-2\\files-2.1\\89960a8f9b5e73731627972c56f94153\\material-1.2.0-alpha02\\res\\layout\\mtrl_calendar_month_labeled.xml"
     },
     {
-        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_icc_on.png.flat",
-        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-hdpi\\ic_icc_on.png"
-    },
-    {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_bottom_sheet_layout.xml.flat",
         "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\layout\\dialog_bottom_sheet_layout.xml"
+    },
+    {
+        "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi_ic_icc_on.png.flat",
+        "source": "D:\\AndroidStudioProjects\\FIDOReader\\app\\src\\main\\res\\drawable-hdpi\\ic_icc_on.png"
     },
     {
         "merged": "D:\\AndroidStudioProjects\\FIDOReader\\app\\build\\intermediates\\res\\merged\\debug\\drawable_abc_list_selector_holo_dark.xml.flat",
