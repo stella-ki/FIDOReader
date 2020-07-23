@@ -41,10 +41,17 @@ public class ExampleUnitTest {
         try {
             //authenticator.ClientPINparse(Authenticator.cp_sub_getKeyAgreement, testData);
 
-            String input = "blueberryplum.niblueberryplum.ni";
-            String key = Util.convertTohex(input);
+            //String input = "blueberryplum.niblueberryplum.ni";
+            //String key = Util.convertTohex(input);
 
-            System.out.println(key);
+            String test2 = "4E74B80EE771037ADD9FFFB3B984138FA8E0B04955F19F9933A14CF8F476C6EC ";
+            String test1 = "TnS4DudxA3rdn/+zuYQTj6jgsElV8Z+ZM6FM+PR2xuw=";
+
+            System.out.println(Util.byteArrayToHexString(test1.getBytes()));
+            System.out.println(Util.convertTohex(test2));
+
+
+            //System.out.println(key);
         }catch (Exception e){
             e.printStackTrace();
         }

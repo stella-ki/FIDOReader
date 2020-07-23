@@ -27,9 +27,6 @@
 
         </activity>
 
-        <activity
-            android:name="com.challenge.fidoreader.ApduSenderContactLess">
-             </activity>
     </application>
 
 </manifest>

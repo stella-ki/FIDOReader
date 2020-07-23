@@ -43,8 +43,6 @@
                 android:name="android.nfc.action.TAG_DISCOVERED"
                 android:resource="@xml/nfc_tech_filter" />
         </activity>
-        <activity android:name="com.challenge.fidoreader.ApduSenderContactLess" >
-        </activity>
 
         <provider
             android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"

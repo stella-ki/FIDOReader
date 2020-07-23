@@ -6,7 +6,7 @@ import android.util.Log;
 import com.challenge.fidoreader.Exception.UserException;
 import com.challenge.fidoreader.Util.MapList;
 import com.challenge.fidoreader.Util.Util;
-import com.challenge.fidoreader.fagment.Credential_item;
+import com.challenge.fidoreader.fagment.CredentialItem;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
@@ -103,7 +103,9 @@ public class Authenticator {
         res = res.replaceAll(" ", "");
         res = res.substring(2);
 
-        //printLog(res);
+        if(res.equals("")){
+            return null;
+        }
         return getCBORData(res);
     }
 
@@ -138,10 +140,33 @@ public class Authenticator {
         }
     }
 
+    public boolean deleteCredential(String cred_id) throws Exception{
+        printLog("deleteCredential");
 
-    public ArrayList<Credential_item> getCredentialList() throws Exception{
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
+        getInfo();
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+        assertSW("9000");
+
+        String fido_result = CredentialManagement(Authenticator.cm_sub_deleteCredential, cred_id);
+        if(!fido_result.equals("00")){
+            throw new UserException("Credential deletion is failed");
+        }
+
+        return true;
+    }
+
+
+    public ArrayList<CredentialItem> getCredentialList() throws Exception{
         printLog("getCredentialList");
-        ArrayList<Credential_item> list = new ArrayList<Credential_item>();
+        ArrayList<CredentialItem> list = new ArrayList<CredentialItem>();
 
 
         bSendAPDU("00A4040008A0000006472F000100");
@@ -180,7 +205,7 @@ public class Authenticator {
         for (num = 0; num < rps.getSize(); num++){
             RPs tmprps = (RPs)rps.getValue(num);
             for (int j = 0; j < tmprps.getCredentials().size(); j++){
-                list.add(new Credential_item(tmprps.getCredential(j).getCredentialID(), tmprps.getRp()));
+                list.add(new CredentialItem(tmprps.getCredential(j).getCredentialID(), tmprps.getRp()));
             }
         }
         return list;
@@ -344,8 +369,9 @@ public class Authenticator {
                 cmd = "41" + cmd;                
                 break;
             case cm_sub_deleteCredential	                  :
-                printLog("Send Credential Management : "+"deleteCredential");
-                String credentialID = param[0];
+                printLog("Send Credential Management : "+"deleteCredential " + param[0]);
+                String credentialID = param[0].replaceAll("\"","");
+                // = Util.convertTohex(credentialID);
                 credentialID = "A1" + "02" + "A2" + "64" + "74797065" + "6A" + "7075626C69632D6B6579" + "62" + "6964" + "58" + Util.toHex(credentialID.length()/2) + credentialID;
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "06" + credentialID).substring(0, 16*2);
                
@@ -369,10 +395,11 @@ public class Authenticator {
 
 
     public JsonNode CredentialManagement_parse(String sub, String res, String... param) throws Exception{
+        //printLog("CredentialManagement_parse : " + res);
         JsonNode jnode = getCBORDataFromResponse(res);
         //printLog(jnode.toString());
         
-        if(res.equals("")){
+        if(res.equals("") || jnode == null){
             return null;
         }
         
@@ -403,7 +430,7 @@ public class Authenticator {
                 rp = param[0];
                 tmpRPs = rps.get(rp);
                 user = jnode.get("6").toString();
-                CredentialID = jnode.get("7").toString();
+                CredentialID = Util.getHexString(jnode.get("7").get("id").binaryValue());
                 publicKey = jnode.get("8").toString();
                 int totalcredCount = Integer.parseInt(jnode.get("9").toString());
                 tmpRPs.setCredentialExpectedCnt(totalcredCount - 1);
@@ -413,7 +440,7 @@ public class Authenticator {
                 rp = param[0];
                 tmpRPs = rps.get(rp);
                 user = jnode.get("6").toString();
-                CredentialID = jnode.get("7").toString();
+                CredentialID = Util.getHexString(jnode.get("7").get("id").binaryValue());
                 publicKey = jnode.get("8").toString();
                 tmpRPs.addCredential(new Credential(user, CredentialID, publicKey));
                 break;

@@ -18,9 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.challenge.fidoreader.Exception.UserException;
+import com.challenge.fidoreader.fagment.CredDeleteBottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.challenge.fidoreader.Util.Util;
-import com.challenge.fidoreader.fagment.Credential_item;
+import com.challenge.fidoreader.fagment.CredentialItem;
 import com.challenge.fidoreader.fagment.ReaderButtonFragment;
 import com.challenge.fidoreader.fagment.AuthenticatorFragment;
 import com.challenge.fidoreader.fagment.ReaderListFragment;
@@ -29,13 +30,14 @@ import com.challenge.fidoreader.fido.Authenticator;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class MainActivity  extends AppCompatActivity {
+public class MainActivity  extends AppCompatActivity implements CredDeleteBottomSheetDialog.BottomSheetListener{
     public final static String TAG = "MainActivity";
 
     private ProgressBar pgsBar;
     Fragment[] pages;
     ReaderButtonFragment page1_1;
     ReaderListFragment page1_2;
+    //DeleteFragment page1_3;
     AuthenticatorFragment page2;
 
     private NfcAdapter mAdapter=null;
@@ -62,11 +64,13 @@ public class MainActivity  extends AppCompatActivity {
         //프래그먼트 선언
         page1_1 = new ReaderButtonFragment();
         page1_2 = new ReaderListFragment();
+        //page1_3 = new DeleteFragment();
         page2 = new AuthenticatorFragment();
 
         pages = new Fragment[3];
         pages[0] = page1_1;
         pages[1] = page1_2;
+        //pages[2] = page1_3;
         pages[2] = page2;
 
         getSupportFragmentManager().beginTransaction().add(R.id.container,page1_1).commit();
@@ -160,24 +164,24 @@ public class MainActivity  extends AppCompatActivity {
 
         if( (mAdapter == null) || (!mAdapter.isEnabled()) ) {
             if (mAdapter == null) {
-                page1_1.setTextview2("PLEASE TAP CARD");
+                page1_1.setTextview2(getString(R.string.txt_NFC_TAP));
             }else if(mAdapter.isEnabled()){
-                page1_1.setTextview3("NFC ENABLED");
+                page1_1.setTextview3(getString(R.string.txt_NFC_enable));
             }else{
-                page1_1.setTextview2("PLEASE TAP CARD");
-                page1_1.setTextview3("NO READER DETECTED");
+                page1_1.setTextview2(getString(R.string.txt_NFC_TAP));
+                page1_1.setTextview3(getString(R.string.txt_NFC_no));
             }
         }
 
         if (mAdapter != null) {
             if (mAdapter.isEnabled()) {
-                page1_1.setTextview3("NFC ENABLED");
+                page1_1.setTextview3(getString(R.string.txt_NFC_enable));
             }
             mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
 
         }else{
-            page1_1.setTextview3("NO READER DETECTED");
-            page1_1.setTextview2("PLEASE TAP CARD");
+            page1_1.setTextview3(getString(R.string.txt_NFC_no));
+            page1_1.setTextview2(getString(R.string.txt_NFC_TAP));
         }
 
 
@@ -223,6 +227,38 @@ public class MainActivity  extends AppCompatActivity {
         }
     }
 
+    CredDeleteBottomSheetDialog bottomSheet;
+
+    @Override
+    public void onButtonClicked(CredentialItem cii) {
+        if(cii == null){
+            return;
+        }
+        Log.v(TAG, "onButtopnclieck : " + cii.getCredential_id());
+
+        try{
+            pgsBar.setVisibility(View.VISIBLE);
+            authenticator.deleteCredential(cii.getCredential_id());
+            bottomSheet.dismiss();
+            page1_2.deleteCredentialItem(cii);
+
+            Toast.makeText(this.getApplicationContext(),"Deletion is success", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Toast.makeText(this.getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }finally {
+            pgsBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public void onChangeFragmentToDelete(CredentialItem cii){
+        bottomSheet = new CredDeleteBottomSheetDialog(cii);
+        bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
+        //onChangeFragment(page1_3);
+        //page1_3.setCredInfo(cii);
+    }
+
+
     public void onChangeFragmentToMain(){
         onChangeFragment(page1_1);
     }
@@ -253,7 +289,7 @@ public class MainActivity  extends AppCompatActivity {
 
             authenticator.setTag(myTag);
 
-            ArrayList<Credential_item> list = authenticator.getCredentialList();
+            ArrayList<CredentialItem> list = authenticator.getCredentialList();
 
             for (int i = 0; i< list.size(); i++){
                 page1_2.addCredentialItem(list.get(i));
@@ -322,7 +358,7 @@ public class MainActivity  extends AppCompatActivity {
                 String szATR = null;
                 try{
                     mShowAtr=true;
-                    szATR =" 3B" + Util.getATRLeString(myTag.getHistoricalBytes())+ "8001" + Util.getHexString(myTag.getHistoricalBytes())+""+ Util.getATRXorString(myTag.getHistoricalBytes());
+                    szATR ="3B" + Util.getATRLeString(myTag.getHistoricalBytes())+ "8001" + Util.getHexString(myTag.getHistoricalBytes())+""+ Util.getATRXorString(myTag.getHistoricalBytes());
                 }
                 catch (Exception e){
                     mShowAtr=false;

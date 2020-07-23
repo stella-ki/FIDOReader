@@ -5,6 +5,8 @@ import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.challenge.fidoreader.Util.Util;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -23,5 +25,10 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         assertEquals("com.syki.fidoreader", appContext.getPackageName());
+
+        String test = "TnS4DudxA3rdn/+zuYQTj6jgsElV8Z+ZM6FM+PR2xuw=";
+
+        System.out.println(Util.byteArrayToHexString(test.getBytes()));
+
     }
 }

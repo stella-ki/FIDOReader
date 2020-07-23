@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -96,13 +95,18 @@ public class ReaderListFragment extends Fragment {
         Log.v(TAG, "onDetach");
     }
 
-    public void addCredentialItem(Credential_item ci){
-        sa.addItem(new Credential_item(ci.rpid, ci.credential_id, R.drawable.authenticator_key));
+    public void addCredentialItem(CredentialItem ci){
+        sa.addItem(new CredentialItem(ci.credential_id,ci.rpid, R.drawable.authenticator_key));
 
     }
 
+    public void deleteCredentialItem(CredentialItem ci){
+        sa.deleteItem(ci);
+        sa.notifyDataSetChanged();
+    }
+
     class singerAdapter extends BaseAdapter{
-        ArrayList<Credential_item> items = new ArrayList<>();
+        ArrayList<CredentialItem> items = new ArrayList<>();
 
 
         @Override
@@ -115,8 +119,13 @@ public class ReaderListFragment extends Fragment {
             return items.get(position);
         }
 
-        public void addItem(Credential_item credential_item){
+        public void addItem(CredentialItem credential_item){
             items.add(credential_item);
+        }
+
+        public void deleteItem(CredentialItem credential_item){
+            items.remove(credential_item);
+
         }
 
         @Override
@@ -125,17 +134,25 @@ public class ReaderListFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ItemFragment iff = null;
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            CredItemFragment iff = null;
             if(convertView == null){
-                iff = new ItemFragment(getActivity().getApplicationContext());
+                iff = new CredItemFragment(getActivity().getApplicationContext());
             }else{
-                iff = (ItemFragment)convertView;
+                iff = (CredItemFragment)convertView;
             }
-            Credential_item cii = items.get(position);
-            iff.setName(cii.getCredential_id());
-            iff.setMobile(cii.getRpid());
+            final CredentialItem cii = items.get(position);
+            iff.setName(cii.getRpid());
+            iff.setMobile(cii.getCredential_id());
             iff.setImage(cii.getResid());
+
+            iff.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainActivity.onChangeFragmentToDelete(cii);
+
+                }
+            });
 
             return iff;
         }

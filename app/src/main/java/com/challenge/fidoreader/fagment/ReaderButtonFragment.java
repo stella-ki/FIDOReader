@@ -1,7 +1,6 @@
 package com.challenge.fidoreader.fagment;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,8 +17,6 @@ import android.widget.TextView;
 
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
-
-import org.w3c.dom.Text;
 
 public class ReaderButtonFragment extends Fragment {
     public final static String TAG = "ReaderButtonFragment";
@@ -49,7 +46,7 @@ public class ReaderButtonFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.v(TAG, "onCreateView");
 
-        View view = inflater.inflate(R.layout.reader_button_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_reader_button, container, false);
 
         btn = (Button)view.findViewById(R.id.readerActivationBtn);
         btn.setOnClickListener(new View.OnClickListener() {
