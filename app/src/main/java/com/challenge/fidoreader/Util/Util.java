@@ -22,7 +22,9 @@ import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -149,6 +151,14 @@ public class Util
                 (sha_256(Util.hexStringToByteArray(plainText)));
     }
 
+    public static String hmac_sha_256(String key, String input) throws NoSuchAlgorithmException, InvalidKeyException{
+        Mac hasher = Mac.getInstance("HmacSHA256");
+        hasher.init(new SecretKeySpec(Util.hexStringToByteArray(key), "HmacSHA256"));
+        byte[] hash = hasher.doFinal(Util.hexStringToByteArray(input));
+
+        return Util.byteArrayToHexString(hash);
+    }
+
 
     public static byte[] aes_cbc(byte[] keyData, byte[] str) throws Exception{
         SecretKey key;
@@ -235,5 +245,17 @@ public class Util
 
         return sb.toString().toUpperCase();
 
+    }
+
+    public static String ascii(String str){
+        char[] chars = str.toCharArray();
+
+        StringBuffer sb = new StringBuffer();
+
+        for(int i = 0 ; i < chars.length ; i++){
+            sb.append(Integer.toHexString((int)chars[i]));
+        }
+
+        return sb.toString().toUpperCase();
     }
 }
