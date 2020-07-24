@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
@@ -76,7 +77,8 @@ public class ReaderButtonFragment extends Fragment {
 
         getInfobtn = (Button)view.findViewById(R.id.KonaBIOPASSGetInfoBtn);
         clientpinbtn = (Button)view.findViewById(R.id.KonaBIOPASSPINBtn);
-        clientpinbtn.setEnabled(true);
+        clientpinbtn.setEnabled(false);
+
         getInfobtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -103,8 +105,14 @@ public class ReaderButtonFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                SetNewPINFragment newDialogFragment = new SetNewPINFragment();
+                SetNewPINFragment newDialogFragment = new SetNewPINFragment(mainActivity, view);
                 newDialogFragment.show(getFragmentManager(), "dialog");
+                newDialogFragment.setCancelable(false);
+                try {
+                    mainActivity.authenticator.setTag(mainActivity.myTag);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -124,6 +132,7 @@ public class ReaderButtonFragment extends Fragment {
         Log.v(TAG, "setEnabled");
         btn.setEnabled(true);
         getInfobtn.setEnabled(true);
+        clientpinbtn.setEnabled(true);
     }
     public void setImageView(int resource){
         imageView.setImageResource(resource);
