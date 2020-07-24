@@ -27,13 +27,6 @@ public class Authenticator {
     public static final byte cp_sub_getPinUvAuthTokenUsingUv	= 0x06;
     public static final byte cp_sub_getUVRetries	            = 0x07;
 
-    public static final String cm_sub_getCredsMetadata	                    =  "1" ;
-    public static final String cm_sub_enumerateRPsBegin	                    =  "2" ;
-    public static final String cm_sub_enumerateRPsGetNextRP	                =  "3" ;
-    public static final String cm_sub_enumerateCredentialsBegin	            =  "4" ;
-    public static final String cm_sub_enumerateCredentialsGetNextCredential =  "5" ;
-    public static final String cm_sub_deleteCredential	                    =  "6" ;
-
     IsoDep myTag;
 
     static byte[] byteAPDU=null;
@@ -42,13 +35,14 @@ public class Authenticator {
 
 
     SharedSecretObject sso;
-    MapList<String, RPs> rps;
     String pinUvAuthToken;
+
+    CredentialManagement_API credMg;
 
     public Authenticator(){
         sso = new SharedSecretObject();
         pinUvAuthToken = "";
-        rps = new MapList<String, RPs>();
+        credMg = new CredentialManagement_API();
     }
 
     public void setTag(IsoDep myTag) {
@@ -151,7 +145,7 @@ public class Authenticator {
         ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
         assertSW("9000");
 
-        String fido_result = CredentialManagement(Authenticator.cm_sub_deleteCredential, cred_id);
+        String fido_result = CredentialManagement(CredentialManagement_API.cm_sub_deleteCredential, cred_id);
         if(!fido_result.equals("00")){
             throw new UserException("Credential deletion is failed");
         }
@@ -164,9 +158,8 @@ public class Authenticator {
         printLog("getCredentialList");
         ArrayList<CredentialItem> list = new ArrayList<CredentialItem>();
 
-
-        // bSendAPDU("00A4040008A0000006472F000100");
-        // assertSW("9000");
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
 
         getInfo();
         assertSW("9000");
@@ -179,29 +172,29 @@ public class Authenticator {
 
         int num = 0;
 
-        String fido_result = CredentialManagement(Authenticator.cm_sub_enumerateRPsBegin);
+        String fido_result = CredentialManagement(CredentialManagement_API.cm_sub_enumerateRPsBegin);
         if(fido_result.equals("2E")){
             throw new UserException("Credential is not exist");
         }
-        for (; num < rps.expectedSize(); num++){
-            CredentialManagement(Authenticator.cm_sub_enumerateRPsGetNextRP);
+        for (; num < credMg.getRps().expectedSize(); num++){
+            CredentialManagement(CredentialManagement_API.cm_sub_enumerateRPsGetNextRP);
         }
 
         String rp = ""; //get First key value which is rp
-        for (num = 0; num < rps.getSize(); num++){
-            rp = (String) rps.getKey(num); //get First key value which is rp
+        for (num = 0; num < credMg.getRps().getSize(); num++){
+            rp = (String) credMg.getRps().getKey(num); //get First key value which is rp
             printLog("Read Credential about RP : " + rp);
-            CredentialManagement(Authenticator.cm_sub_enumerateCredentialsBegin, rp);
-            int credCunt = rps.get(rp).getCredentialExpectedCnt();
+            CredentialManagement(CredentialManagement_API.cm_sub_enumerateCredentialsBegin, rp);
+            int credCunt = credMg.getRps().get(rp).getCredentialExpectedCnt();
             for (int j = 0; j < credCunt; j++){
-                CredentialManagement(Authenticator.cm_sub_enumerateCredentialsGetNextCredential, rp);
+                CredentialManagement(CredentialManagement_API.cm_sub_enumerateCredentialsGetNextCredential, rp);
             }
         }
 
-        for (num = 0; num < rps.getSize(); num++){
-            RPs tmprps = (RPs)rps.getValue(num);
+        for (num = 0; num < credMg.getRps().getSize(); num++){
+            RPs tmprps = (RPs)credMg.getRps().getValue(num);
             for (int j = 0; j < tmprps.getCredentials().size(); j++){
-                list.add(new CredentialItem(tmprps.getCredential(j).getCredentialID(), tmprps.getRp()));
+                list.add(new CredentialItem(tmprps.getCredential(j).getCredentialID(), tmprps.getRp(), tmprps.getCredential(j).getUser()));
             }
         }
         return list;
@@ -298,157 +291,21 @@ public class Authenticator {
 
     public String CredentialManagement(String sub, String... param) throws Exception{
         String fido_result = "";
-        String result = CredentialManagement_cmd(sub, param);
+
+        credMg.setPinUvAuthToken(pinUvAuthToken);
+        String cmd = credMg.commands(sub, param);
+
+        String result = makeCommand(cmd);
+
         fido_result = result.substring(0,2);
         if(fido_result.equals("00")){
-            CredentialManagement_parse(sub, result, param);
+            credMg.responses(sub, result, param);
         }else{
             printLog("CredentialManagement is not successful");
         }
 
         return fido_result;
     }
-
-    public String CredentialManagement_cmd(String sub, String... param) throws Exception{
-        String pinUvAuthParam = "";
-        String cmd = "";
-
-        String rp = "";
-        String rpIDHash = "";
-        
-        switch (sub){
-            case cm_sub_getCredsMetadata	                  :
-                printLog("Send Credential Management : "+"getCredsMetadata");
-                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "01").substring(0, 16*2);
-                cmd = "A3" 
-                    + "01" + "01" //subcommand index
-                    + "03" + "01" // pinUvAuthProtocol
-                    + "04" + "58"+ Util.toHex(pinUvAuthParam.length()/2) + pinUvAuthParam; //pinUvAuthParam
-                cmd = "41" + cmd;
-                break;
-            case cm_sub_enumerateRPsBegin	                  :
-                printLog("Send Credential Management : "+"enumerateRPsBegin");
-                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "02").substring(0, 16*2);
-                cmd = "A3" 
-                    + "01" + "02" //subcommand index
-                    + "03" + "01" // pinUvAuthProtocol
-                    + "04" + "58"+ Util.toHex(pinUvAuthParam.length()/2) + pinUvAuthParam; //pinUvAuthParam
-                cmd = "41" + cmd;
-                break;
-            case cm_sub_enumerateRPsGetNextRP	              :
-                printLog("Send Credential Management : "+"enumerateRPsGetNextRP");
-                cmd = "A1" 
-                    + "01" + "03"; //subcommand index
-                cmd = "41" + cmd;
-                break;
-            case cm_sub_enumerateCredentialsBegin	          :
-                printLog("Send Credential Management : "+"enumerateCredentialsBegin");
-                rp = param[0];
-                rp = Util.convertTohex(rp);
-                rpIDHash = Util.sha_256(rp);
-                rpIDHash = "A10158" + Util.toHex(rpIDHash.length()/2) + rpIDHash;
-                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "04" + rpIDHash).substring(0, 16*2);
-                
-                cmd = "A4" 
-                    + "01" + "04" //subcommand index
-                    + "02" + rpIDHash //subcommand params
-                    + "03" + "01" // pinUvAuthProtocol
-                    + "04" + "58"+ Util.toHex(pinUvAuthParam.length()/2) + pinUvAuthParam; //pinUvAuthParam
-                        
-                cmd = "41" + cmd;
-
-                break;
-            case cm_sub_enumerateCredentialsGetNextCredential :
-                printLog("Send Credential Management : "+"enumerateCredentialsGetNextCredential");
-                cmd = "A1" 
-                    + "01" + "05"; //subcommand index                        
-                cmd = "41" + cmd;                
-                break;
-            case cm_sub_deleteCredential	                  :
-                printLog("Send Credential Management : "+"deleteCredential " + param[0]);
-                String credentialID = param[0].replaceAll("\"","");
-                // = Util.convertTohex(credentialID);
-                credentialID = "A1" + "02" + "A2" + "64" + "74797065" + "6A" + "7075626C69632D6B6579" + "62" + "6964" + "58" + Util.toHex(credentialID.length()/2) + credentialID;
-                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "06" + credentialID).substring(0, 16*2);
-               
-                cmd = "A4" 
-                    + "01" + "06" //subcommand index
-                    + "02" + credentialID //subcommand params
-                    + "03" + "01" // pinUvAuthProtocol
-                    + "04" + "58"+ Util.toHex(pinUvAuthParam.length()/2) + pinUvAuthParam; //pinUvAuthParam
-                cmd = "41" + cmd;                
-                break;
-            default : 
-                throw new Exception("Subcommand value is wrong");
-                
-        }
-
-        String pin = "0000";
-        String result = makeCommand(cmd);
-
-        return result;
-    }
-
-
-    public JsonNode CredentialManagement_parse(String sub, String res, String... param) throws Exception{
-        //printLog("CredentialManagement_parse : " + res);
-        JsonNode jnode = getCBORDataFromResponse(res);
-        //printLog(jnode.toString());
-        
-        if(res.equals("") || jnode == null){
-            return null;
-        }
-        
-        String rp = "";
-        String rpIDHash = "";
-        String user = "";
-        String CredentialID = "";
-        String publicKey = "";
-        RPs tmpRPs;
-
-        switch (sub){
-            case cm_sub_getCredsMetadata	                  :
-                break;
-            case cm_sub_enumerateRPsBegin	                  :               
-                rps.clear();
-                rp = jnode.get("3").get("id").toString().replaceAll("\"", "");
-                rpIDHash = jnode.get("4").toString();
-                int totalRpCount = Integer.parseInt(jnode.get("5").toString());
-                rps.add(rp, new RPs(rp, rpIDHash));
-                rps.setExpectedSize(totalRpCount - 1);
-                break;
-            case cm_sub_enumerateRPsGetNextRP	              :
-                rp = jnode.get("3").get("id").toString().replaceAll("\"", "");
-                rpIDHash = jnode.get("4").toString();
-                rps.add(rp, new RPs(rp, rpIDHash));
-                break;
-            case cm_sub_enumerateCredentialsBegin	          :
-                rp = param[0];
-                tmpRPs = rps.get(rp);
-                user = jnode.get("6").toString();
-                CredentialID = Util.getHexString(jnode.get("7").get("id").binaryValue());
-                publicKey = jnode.get("8").toString();
-                int totalcredCount = Integer.parseInt(jnode.get("9").toString());
-                tmpRPs.setCredentialExpectedCnt(totalcredCount - 1);
-                tmpRPs.addCredential(new Credential(user, CredentialID, publicKey));
-                break;
-            case cm_sub_enumerateCredentialsGetNextCredential :
-                rp = param[0];
-                tmpRPs = rps.get(rp);
-                user = jnode.get("6").toString();
-                CredentialID = Util.getHexString(jnode.get("7").get("id").binaryValue());
-                publicKey = jnode.get("8").toString();
-                tmpRPs.addCredential(new Credential(user, CredentialID, publicKey));
-                break;
-            case cm_sub_deleteCredential	                  :
-                break;
-            default :
-                throw new Exception("Subcommand value is wrong");
-        }
-
-        return jnode;
-    }
-
 
     private byte[]  transceives (byte[] data) throws Exception{
 

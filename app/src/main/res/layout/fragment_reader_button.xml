@@ -16,7 +16,7 @@
         <ImageView
             android:id="@+id/readerActivationImageView"
             android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_height="70dp"
             tools:src="@tools:sample/avatars" />
 
         <LinearLayout
@@ -51,21 +51,42 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/btn_read_FIDO" />
+        android:layout_margin="5dp"
+        android:text="@string/btn_read_FIDO"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="0"/>
 
     <Button
         android:id="@+id/KonaBIOPASSGetInfoBtn"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/btn_getInfo" />
+        android:layout_margin="5dp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="0"
+        android:text="@string/btn_getInfo"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/KonaBIOPASSPINBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="ClientPIN"/>
+        android:layout_margin="5dp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="0"
+        android:text="ClientPIN"
+        android:textColor="#FFFFFF" />
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">

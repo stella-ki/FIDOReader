@@ -40,15 +40,28 @@
             android:id="@+id/btn_cred_delete"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="Delete" />
+            android:layout_margin="5dp"
+            android:text="Delete"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="0"/>
 
         <Button
             android:id="@+id/btn_cred_Cancel"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:text="Cancel" />
+            android:layout_margin="5dp"
+            android:text="Cancel"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="0"
+            />
     </LinearLayout>
 
 </LinearLayout>

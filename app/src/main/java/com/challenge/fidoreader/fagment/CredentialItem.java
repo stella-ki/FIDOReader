@@ -3,18 +3,21 @@ package com.challenge.fidoreader.fagment;
 public class CredentialItem {
     String credential_id;
     String rpid;
+    String name;
     int resid;
 
-    public CredentialItem(String credential_id, String rpid, int resid) {
+    public CredentialItem(String credential_id, String rpid, String name, int resid) {
         this.credential_id = credential_id;
         this.rpid = rpid;
         this.resid = resid;
+        this.name = name;
     }
     
     
-    public CredentialItem(String credential_id, String rpid) {
+    public CredentialItem(String credential_id, String rpid, String name) {
         this.credential_id = credential_id;
         this.rpid = rpid;
+        this.name = name;
     }
 
     public String getCredential_id() {
@@ -41,11 +44,20 @@ public class CredentialItem {
         this.resid = resid;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
-        return "Credential_item{" +
+        return "CredentialItem{" +
                 "credential_id='" + credential_id + '\'' +
                 ", rpid='" + rpid + '\'' +
+                ", name='" + name + '\'' +
                 ", resid=" + resid +
                 '}';
     }

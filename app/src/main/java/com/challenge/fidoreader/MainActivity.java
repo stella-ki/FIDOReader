@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.IsoDep;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -266,15 +267,28 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
     public void onChangeFragmentToList(){
         Log.v(TAG, "onchangeFragment");
         try{
-            pgsBar.setVisibility(View.VISIBLE);
-            getCredentialList();
+            //pgsBar.setVisibility(View.VISIBLE);
+
+            authenticator.setTag(myTag);
+
+            //ArrayList<CredentialItem> list = authenticator.getCredentialList();
+
+            GoogleTranslate googleTranslate = new GoogleTranslate(pgsBar);
+            AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
+            ArrayList<CredentialItem> list = (ArrayList<CredentialItem>)asyncTask.get();
+
+            for (int i = 0; i< list.size(); i++){
+                page1_2.addCredentialItem(list.get(i));
+            }
+
 
             onChangeFragment(page1_2);
 
         }catch (Exception e){
+            Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }finally {
-            pgsBar.setVisibility(View.INVISIBLE);
+           //pgsBar.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -293,7 +307,6 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
 
             for (int i = 0; i< list.size(); i++){
                 page1_2.addCredentialItem(list.get(i));
-
             }
 
         }catch (UserException ue){

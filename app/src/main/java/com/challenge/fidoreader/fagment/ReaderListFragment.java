@@ -96,7 +96,7 @@ public class ReaderListFragment extends Fragment {
     }
 
     public void addCredentialItem(CredentialItem ci){
-        sa.addItem(new CredentialItem(ci.credential_id,ci.rpid, R.drawable.authenticator_key));
+        sa.addItem(new CredentialItem(ci.credential_id, ci.rpid, ci.getName(), R.drawable.authenticator_key));
 
     }
 
@@ -142,8 +142,9 @@ public class ReaderListFragment extends Fragment {
                 iff = (CredItemFragment)convertView;
             }
             final CredentialItem cii = items.get(position);
-            iff.setName(cii.getRpid());
-            iff.setMobile(cii.getCredential_id());
+            iff.setRp(cii.getRpid());
+            iff.setName(cii.getName());
+            iff.setkeyalue(cii.getCredential_id());
             iff.setImage(cii.getResid());
 
             iff.setOnClickListener(new View.OnClickListener() {
