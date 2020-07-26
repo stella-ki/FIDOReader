@@ -123,6 +123,8 @@ public class ChangePINFragment extends DialogFragment {
                         }
                         else{
                             Toast.makeText(activity.getApplicationContext(), "PIN 변경을 정상적으로 종료하지 못하였습니다.", Toast.LENGTH_LONG).show();
+
+                            getDialog().dismiss();
                         }
 
                     } catch (Exception e) {
