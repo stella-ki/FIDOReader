@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import com.fasterxml.jackson.dataformat.cbor.CBORParser;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -105,9 +107,18 @@ public class ReaderButtonFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                SetNewPINFragment newDialogFragment = new SetNewPINFragment(mainActivity, view);
-                newDialogFragment.show(getFragmentManager(), "dialog");
-                newDialogFragment.setCancelable(false);
+                // Change PIN or
+                // Set New PIN
+                DialogFragment pinFragment = null;
+                if(clientpinbtn.getText().toString().equals("Set New PIN")) {
+                    pinFragment = new SetNewPINFragment(mainActivity, view);
+                }
+                else if(clientpinbtn.getText().toString().equals("Change PIN")) {
+                    pinFragment = new ChangePINFragment(mainActivity, view);
+                }
+
+                pinFragment.show(getFragmentManager(), "dialog");
+                pinFragment.setCancelable(false);
                 try {
                     mainActivity.authenticator.setTag(mainActivity.myTag);
                 } catch (Exception e) {
@@ -131,6 +142,8 @@ public class ReaderButtonFragment extends Fragment {
     public void setEnabled(){
         Log.v(TAG, "setEnabled");
         btn.setEnabled(true);
+
+        getInfo();
         getInfobtn.setEnabled(true);
         clientpinbtn.setEnabled(true);
     }
@@ -220,20 +233,56 @@ public class ReaderButtonFragment extends Fragment {
 
     }
 
-    private void getInfoPrint(TableLayout getInfoTable) throws Exception {
-
-        mainActivity.authenticator.setTag(mainActivity.myTag);
-        String result = mainActivity.authenticator.getInfo();
+    private Map<String, Object> getInfo(){
+        String result = null;
+        try {
+            mainActivity.authenticator.setTag(mainActivity.myTag);
+            result = mainActivity.authenticator.getInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
 
         CBORFactory cf = new CBORFactory();
         ObjectMapper mapper = new ObjectMapper(cf);
+
+        CBORParser cborParser = null;
+        try {
+            cborParser = cf.createParser(bais);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Map<String, Object> responseMap = null;
+        try {
+            responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (String key : responseMap.keySet()) {
+            if (key.equals("4")) {
+                LinkedHashMap<String, Boolean> options = (LinkedHashMap<String, Boolean>) responseMap.get(key);
+
+                if(options.get("clientPin")){
+                    clientpinbtn.setText("Change PIN");
+                }
+                else{
+                    clientpinbtn.setText("Set New PIN");
+                }
+            }
+        }
+
+        return responseMap;
+    }
+
+    private void getInfoPrint(TableLayout getInfoTable) throws Exception {
         try {
             // JsonNode jnode = mapper.readValue(bais, JsonNode.class);
-            CBORParser cborParser = cf.createParser(bais);
-            Map<String, Object> responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
-            });
+
+            Map<String, Object> responseMap = getInfo();
+            String result = "";
 
             ArrayList<String> version;
             ArrayList<String> extensions;

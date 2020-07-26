@@ -39,6 +39,7 @@ public class Authenticator {
     SharedSecretObject sso;
     String pinUvAuthToken;
     String clientPIN = "";
+    String originPIN = "";
 
     CredentialManagement_API credMg;
 
@@ -117,13 +118,14 @@ public class Authenticator {
         return null;
     }
 
-    public void ClientPIN(byte sub) throws Exception{
+    public String ClientPIN(byte sub) throws Exception{
         String result = ClientPIN_cmd(sub);
         if(result.substring(0,2).equals("00")){
             ClientPINparse(sub, result);
         }else{
             printLog("ClientPIN is not successful");
         }
+        return result.substring(0, 2);
     }
 
     public void assertSW(String sw) throws Exception{
@@ -202,7 +204,7 @@ public class Authenticator {
         return list;
     }
 
-    public void setPIN(String clientPIN) throws Exception {
+    public String setPIN(String clientPIN) throws Exception {
         bSendAPDU("00A4040008A0000006472F000100");
         assertSW("9000");
 
@@ -214,12 +216,14 @@ public class Authenticator {
 
         this.clientPIN = clientPIN;
 
-        ClientPIN(Authenticator.cp_sub_setPIN);
+        String result = ClientPIN(Authenticator.cp_sub_setPIN);
         assertSW("9000");
+
+        return result;
 
     }
 
-    public void changePin(String beforePIN, String newPIN) throws Exception {
+    public String changePin(String beforePIN, String newPIN) throws Exception {
         bSendAPDU("00A4040008A0000006472F000100");
         assertSW("9000");
 
@@ -229,8 +233,13 @@ public class Authenticator {
         ClientPIN(Authenticator.cp_sub_getKeyAgreement);
         assertSW("9000");
 
-        ClientPIN(Authenticator.cp_sub_setPIN);
+        this.originPIN = beforePIN;
+        this.clientPIN = newPIN;
+
+        String result = ClientPIN(Authenticator.cp_sub_changePIN);
         assertSW("9000");
+
+        return result;
     }
 
     public String ClientPIN_cmd(byte sub) throws Exception{
@@ -262,18 +271,21 @@ public class Authenticator {
             case cp_sub_changePIN                  :
                 printLog("Send Client PIN : " + "changePIN");
                 keyAgreement = "A5010203262001215820" + sso.getPublickey().substring(0,64) + "225820" + sso.getPublickey().substring(64);
+
                 newPinEnc = padding_00(clientPIN);   // clientPIN -> User INPUT (new PIN)
                 newPinEnc = Util.aes_cbc(sso.getSharedSecret(), newPinEnc);
-                pinUvAuthParam = Util.hmac_sha_256(sso.getSharedSecret(), newPinEnc).substring(0, 32);
-                String currentPIN = Util.sha_256(clientPIN);    // currentPIN
-                currentPIN = Util.aes_cbc(sso.getSharedSecret(), currentPIN.substring(0, 32));
+
+                String pinHashEnc = Util.sha_256(originPIN);    // currentPIN
+                pinHashEnc = Util.aes_cbc(sso.getSharedSecret(), pinHashEnc.substring(0, 32));
+
+                pinUvAuthParam = Util.hmac_sha_256(sso.getSharedSecret(), newPinEnc + pinHashEnc).substring(0, 32);
                 cmd = "A6"
                         + "01" + "01" // pinUvAuthProtocol
                         + "02" + "04" // subCommand
                         + "03" + keyAgreement   //keyAgreement
                         + "04" + "50" + pinUvAuthParam  // pinUbAuthParam
                         + "05" + "58" + "40" + newPinEnc    // newPinEnc
-                        + "06" + "50" + currentPIN          // pinHashEn (related with currentPIN)
+                        + "06" + "50" + pinHashEnc          // pinHashEn (related with currentPIN)
                 ;
                 cmd = "06" + cmd;
                 break;
@@ -282,7 +294,7 @@ public class Authenticator {
                 keyAgreement = "A5010203262001215820" + sso.getPublickey().substring(0,64) + "225820" + sso.getPublickey().substring(64);
                 String sha = Util.sha_256("30303030").substring(0, 16 * 2);
                 printLog("sha : " + sha);
-                String pinHashEnc = Util.aes_cbc(sso.getSharedSecret(), sha);
+                pinHashEnc = Util.aes_cbc(sso.getSharedSecret(), sha);
                 printLog("pinHashEnc : " + pinHashEnc);
                 cmd = "A4"
                         + "01" + "01" //pinUvAuthProtocol
@@ -424,7 +436,6 @@ public class Authenticator {
 
             response = bSendAPDU("80100000" + Util.toHex(len_remain_data / 2) + cData.substring(off_data, off_data + len_remain_data) + "");
             responseData = response.substring(0, response.length() - 4);
-
 
         }
 
