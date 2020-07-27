@@ -38,18 +38,13 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
     Fragment[] pages;
     ReaderButtonFragment page1_1;
     ReaderListFragment page1_2;
-    //DeleteFragment page1_3;
+
+    CredDeleteBottomSheetDialog bottomSheet;
+
     AuthenticatorFragment page2;
 
-    private NfcAdapter mAdapter=null;
-    private PendingIntent mPendingIntent;
-    private String[][] mTechLists;
-    private IntentFilter[] mFilters;
-    public static IsoDep myTag;
-    boolean mFirstDetected=false;
-    boolean mShowAtr=false;
-
     public Authenticator authenticator;
+    public CardReader cardReader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +60,11 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         //프래그먼트 선언
         page1_1 = new ReaderButtonFragment();
         page1_2 = new ReaderListFragment();
-        //page1_3 = new DeleteFragment();
         page2 = new AuthenticatorFragment();
 
         pages = new Fragment[3];
         pages[0] = page1_1;
         pages[1] = page1_2;
-        //pages[2] = page1_3;
         pages[2] = page2;
 
         getSupportFragmentManager().beginTransaction().add(R.id.container,page1_1).commit();
@@ -117,7 +110,7 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
 
         pgsBar = (ProgressBar) findViewById(R.id.h_progressbar);
         //pgsBar.setIndeterminate(true);
-        pgsBar.setVisibility(View.INVISIBLE);
+        pgsBar.setVisibility(View.GONE);
 
     }
 
@@ -125,22 +118,10 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
     public void onStart(){
         super.onStart();
         Log.v(TAG, "onStart");
-        resolveIntent(getIntent());
 
-        mAdapter = NfcAdapter.getDefaultAdapter(this);
-        mPendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
-        try{
-            ndef.addDataType("*/*");
-        }catch (IntentFilter.MalformedMimeTypeException e){
-            throw new RuntimeException("fail", e);
-        }
-        mFilters = new IntentFilter[] { ndef, };
-        mTechLists = new String[][] { new String[] { IsoDep.class.getName() } };
+        cardReader = new CardReader(this, getIntent());
 
-        page1_1.setImageView(R.drawable.ic_icc_off);
-        page1_1.setTextview2("");
-        page1_1.setTextview3("");
+        page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
 
         authenticator = new Authenticator();
 
@@ -151,70 +132,26 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         super.onResume();
         Log.v(TAG, "onResume");
 
-        if(  (mFirstDetected==true) && (myTag.isConnected()) ){
-            if(mShowAtr==true){
-                page1_1.setImageView(R.drawable.ic_icc_on_atr);
-            }
-            else{
-                page1_1.setImageView(R.drawable.ic_icc_on);
-            }
-        }
-        else{
-            page1_1.setImageView(R.drawable.ic_icc_off);
-        }
-
-        if( (mAdapter == null) || (!mAdapter.isEnabled()) ) {
-            if (mAdapter == null) {
-                page1_1.setTextview2(getString(R.string.txt_NFC_TAP));
-            }else if(mAdapter.isEnabled()){
-                page1_1.setTextview3(getString(R.string.txt_NFC_enable));
-            }else{
-                page1_1.setTextview2(getString(R.string.txt_NFC_TAP));
-                page1_1.setTextview3(getString(R.string.txt_NFC_no));
-            }
-        }
-
-        if (mAdapter != null) {
-            if (mAdapter.isEnabled()) {
-                page1_1.setTextview3(getString(R.string.txt_NFC_enable));
-            }
-            mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
-
-        }else{
-            page1_1.setTextview3(getString(R.string.txt_NFC_no));
-            page1_1.setTextview2(getString(R.string.txt_NFC_TAP));
-        }
-
-
+        cardReader.onResume(this);
+        page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str);
     }
-
 
     @Override
     public void onPause(){
         super.onPause();
         Log.v(TAG, "onPause");
 
-        if( (mFirstDetected==true) && (myTag.isConnected()) ){
-            if(mShowAtr==true){
-                page1_1.setImageView(R.drawable.ic_icc_on_atr);
-            }
-            else{
-                page1_1.setImageView(R.drawable.ic_icc_on);
-            }
-        }
-        else{
-            page1_1.setImageView(R.drawable.ic_icc_off);
-        }
-        mAdapter.disableForegroundDispatch(this);
-
-
+        cardReader.onPause(this);
+        page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str);
     }
 
     @Override
     protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
         setIntent(intent);
-        resolveIntent(intent);
+        cardReader.resolveIntent(intent);
+
+        page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
     }
 
     public void onChangeFragment(Fragment frgmt){
@@ -228,7 +165,6 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         }
     }
 
-    CredDeleteBottomSheetDialog bottomSheet;
 
     @Override
     public void onButtonClicked(CredentialItem cii) {
@@ -255,8 +191,6 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
     public void onChangeFragmentToDelete(CredentialItem cii){
         bottomSheet = new CredDeleteBottomSheetDialog(cii);
         bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
-        //onChangeFragment(page1_3);
-        //page1_3.setCredInfo(cii);
     }
 
 
@@ -269,10 +203,9 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         try{
             //pgsBar.setVisibility(View.VISIBLE);
 
-            authenticator.setTag(myTag);
+            authenticator.setTag(cardReader.myTag);
 
             //ArrayList<CredentialItem> list = authenticator.getCredentialList();
-
             GoogleTranslate googleTranslate = new GoogleTranslate(pgsBar);
             AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
             ArrayList<CredentialItem> list = (ArrayList<CredentialItem>)asyncTask.get();
@@ -292,16 +225,13 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         }
     }
 
-
-
-
     public void getCredentialList() throws Exception{
 
         try{
             Log.v(TAG, "getCredentialList");
             //progressON("Loading...");
 
-            authenticator.setTag(myTag);
+            authenticator.setTag(cardReader.myTag);
 
             ArrayList<CredentialItem> list = authenticator.getCredentialList();
 
@@ -320,93 +250,6 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         }
 
 
-    }
-/*
-
-    private void startProgress() {
-
-        progressON("Loading...");
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                progressOFF();
-            }
-        }, 3500);
-
-    }
-*/
-
-    private void resolveIntent(Intent intent)
-    {
-        Log.v(TAG, "resolveIntent");
-        String action = intent.getAction();
-        if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action) || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action) || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action))
-        {
-            Parcelable tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            final Tag t = (Tag) tag;
-            myTag = IsoDep.get(t);
-            mFirstDetected=true;
-            if( !myTag.isConnected() ){
-                try{
-                    myTag.connect();
-                    myTag.setTimeout(5000);
-                }
-                catch (IOException e){
-                    e.printStackTrace();
-                    return;
-                }
-            }
-            if( myTag.isConnected() ){
-                if(mShowAtr == true){
-                    page1_1.setImageView(R.drawable.ic_icc_on_atr);
-                    page1_1.setEnabled();
-                }
-                else{
-                    page1_1.setImageView(R.drawable.ic_icc_on);
-                }
-
-                vShowCardRemovalInfo();
-
-                String szATR = null;
-                try{
-                    mShowAtr=true;
-                    szATR ="3B" + Util.getATRLeString(myTag.getHistoricalBytes())+ "8001" + Util.getHexString(myTag.getHistoricalBytes())+""+ Util.getATRXorString(myTag.getHistoricalBytes());
-                }
-                catch (Exception e){
-                    mShowAtr=false;
-                    szATR = "CARD DETECTED  ";
-                }
-                page1_1.setTextview2(szATR);
-                if(mShowAtr == true){
-                    page1_1.setEnabled();
-                }
-            }
-            else{
-                page1_1.setImageView(R.drawable.ic_icc_off);
-            }
-        }
-        if( mFirstDetected==true && myTag.isConnected() ){
-            if(mShowAtr==true){
-                page1_1.setImageView(R.drawable.ic_icc_on_atr);
-            }
-            else{
-                page1_1.setImageView(R.drawable.ic_icc_on);
-            }
-        }
-        else{
-            page1_1.setImageView(R.drawable.ic_icc_off);
-        }
-    }
-
-
-    private void vShowCardRemovalInfo()
-    {
-        Context context = getApplicationContext();
-        CharSequence text = "Card Removal will NOT be detected";
-        int duration = Toast.LENGTH_LONG;
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
     }
 
 }

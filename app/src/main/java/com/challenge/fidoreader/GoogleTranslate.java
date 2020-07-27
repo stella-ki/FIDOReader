@@ -1,6 +1,7 @@
 package com.challenge.fidoreader;
 
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -20,22 +21,26 @@ public class GoogleTranslate extends AsyncTask<Object, Object, Object> {
 
     @Override
     protected void onPreExecute() {
+        super.onPreExecute();
+        Log.v("translate", "onPreExecute");
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPostExecute(Object s) {
-        mProgressBar.setVisibility(View.GONE);
+        Log.v("translate", "onPostExecute");
+        //mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
     protected Object doInBackground(Object... params) {
+        Log.v("translate", "doInBackground");
         Authenticator authenticator = (Authenticator)params[0];
         /*String vocab = params[0];
         String source = params[1];
         String target = params[2];
         }*/
-        ArrayList<CredentialItem> list = null;
+        ArrayList<CredentialItem> list = new ArrayList<>();//null;
         try {
             list = authenticator.getCredentialList();
         }

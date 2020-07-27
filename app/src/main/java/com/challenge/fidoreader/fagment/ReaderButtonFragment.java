@@ -112,11 +112,7 @@ public class ReaderButtonFragment extends Fragment {
         txtView2 = (TextView)view.findViewById(R.id.readerActivationText2);
         txtView3 = (TextView)view.findViewById(R.id.readerActivationText3);
 
-
-        setImageView(R.drawable.ic_icc_off);
-        setTextview2("");
-        setTextview3("");
-
+        setResult(R.drawable.ic_icc_off, "", "");
         return view;
     }
 
@@ -125,18 +121,20 @@ public class ReaderButtonFragment extends Fragment {
         btn.setEnabled(true);
         getInfobtn.setEnabled(true);
     }
-    public void setImageView(int resource){
+    public void setResult(int resource, String str1, String str2){
         imageView.setImageResource(resource);
-    }
-
-    public void setTextview2(String txt){
-        txtView2.setText(txt);
+        txtView2.setText(str1);
+        txtView3.setText(str2);
     }
 
 
-    public void setTextview3(String txt){
-        txtView3.setText(txt);
+    public void setResult(int resource, String str1, String str2, boolean result){
+        setResult(resource, str1, str2);
+        if(result){
+            setEnabled();
+        }
     }
+
 
     @Override
     public void onResume(){
@@ -213,7 +211,7 @@ public class ReaderButtonFragment extends Fragment {
 
     private void getInfoPrint(TableLayout getInfoTable) throws Exception {
 
-        mainActivity.authenticator.setTag(mainActivity.myTag);
+        mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
         String result = mainActivity.authenticator.getInfo();
 
         ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
