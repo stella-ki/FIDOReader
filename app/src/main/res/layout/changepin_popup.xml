@@ -7,6 +7,18 @@
     tools:context=".fagment.ReaderButtonFragment">
 
     <TextView
+        android:id="@+id/beforePINView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Origin PIN" />
+
+    <EditText
+        android:id="@+id/beforePINEditText"
+        android:layout_width="200dip"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"/>
+
+    <TextView
         android:id="@+id/newPINView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

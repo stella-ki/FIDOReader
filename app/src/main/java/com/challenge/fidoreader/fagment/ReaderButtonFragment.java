@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
@@ -27,6 +29,7 @@ import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import com.fasterxml.jackson.dataformat.cbor.CBORParser;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -76,7 +79,8 @@ public class ReaderButtonFragment extends Fragment {
 
         getInfobtn = (Button)view.findViewById(R.id.KonaBIOPASSGetInfoBtn);
         clientpinbtn = (Button)view.findViewById(R.id.KonaBIOPASSPINBtn);
-        clientpinbtn.setEnabled(true);
+        clientpinbtn.setEnabled(false);
+
         getInfobtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -103,8 +107,23 @@ public class ReaderButtonFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                SetNewPINFragment newDialogFragment = new SetNewPINFragment();
-                newDialogFragment.show(getFragmentManager(), "dialog");
+                // Change PIN or
+                // Set New PIN
+                DialogFragment pinFragment = null;
+                if(clientpinbtn.getText().toString().equals("Set New PIN")) {
+                    pinFragment = new SetNewPINFragment(mainActivity, view);
+                }
+                else if(clientpinbtn.getText().toString().equals("Change PIN")) {
+                    pinFragment = new ChangePINFragment(mainActivity, view);
+                }
+
+                pinFragment.show(getFragmentManager(), "dialog");
+                pinFragment.setCancelable(false);
+                try {
+                    mainActivity.authenticator.setTag(mainActivity.myTag);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -133,7 +152,10 @@ public class ReaderButtonFragment extends Fragment {
     public void setEnabled(){
         Log.v(TAG, "setEnabled");
         btn.setEnabled(true);
+
+        getInfo();
         getInfobtn.setEnabled(true);
+        clientpinbtn.setEnabled(true);
     }
     public void setResult(int resource, String str1, String str2){
         imageView.setImageResource(resource);
@@ -223,20 +245,63 @@ public class ReaderButtonFragment extends Fragment {
 
     }
 
+<<<<<<< HEAD
     private void getInfoPrint(TableLayout getInfoTable) throws Exception {
 
         mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
         String result = mainActivity.authenticator.getInfo();
+=======
+    private Map<String, Object> getInfo(){
+        String result = null;
+        try {
+            mainActivity.authenticator.setTag(mainActivity.myTag);
+            result = mainActivity.authenticator.getInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+>>>>>>> 1f8d9c0c3a6d0a2fbd9bcbed2e027ef16651e74c
 
         ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
 
         CBORFactory cf = new CBORFactory();
         ObjectMapper mapper = new ObjectMapper(cf);
+
+        CBORParser cborParser = null;
+        try {
+            cborParser = cf.createParser(bais);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Map<String, Object> responseMap = null;
+        try {
+            responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (String key : responseMap.keySet()) {
+            if (key.equals("4")) {
+                LinkedHashMap<String, Boolean> options = (LinkedHashMap<String, Boolean>) responseMap.get(key);
+
+                if(options.get("clientPin")){
+                    clientpinbtn.setText("Change PIN");
+                }
+                else{
+                    clientpinbtn.setText("Set New PIN");
+                }
+            }
+        }
+
+        return responseMap;
+    }
+
+    private void getInfoPrint(TableLayout getInfoTable) throws Exception {
         try {
             // JsonNode jnode = mapper.readValue(bais, JsonNode.class);
-            CBORParser cborParser = cf.createParser(bais);
-            Map<String, Object> responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
-            });
+
+            Map<String, Object> responseMap = getInfo();
+            String result = "";
 
             ArrayList<String> version;
             ArrayList<String> extensions;
