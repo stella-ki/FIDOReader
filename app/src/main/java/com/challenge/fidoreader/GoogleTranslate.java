@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.challenge.fidoreader.fagment.CredentialItem;
-import com.challenge.fidoreader.fido.Authenticator;
+import com.challenge.fidoreader.fidoReader.Authenticator;
 
 import java.util.ArrayList;
 

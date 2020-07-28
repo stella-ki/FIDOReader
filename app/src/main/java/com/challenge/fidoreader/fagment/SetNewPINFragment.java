@@ -2,28 +2,22 @@ package com.challenge.fidoreader.fagment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
 import com.challenge.fidoreader.Util.Util;
-import com.challenge.fidoreader.fido.Authenticator;
-import com.google.android.material.snackbar.Snackbar;
 
 
 public class SetNewPINFragment extends DialogFragment {

@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fido;
+package com.challenge.fidoreader.fidoReader;
 
 import com.challenge.fidoreader.Util.MapList;
 import com.challenge.fidoreader.Util.Util;

@@ -18,7 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.challenge.fidoreader.fagment.CredentialItem;
 import com.challenge.fidoreader.fagment.ReaderButtonFragment;
 import com.challenge.fidoreader.fagment.AuthenticatorFragment;
-import com.challenge.fidoreader.fido.Authenticator;
+import com.challenge.fidoreader.fidoReader.Authenticator;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;

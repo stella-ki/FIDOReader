@@ -1,12 +1,9 @@
-package com.challenge.fidoreader.fido;
+package com.challenge.fidoreader.fidoReader;
 
 import android.nfc.tech.IsoDep;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
 import com.challenge.fidoreader.Exception.UserException;
-import com.challenge.fidoreader.Util.MapList;
 import com.challenge.fidoreader.Util.Util;
 import com.challenge.fidoreader.fagment.CredentialItem;
 import com.fasterxml.jackson.databind.JsonNode;

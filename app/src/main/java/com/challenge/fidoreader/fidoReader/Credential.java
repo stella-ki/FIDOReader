@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fido;
+package com.challenge.fidoreader.fidoReader;
 
 public class Credential {
 
