@@ -1,15 +1,8 @@
 package com.challenge.fidoreader;
 
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.IsoDep;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -19,16 +12,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.challenge.fidoreader.Exception.UserException;
+import com.challenge.fidoreader.Util.Code;
 import com.challenge.fidoreader.fagment.CredDeleteBottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
-import com.challenge.fidoreader.Util.Util;
 import com.challenge.fidoreader.fagment.CredentialItem;
 import com.challenge.fidoreader.fagment.ReaderButtonFragment;
 import com.challenge.fidoreader.fagment.AuthenticatorFragment;
-import com.challenge.fidoreader.fagment.ReaderListFragment;
 import com.challenge.fidoreader.fido.Authenticator;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity  extends AppCompatActivity implements CredDeleteBottomSheetDialog.BottomSheetListener{
@@ -37,14 +28,13 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
     private ProgressBar pgsBar;
     Fragment[] pages;
     ReaderButtonFragment page1_1;
-    ReaderListFragment page1_2;
 
     CredDeleteBottomSheetDialog bottomSheet;
 
     AuthenticatorFragment page2;
 
-    public Authenticator authenticator;
-    public CardReader cardReader;
+    public static Authenticator authenticator;
+    public static CardReader cardReader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,20 +49,17 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
 
         //프래그먼트 선언
         page1_1 = new ReaderButtonFragment();
-        page1_2 = new ReaderListFragment();
+        //page1_2 = new ReaderListFragment();
         page2 = new AuthenticatorFragment();
 
-        pages = new Fragment[3];
+        pages = new Fragment[2];
         pages[0] = page1_1;
-        pages[1] = page1_2;
-        pages[2] = page2;
+        pages[1] = page2;
 
         getSupportFragmentManager().beginTransaction().add(R.id.container,page1_1).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container,page1_2).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.container,page2).commit();
 
         getSupportFragmentManager().beginTransaction().hide(page1_1).commit();
-        getSupportFragmentManager().beginTransaction().hide(page1_2).commit();
         getSupportFragmentManager().beginTransaction().hide(page2).commit();
 
         getSupportFragmentManager().beginTransaction().show(page1_1).commit();
@@ -112,19 +99,15 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         //pgsBar.setIndeterminate(true);
         pgsBar.setVisibility(View.GONE);
 
+        cardReader = new CardReader(this, getIntent());
+        authenticator = new Authenticator();
     }
 
     @Override
     public void onStart(){
         super.onStart();
         Log.v(TAG, "onStart");
-
-        cardReader = new CardReader(this, getIntent());
-
         page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
-
-        authenticator = new Authenticator();
-
     }
 
     @Override
@@ -177,7 +160,7 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
             pgsBar.setVisibility(View.VISIBLE);
             authenticator.deleteCredential(cii.getCredential_id());
             bottomSheet.dismiss();
-            page1_2.deleteCredentialItem(cii);
+            //page1_2.deleteCredentialItem(cii);
 
             Toast.makeText(this.getApplicationContext(),"Deletion is success", Toast.LENGTH_SHORT).show();
         }catch (Exception e){
@@ -210,12 +193,16 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
             AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
             ArrayList<CredentialItem> list = (ArrayList<CredentialItem>)asyncTask.get();
 
-            for (int i = 0; i< list.size(); i++){
+            Intent intent = new Intent(getApplicationContext(), CredListActivity.class);
+            intent.putParcelableArrayListExtra("Credentiallist", list);
+            startActivityForResult(intent, Code.requestCode);
+
+            /*for (int i = 0; i< list.size(); i++){
                 page1_2.addCredentialItem(list.get(i));
             }
 
 
-            onChangeFragment(page1_2);
+            onChangeFragment(page1_2);*/
 
         }catch (Exception e){
             Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
@@ -235,9 +222,9 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
 
             ArrayList<CredentialItem> list = authenticator.getCredentialList();
 
-            for (int i = 0; i< list.size(); i++){
+           /* for (int i = 0; i< list.size(); i++){
                 page1_2.addCredentialItem(list.get(i));
-            }
+            }*/
 
         }catch (UserException ue){
             Toast.makeText(this.getApplicationContext(),ue.getMessage(), Toast.LENGTH_SHORT).show();
