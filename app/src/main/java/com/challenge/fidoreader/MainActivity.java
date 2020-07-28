@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.challenge.fidoreader.Exception.UserException;
 import com.challenge.fidoreader.Util.Code;
@@ -19,22 +21,24 @@ import com.challenge.fidoreader.fagment.CredentialItem;
 import com.challenge.fidoreader.fagment.ReaderButtonFragment;
 import com.challenge.fidoreader.fagment.AuthenticatorFragment;
 import com.challenge.fidoreader.fido.Authenticator;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
-public class MainActivity  extends AppCompatActivity implements CredDeleteBottomSheetDialog.BottomSheetListener{
+public class MainActivity  extends AppCompatActivity {
     public final static String TAG = "MainActivity";
 
     private ProgressBar pgsBar;
     Fragment[] pages;
+
     ReaderButtonFragment page1_1;
-
-    CredDeleteBottomSheetDialog bottomSheet;
-
     AuthenticatorFragment page2;
 
     public static Authenticator authenticator;
     public static CardReader cardReader;
+
+    ViewPager2 viewPager2;
+    ArrayList<String> titles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,51 +53,27 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
 
         //프래그먼트 선언
         page1_1 = new ReaderButtonFragment();
-        //page1_2 = new ReaderListFragment();
         page2 = new AuthenticatorFragment();
 
         pages = new Fragment[2];
         pages[0] = page1_1;
         pages[1] = page2;
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container,page1_1).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container,page2).commit();
-
-        getSupportFragmentManager().beginTransaction().hide(page1_1).commit();
-        getSupportFragmentManager().beginTransaction().hide(page2).commit();
-
-        getSupportFragmentManager().beginTransaction().show(page1_1).commit();
-
         //탭 레이아웃 호출 후 탭 추가
         TabLayout tabs = (TabLayout) findViewById(R.id.tabLayout);
-        tabs.addTab(tabs.newTab().setText("Authenticators"));
-        tabs.addTab(tabs.newTab().setText("FIDO2 Reader"));
+        titles.add("Authenticators");
+        titles.add("FIDO2 Reader");
 
-        //각 탭을 누를 때 메소드 호출
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
+        viewPager2 = findViewById(R.id.view_pager);
 
-                if(position == 0){
-                    onChangeFragment(page1_1);
-                }
-                else if(position == 1){
-                    onChangeFragment(page2);
-                }
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        viewPager2.setAdapter(new ViewPagerAdapter(this, pages));
+        new TabLayoutMediator(tabs, viewPager2,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        tab.setText(titles.get(position));
+                    }
+                }).attach();
 
         pgsBar = (ProgressBar) findViewById(R.id.h_progressbar);
         //pgsBar.setIndeterminate(true);
@@ -107,7 +87,9 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
     public void onStart(){
         super.onStart();
         Log.v(TAG, "onStart");
-        page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+        if(page1_1.isReady()){
+            page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+        }
     }
 
     @Override
@@ -116,7 +98,9 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         Log.v(TAG, "onResume");
 
         cardReader.onResume(this);
-        page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str);
+        if(page1_1.isReady()){
+            page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+        }
     }
 
     @Override
@@ -125,7 +109,9 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         Log.v(TAG, "onPause");
 
         cardReader.onPause(this);
-        page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str);
+        if(page1_1.isReady()){
+            page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+        }
     }
 
     @Override
@@ -134,58 +120,14 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
         setIntent(intent);
         cardReader.resolveIntent(intent);
 
-        page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
-    }
-
-    public void onChangeFragment(Fragment frgmt){
-        for (int i = 0; i <pages.length; i++){
-            if(!frgmt.equals(pages[i])){
-                getSupportFragmentManager().beginTransaction().hide(pages[i]).commit();
-            }else{
-                getSupportFragmentManager().beginTransaction().show(pages[i]).commit();
-            }
-
+        if(page1_1.isReady()){
+            page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
         }
-    }
-
-
-    @Override
-    public void onButtonClicked(CredentialItem cii) {
-        if(cii == null){
-            return;
-        }
-        Log.v(TAG, "onButtopnclieck : " + cii.getCredential_id());
-
-        try{
-            pgsBar.setVisibility(View.VISIBLE);
-            authenticator.deleteCredential(cii.getCredential_id());
-            bottomSheet.dismiss();
-            //page1_2.deleteCredentialItem(cii);
-
-            Toast.makeText(this.getApplicationContext(),"Deletion is success", Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
-            Toast.makeText(this.getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }finally {
-            pgsBar.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    public void onChangeFragmentToDelete(CredentialItem cii){
-        bottomSheet = new CredDeleteBottomSheetDialog(cii);
-        bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
-    }
-
-
-    public void onChangeFragmentToMain(){
-        onChangeFragment(page1_1);
     }
 
     public void onChangeFragmentToList(){
         Log.v(TAG, "onchangeFragment");
         try{
-            //pgsBar.setVisibility(View.VISIBLE);
-
             authenticator.setTag(cardReader.myTag);
 
             //ArrayList<CredentialItem> list = authenticator.getCredentialList();
@@ -197,46 +139,10 @@ public class MainActivity  extends AppCompatActivity implements CredDeleteBottom
             intent.putParcelableArrayListExtra("Credentiallist", list);
             startActivityForResult(intent, Code.requestCode);
 
-            /*for (int i = 0; i< list.size(); i++){
-                page1_2.addCredentialItem(list.get(i));
-            }
-
-
-            onChangeFragment(page1_2);*/
-
         }catch (Exception e){
             Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
-        }finally {
-           //pgsBar.setVisibility(View.INVISIBLE);
         }
-    }
-
-    public void getCredentialList() throws Exception{
-
-        try{
-            Log.v(TAG, "getCredentialList");
-            //progressON("Loading...");
-
-            authenticator.setTag(cardReader.myTag);
-
-            ArrayList<CredentialItem> list = authenticator.getCredentialList();
-
-           /* for (int i = 0; i< list.size(); i++){
-                page1_2.addCredentialItem(list.get(i));
-            }*/
-
-        }catch (UserException ue){
-            Toast.makeText(this.getApplicationContext(),ue.getMessage(), Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
-            e.printStackTrace();
-            Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
-            throw e;
-        }finally {
-            //progressOFF();
-        }
-
-
     }
 
 }

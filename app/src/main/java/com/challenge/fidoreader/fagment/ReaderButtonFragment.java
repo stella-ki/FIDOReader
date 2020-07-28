@@ -112,9 +112,23 @@ public class ReaderButtonFragment extends Fragment {
         txtView2 = (TextView)view.findViewById(R.id.readerActivationText2);
         txtView3 = (TextView)view.findViewById(R.id.readerActivationText3);
 
-        setResult(R.drawable.ic_icc_off, "", "");
+
+        setResult(MainActivity.cardReader.result_image,
+                MainActivity.cardReader.result1_str,
+                MainActivity.cardReader.result2_str,
+                MainActivity.cardReader.result);
         return view;
     }
+
+    public boolean isReady(){
+        if(imageView != null && txtView2 != null && txtView3 != null){
+            Log.v(TAG, "Fragment is ready");
+            return true;
+        }
+        Log.v(TAG, "Fragment is not ready");
+        return false;
+    }
+
 
     public void setEnabled(){
         Log.v(TAG, "setEnabled");
@@ -140,7 +154,7 @@ public class ReaderButtonFragment extends Fragment {
     public void onResume(){
         super.onResume();
         Log.v(TAG, "onResume");
-
+        setResult(MainActivity.cardReader.result_image, MainActivity.cardReader.result1_str, MainActivity.cardReader.result2_str);
     }
 
     @Override
