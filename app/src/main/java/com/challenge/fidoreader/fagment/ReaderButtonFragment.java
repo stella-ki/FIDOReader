@@ -120,7 +120,7 @@ public class ReaderButtonFragment extends Fragment {
                 pinFragment.show(getFragmentManager(), "dialog");
                 pinFragment.setCancelable(false);
                 try {
-                    mainActivity.authenticator.setTag(mainActivity.myTag);
+                    mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -245,21 +245,16 @@ public class ReaderButtonFragment extends Fragment {
 
     }
 
-<<<<<<< HEAD
-    private void getInfoPrint(TableLayout getInfoTable) throws Exception {
 
-        mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
-        String result = mainActivity.authenticator.getInfo();
-=======
+
     private Map<String, Object> getInfo(){
         String result = null;
         try {
-            mainActivity.authenticator.setTag(mainActivity.myTag);
+            mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
             result = mainActivity.authenticator.getInfo();
         } catch (Exception e) {
             e.printStackTrace();
         }
->>>>>>> 1f8d9c0c3a6d0a2fbd9bcbed2e027ef16651e74c
 
         ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
 
