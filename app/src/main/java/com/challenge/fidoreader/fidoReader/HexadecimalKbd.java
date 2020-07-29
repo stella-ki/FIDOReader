@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-package com.challenge.fidoreader;
+package com.challenge.fidoreader.fidoReader;
 
 import android.app.Activity;
 import android.inputmethodservice.Keyboard;

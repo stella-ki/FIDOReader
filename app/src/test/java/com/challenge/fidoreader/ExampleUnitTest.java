@@ -1,16 +1,9 @@
 package com.challenge.fidoreader;
 
 import com.challenge.fidoreader.Util.Util;
-import com.challenge.fidoreader.fido.Authenticator;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
+import com.challenge.fidoreader.fidoReader.Authenticator;
 
 import org.junit.Test;
-
-import java.io.ByteArrayInputStream;
-
-import static org.junit.Assert.*;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

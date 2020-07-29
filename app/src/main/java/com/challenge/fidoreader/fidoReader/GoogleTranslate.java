@@ -1,4 +1,4 @@
-package com.challenge.fidoreader;
+package com.challenge.fidoreader.fidoReader;
 
 import android.os.AsyncTask;
 import android.util.Log;

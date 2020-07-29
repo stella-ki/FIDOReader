@@ -1,4 +1,4 @@
-package com.challenge.fidoreader;
+package com.challenge.fidoreader.fidoReader;
 
 import android.app.PendingIntent;
 import android.content.Context;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.challenge.fidoreader.R;
 import com.challenge.fidoreader.Util.Util;
 
 import java.io.IOException;

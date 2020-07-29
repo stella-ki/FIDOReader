@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.challenge.fidoreader.Util.Code;
+import com.challenge.fidoreader.fidoReader.CardReader;
+import com.challenge.fidoreader.fidoReader.GoogleTranslate;
 import com.google.android.material.tabs.TabLayout;
 import com.challenge.fidoreader.fagment.CredentialItem;
 import com.challenge.fidoreader.fagment.ReaderButtonFragment;
