@@ -113,7 +113,7 @@ public class ReaderButtonFragment extends Fragment {
                     pinFragment = new SetNewPINFragment(mainActivity);
                 }
                 else if(clientpinbtn.getText().toString().equals("Change PIN")) {
-                    pinFragment = new ChangePINFragment(mainActivity, view);
+                    pinFragment = new ChangePINFragment(mainActivity);
                 }
 
                 pinFragment.show(getFragmentManager(), "dialog");

@@ -1,73 +1,87 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    tools:context=".fagment.ReaderButtonFragment">
-
-    <TextView
-        android:id="@+id/beforePINView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Origin PIN" />
-
-    <EditText
-        android:id="@+id/beforePINEditText"
-        android:layout_width="200dip"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
-
-    <TextView
-        android:id="@+id/newPINView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New PIN" />
-
-    <EditText
-        android:id="@+id/newPINEditText"
-        android:layout_width="200dip"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
-
-    <TextView
-        android:id="@+id/confrimPINView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm PIN" />
-
-    <EditText
-        android:id="@+id/confrimPINEditText"
-        android:layout_width="200dip"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
-
-    <TextView
-        android:id="@+id/resultSetView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    android:background="@android:color/transparent" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57dp"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="13pt"
+            android:layout_marginTop="45dp"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:text="PIN 변경하기"/>
+
+        <TextView
+            android:id="@+id/beforePINView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Origin PIN" />
+
+        <EditText
+            android:id="@+id/beforePINEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+
+        <TextView
+            android:id="@+id/newPINView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New PIN" />
+
+        <EditText
+            android:id="@+id/newPINEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+
+        <TextView
+            android:id="@+id/confrimPINView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirm PIN" />
+
+        <EditText
+            android:id="@+id/confrimPINEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"/>
+
+        <TextView
+            android:id="@+id/resultSetView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <Button
             android:id="@+id/OKBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="65dp"
             android:layout_marginRight="45dp"
             android:layout_marginBottom="10dp"
             android:background="@drawable/buttonshape"
             android:text="OK" />
-
-        <Button
-            android:id="@+id/CancelBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/buttonshape"
-            android:text="Cancel" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/CancelBtn"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/closebuttonshare"
+        android:src="@drawable/close_button" />
 
-</LinearLayout>
+</RelativeLayout>
