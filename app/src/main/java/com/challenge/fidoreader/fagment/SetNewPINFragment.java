@@ -66,11 +66,11 @@ public class SetNewPINFragment extends DialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(password1.getText().toString().equals(password2.getText().toString())){
                     resultView.setTextColor(Color.parseColor("#00FF00"));
-                    resultView.setText("Matched Passord");
+                    resultView.setText("Matched Password");
                 }
                 else{
                     resultView.setTextColor(Color.parseColor("#FF0000"));
-                    resultView.setText("Not Matched Passord");
+                    resultView.setText("Not Matched Password");
                 }
             }
 
