@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
@@ -111,7 +110,7 @@ public class ReaderButtonFragment extends Fragment {
                 // Set New PIN
                 DialogFragment pinFragment = null;
                 if(clientpinbtn.getText().toString().equals("Set New PIN")) {
-                    pinFragment = new SetNewPINFragment(mainActivity, view);
+                    pinFragment = new SetNewPINFragment(mainActivity);
                 }
                 else if(clientpinbtn.getText().toString().equals("Change PIN")) {
                     pinFragment = new ChangePINFragment(mainActivity, view);
