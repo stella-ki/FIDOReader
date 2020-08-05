@@ -258,4 +258,17 @@ public class Util
 
         return sb.toString().toUpperCase();
     }
+
+
+    public static String padding_00(String str){
+        if(str.length()/2 < 64){
+            while(str.length()/2 != 64) {
+                str = str + "00";
+            }
+        }
+        return str;
+    }
+
+
+
 }
