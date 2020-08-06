@@ -1402,6 +1402,8 @@ drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
 drawable buttonshape
 drawable cat
+drawable close_button
+drawable closebuttonshare
 drawable design_bottom_navigation_item_background
 drawable design_fab_background
 drawable design_ic_visibility
@@ -1457,11 +1459,13 @@ id ALT
 id BOTTOM_END
 id BOTTOM_START
 id CTRL
+id CancelBtn
 id FUNCTION
 id KonaBIOPASSGetInfoBtn
 id KonaBIOPASSGetInfoTable
 id KonaBIOPASSPINBtn
 id META
+id OKBtn
 id SHIFT
 id SYM
 id TOP_END
@@ -1527,6 +1531,8 @@ id async
 id auto
 id background
 id barrier
+id beforePINEditText
+id beforePINView
 id beginning
 id blocking
 id bottom
@@ -1622,6 +1628,7 @@ id largeLabel
 id left
 id line1
 id line3
+id linearLayout1
 id listMode
 id list_item
 id listview
@@ -1854,6 +1861,7 @@ layout abc_tooltip
 layout activity_cred_list
 layout activity_main
 layout catloading_main
+layout changepin_popup
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog

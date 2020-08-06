@@ -11,12 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.challenge.fidoreader.fagment.CredDeleteBottomSheetDialog;
-import com.challenge.fidoreader.fagment.CredItemFragment;
-import com.challenge.fidoreader.fagment.CredentialItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class CredListActivity extends AppCompatActivity implements CredDeleteBottomSheetDialog.BottomSheetListener{
