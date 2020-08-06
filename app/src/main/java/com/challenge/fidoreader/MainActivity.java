@@ -14,13 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.challenge.fidoreader.Util.Code;
-import com.challenge.fidoreader.fidoReader.CardReader;
-import com.challenge.fidoreader.fidoReader.GoogleTranslate;
+import com.challenge.fidoreader.fidoReader.Authenticator;
 import com.google.android.material.tabs.TabLayout;
 import com.challenge.fidoreader.fagment.CredentialItem;
 import com.challenge.fidoreader.fagment.ReaderButtonFragment;
 import com.challenge.fidoreader.fagment.AuthenticatorFragment;
-import com.challenge.fidoreader.fidoReader.Authenticator;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;

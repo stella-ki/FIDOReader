@@ -1,7 +1,6 @@
 package com.challenge.fidoreader;
 
 import com.challenge.fidoreader.Util.Util;
-import com.challenge.fidoreader.fidoReader.Authenticator;
 
 import org.junit.Test;
 
