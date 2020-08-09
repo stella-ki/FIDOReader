@@ -1,26 +1,7 @@
-/*
-Copyright 2014  Jose Maria ARROYO jm.arroyo.castejon@gmail.com
+package com.challenge.fidoreader.Util
 
-APDUSenderContactLess is free software: you can redistribute it and/or modify
-it  under  the  terms  of the GNU General Public License  as published by the 
-Free Software Foundation, either version 3 of the License, or (at your option) 
-any later version.
-
-APDUSenderContactLess is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-*/
-
-package com.challenge.fidoreader.Util;
-
-
-public enum RetStatusWord 
-{
+// 필요없어 보임
+enum class RetStatusWord(private var szSWStr: String, private var szDescriptionStr: String){
     SW001("9000", "Successful"),
     SW002("6200","No information given"),
     SW003("6281","Part of returned data may be corrupted"),
@@ -58,41 +39,27 @@ public enum RetStatusWord
     SW035("6E00","Class not supported"),
     SW036("6F00","No precise diagnostics");
 
-
-    private String szSWStr;
-    private String szDescriptionStr;
-
-
-    private RetStatusWord(String szSWStr, String szDescriptionStr) 
-    {
-        this.szSWStr = szSWStr;
-        this.szDescriptionStr = szDescriptionStr;
-
+    private fun getDesdcriptionStr(): String{
+        return szDescriptionStr
     }
 
-    private String getDescriptionStr()
-    {
-        return szDescriptionStr;
+    private fun getSWStr(): String{
+        return szSWStr
     }
 
+    companion object{
+        fun getSWDescription(swStr: String): String {
+            var retStatusWords: Array<RetStatusWord> = RetStatusWord.values()
 
-    private String getSWStr()
-    {
-        return szSWStr;
-    }
+            for(ii in retStatusWords.indices){
+                var retStatusWord = retStatusWords[ii]
 
-    public static String getSWDescription(String swStr)
-    {
-        RetStatusWord[] retStatusWords = RetStatusWord.values();
-        for (int ii = 0; ii < retStatusWords.length; ii++) 
-        {
-            RetStatusWord retStatusWord=retStatusWords[ii];
-            if (retStatusWord.getSWStr().equalsIgnoreCase(swStr))
-            {
-                return retStatusWord.getDescriptionStr();
+                if(retStatusWord.getSWStr().equals(swStr, true)){
+                    return retStatusWord.getDesdcriptionStr()
+                }
             }
+            return ""
         }
-        return "";
     }
 
 }
