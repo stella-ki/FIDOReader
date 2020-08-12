@@ -130,6 +130,14 @@ public class ReaderButtonFragment extends Fragment {
         txtView2 = (TextView)view.findViewById(R.id.readerActivationText2);
         txtView3 = (TextView)view.findViewById(R.id.readerActivationText3);
 
+        Button enrollManageBtn = view.findViewById(R.id.EnrollBtn);
+
+        enrollManageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.onChangeFragmentToList2();
+            }
+        });
 
         setResult(MainActivity.cardReader.result_image,
                 MainActivity.cardReader.result1_str,

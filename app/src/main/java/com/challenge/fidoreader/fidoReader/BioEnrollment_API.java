@@ -2,20 +2,25 @@ package com.challenge.fidoreader.fidoReader;
 
 import com.challenge.fidoreader.Util.MapList;
 import com.challenge.fidoreader.Util.Util;
+import com.challenge.fidoreader.fagment.FingerItem;
 import com.fasterxml.jackson.databind.JsonNode;
+
+import java.util.ArrayList;
 
 
 public class BioEnrollment_API extends FIDO2_API  {
     public final static String TAG = "BioEnrollment_API";
 
-    public static final String be_getbiomodality	                    =  "0" ;
-    public static final String be_sub_enrollBegin	                    =  "1" ;
-    public static final String be_sub_enrollCaptureNextSample	                    =  "2" ;
-    public static final String be_sub_cancelCurrentEnrollment	                =  "3" ;
-    public static final String be_sub_emurateEnrollments	            =  "4" ;
-    public static final String be_sub_setFriendlyName =  "5" ;
-    public static final String be_sub_removeEnrollment	                    =  "6" ;
-    public static final String be_sub_getFingerprintSensorInfo	                    =  "7" ;
+    public static final String be_getbiomodality	            =  "0" ;
+    public static final String be_sub_enrollBegin	            =  "1" ;
+    public static final String be_sub_enrollCaptureNextSample   =  "2" ;
+    public static final String be_sub_cancelCurrentEnrollment   =  "3" ;
+    public static final String be_sub_emurateEnrollments	    =  "4" ;
+    public static final String be_sub_setFriendlyName           =  "5" ;
+    public static final String be_sub_removeEnrollment	        =  "6" ;
+    public static final String be_sub_getFingerprintSensorInfo  =  "7" ;
+
+    ArrayList<FingerItem> fingerList = new ArrayList<>();//null;
 
     public BioEnrollment_API(){
         pinUvAuthToken = "";
@@ -29,6 +34,7 @@ public class BioEnrollment_API extends FIDO2_API  {
         String templateID = "";
         String templateFriendlyName = "";
         String timeoutMiliseconds = "";
+        String subparam = "";
 
         switch (sub){
             case be_sub_enrollBegin	                  :
@@ -50,16 +56,16 @@ public class BioEnrollment_API extends FIDO2_API  {
                 break;
             case be_sub_enrollCaptureNextSample	                  :
                 printLog("Send BioEnrollment : "+"enrollCaptureNextSample");    
-                String subparam = "";
+                subparam = "";
                 timeoutMiliseconds = params[0].replaceAll("\"","");
                 templateID = params[1].replaceAll("\"","");
                 if(timeoutMiliseconds != null){
-                    templateID = "01" + "41" + templateID
+                    templateID = "01" + "41" + templateID;
                     timeoutMiliseconds = "03" + "19" + timeoutMiliseconds;
-                    subparam = "A2" + templateID + timeoutMiliseconds
+                    subparam = "A2" + templateID + timeoutMiliseconds;
                 }else{
-                    templateID = "01" + "41" + templateID
-                    subparam = "A1" + templateID
+                    templateID = "01" + "41" + templateID;
+                    subparam = "A1" + templateID;
                 }
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "01" + "02" + subparam).substring(0, 16*2);
                 cmd = "A5"
@@ -73,7 +79,7 @@ public class BioEnrollment_API extends FIDO2_API  {
             case be_sub_cancelCurrentEnrollment	              :
                 printLog("Send BioEnrollment : "+"cancelCurrentEnrollment");
                 cmd = "A2"
-                        + "01" + "01"; //modality
+                        + "01" + "01" //modality
                         + "02" + "03"; //subcommand index
                 cmd = "40" + cmd;
                 break;
@@ -91,13 +97,13 @@ public class BioEnrollment_API extends FIDO2_API  {
                 break;
             case be_sub_setFriendlyName :
                 printLog("Send BioEnrollment : "+"setFriendlyName");
-                String subparam = "";
+                subparam = "";
                 templateID = params[0].replaceAll("\"","");
                 templateFriendlyName = params[1].replaceAll("\"","");
                 
-                templateID = "01" + "41" + templateID
+                templateID = "01" + "41" + templateID;
                 templateFriendlyName = "02" + (60 + templateFriendlyName.length()/2) + templateFriendlyName;
-                subparam = "A2" + templateID + templateFriendlyName
+                subparam = "A2" + templateID + templateFriendlyName;
                     
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "01" + "05" + subparam).substring(0, 16*2);
                 cmd = "A5"
@@ -110,11 +116,11 @@ public class BioEnrollment_API extends FIDO2_API  {
                 break;
             case be_sub_removeEnrollment	                  :
                 printLog("Send BioEnrollment : "+"be_sub_removeEnrollment ");
-                String subparam = "";
+                subparam = "";
                 templateID = params[0].replaceAll("\"","");
                 
-                templateID = "01" + "41" + templateID
-                subparam = "A1" + templateID + templateFriendlyName
+                templateID = "01" + "41" + templateID;
+                subparam = "A1" + templateID + templateFriendlyName;
                     
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "01" + "06" + subparam).substring(0, 16*2);
                 cmd = "A5"
@@ -129,7 +135,7 @@ public class BioEnrollment_API extends FIDO2_API  {
             case be_sub_getFingerprintSensorInfo	                  :
                 printLog("Send BioEnrollment : "+"getFingerprintSensorInfo");
                 cmd = "A2"
-                        + "01" + "01"; //modality
+                        + "01" + "01" //modality
                         + "02" + "07"; //subcommand index
                 cmd = "40" + cmd;
                 break;
@@ -147,6 +153,10 @@ public class BioEnrollment_API extends FIDO2_API  {
         return cmd;
     }
 
+    String lastEnrollSampleStatus = "00";
+    String remainingSamples = "00";
+    String templateID = "";
+
     @Override
     public String responses(String sub, String res, String... params) throws Exception{
         JsonNode jnode = getCBORDataFromResponse(res);
@@ -155,34 +165,29 @@ public class BioEnrollment_API extends FIDO2_API  {
             return null;
         }
 
-        String rp = "";
-        String rpIDHash = "";
-        String user = "";
-        String CredentialID = "";
-        String publicKey = "";
-        RPs tmpRPs;
-
         switch (sub){
             case be_getbiomodality	:
                 String modality = jnode.get("1").toString().replaceAll("\"", "");
                 break;
             case be_sub_enrollBegin	                  :
-                String templateID = jnode.get("4").toString();
-                String lastEnrollSampleStatus = jnode.get("5").toString();
-                String remainingSamples = jnode.get("6").toString();
+                templateID = Util.byteArrayToHexString(jnode.get("4").binaryValue());
+                lastEnrollSampleStatus = jnode.get("5").toString();
+                remainingSamples = jnode.get("6").toString();
                 break;
             case be_sub_enrollCaptureNextSample	              :                
-                String lastEnrollSampleStatus = jnode.get("5").toString();
-                String remainingSamples = jnode.get("6").toString();
+                lastEnrollSampleStatus = jnode.get("5").toString();
+                remainingSamples = jnode.get("6").toString();
                 break;
             case be_sub_cancelCurrentEnrollment	          :
                 
                 break;
             case be_sub_emurateEnrollments :
-                String templateInfo = jnode.get("7").toString();
-                CredentialID = Util.getHexString(jnode.get("7").get("id").binaryValue());
-                publicKey = jnode.get("8").toString();
-                tmpRPs.addCredential(new Credential(user, CredentialID, publicKey));
+                JsonNode list = jnode.get("7");
+                int cntFP = jnode.get("7").size();
+
+                for(int i = 0; i< cntFP; i++){
+                    fingerList.add(new FingerItem(Util.byteArrayToHexString(list.get(i).get("1").binaryValue()), list.get(i).get("2").toString().replaceAll("\"", ""),1));
+                }
                 break;
             case be_sub_setFriendlyName 	                  :
                 break;

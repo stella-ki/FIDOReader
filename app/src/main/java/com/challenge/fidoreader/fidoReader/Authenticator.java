@@ -1,11 +1,13 @@
 package com.challenge.fidoreader.fidoReader;
 
+import android.content.Intent;
 import android.nfc.tech.IsoDep;
 import android.util.Log;
 
 import com.challenge.fidoreader.Exception.UserException;
 import com.challenge.fidoreader.Util.Util;
 import com.challenge.fidoreader.fagment.CredentialItem;
+import com.challenge.fidoreader.fagment.FingerItem;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
@@ -39,11 +41,13 @@ public class Authenticator {
     String originPIN = "";
 
     CredentialManagement_API credMg;
+    BioEnrollment_API bio_api;
 
     public Authenticator(){
         sso = new SharedSecretObject();
         pinUvAuthToken = "";
         credMg = new CredentialManagement_API();
+        bio_api = new BioEnrollment_API();
     }
 
     public void setTag(IsoDep myTag) {
@@ -149,6 +153,146 @@ public class Authenticator {
         String fido_result = CredentialManagement(CredentialManagement_API.cm_sub_deleteCredential, cred_id);
         if(!fido_result.equals("00")){
             throw new UserException("Credential deletion is failed");
+        }
+
+        return true;
+    }
+
+    public ArrayList<FingerItem> readEnrollInformation() throws Exception{
+        ArrayList<FingerItem> list = new ArrayList<>();//null;
+
+        printLog("deleteCredential");
+
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
+        getInfo();
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+        assertSW("9000");
+
+        String fido_result = BioEnrollment(BioEnrollment_API.be_sub_emurateEnrollments);
+        if(!fido_result.equals("00")){
+            throw new UserException("BioEnrollment is failed");
+        }
+
+        return bio_api.fingerList;
+    }
+
+
+    public boolean deleteEnroll(String templateID) throws Exception{
+        ArrayList<FingerItem> list = new ArrayList<>();//null;
+
+        printLog("deleteEnroll");
+
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
+        getInfo();
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+        assertSW("9000");
+
+        String fido_result = BioEnrollment(BioEnrollment_API.be_sub_removeEnrollment, templateID);
+        if(!fido_result.equals("00")){
+            throw new UserException("BioEnrollment is failed");
+        }
+
+        return true;
+    }
+
+
+    public boolean changeEnroll(String templateID, String new_name) throws Exception{
+        ArrayList<FingerItem> list = new ArrayList<>();//null;
+
+        printLog("deleteEnroll");
+
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
+        getInfo();
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+        assertSW("9000");
+
+        String fido_result = BioEnrollment(BioEnrollment_API.be_sub_setFriendlyName, templateID, new_name);
+        if(!fido_result.equals("00")){
+            throw new UserException("BioEnrollment is failed");
+        }
+
+        return true;
+    }
+
+
+    public boolean getPINToken() throws Exception{
+
+        printLog("getPinUvAuthTokenUsingPin");
+
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
+        getInfo();
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+        assertSW("9000");
+
+        return true;
+    }
+
+    public String enrollfinger() throws Exception{
+        printLog("enrollfinger");
+
+        String fido_result = BioEnrollment(BioEnrollment_API.be_sub_enrollBegin, "4E20");
+        if(!fido_result.equals("00")){
+            throw new UserException("BioEnrollment is failed");
+        }
+
+        int cnt = Integer.valueOf(bio_api.remainingSamples, 16);
+
+        //printLog("remain : " + cnt);
+        //printLog("bio_api.templateID : " + bio_api.templateID);
+        return bio_api.templateID;
+    }
+
+
+    public int enrollNextfinger(String templateID) throws Exception{
+        printLog("enrollCaptureNextSample");
+
+        String fido_result = BioEnrollment(BioEnrollment_API.be_sub_enrollCaptureNextSample, "4E20", templateID);
+        if(!fido_result.equals("00")){
+            throw new UserException("BioEnrollment is failed");
+        }
+
+        int cnt = Integer.valueOf(bio_api.remainingSamples, 16);
+        printLog("remain : " + cnt);
+
+        return cnt;
+    }
+
+
+
+    public boolean enrollCancel() throws Exception{
+        printLog("enrollCancel");
+
+        String fido_result = BioEnrollment(BioEnrollment_API.be_sub_cancelCurrentEnrollment);
+        if(!fido_result.equals("00")){
+            throw new UserException("BioEnrollment is failed");
         }
 
         return true;
@@ -371,6 +515,26 @@ public class Authenticator {
             credMg.responses(sub, result, param);
         }else{
             printLog("CredentialManagement is not successful");
+        }
+
+        return fido_result;
+    }
+
+
+
+    public String BioEnrollment(String sub, String... param) throws Exception{
+        String fido_result = "";
+
+        bio_api.setPinUvAuthToken(pinUvAuthToken);
+        String cmd = bio_api.commands(sub, param);
+
+        String result = makeCommand(cmd);
+
+        fido_result = result.substring(0,2);
+        if(fido_result.equals("00")){
+            bio_api.responses(sub, result, param);
+        }else{
+            printLog("BioEnrollment is not successful");
         }
 
         return fido_result;

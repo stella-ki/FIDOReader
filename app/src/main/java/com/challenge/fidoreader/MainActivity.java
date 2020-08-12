@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -14,7 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.challenge.fidoreader.Util.Code;
+import com.challenge.fidoreader.fagment.FingerItem;
 import com.challenge.fidoreader.fidoReader.CardReader;
+import com.challenge.fidoreader.fidoReader.GetEnrollInformation;
 import com.challenge.fidoreader.fidoReader.GoogleTranslate;
 import com.google.android.material.tabs.TabLayout;
 import com.challenge.fidoreader.fagment.CredentialItem;
@@ -81,14 +84,21 @@ public class MainActivity  extends AppCompatActivity {
 
         cardReader = new CardReader(this, getIntent());
         authenticator = new Authenticator();
+
+
+
     }
 
     @Override
     public void onStart(){
         super.onStart();
         Log.v(TAG, "onStart");
-        if(page1_1.isReady()){
-            page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+        try {
+            if(page1_1.isReady()){
+                page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -137,6 +147,28 @@ public class MainActivity  extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(), CredListActivity.class);
             intent.putParcelableArrayListExtra("Credentiallist", list);
+            startActivityForResult(intent, Code.requestCode);
+
+        }catch (Exception e){
+            Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+
+    public void onChangeFragmentToList2(){
+        Log.v(TAG, "onchangeFragment");
+        try{
+            authenticator.setTag(cardReader.myTag);
+
+            GetEnrollInformation googleTranslate = new GetEnrollInformation(pgsBar);
+            AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
+            ArrayList<FingerItem> list = (ArrayList<FingerItem>)asyncTask.get();
+
+            list.add(new FingerItem("+"));
+
+            Intent intent = new Intent(getApplicationContext(), EnrollManageActivty.class);
+            intent.putParcelableArrayListExtra("fingerItem", list);
             startActivityForResult(intent, Code.requestCode);
 
         }catch (Exception e){
