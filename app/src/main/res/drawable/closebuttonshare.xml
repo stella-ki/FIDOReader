@@ -3,7 +3,8 @@
     android:innerRadius="0dp"
     android:shape="oval"
     android:useLevel="false" >
-    <solid android:color="@android:color/transparent" />
+    <!--solid android:color="@android:color/transparent" /-->
+    <solid android:color="#fff"/>
 
     <stroke
         android:width="45dp"
