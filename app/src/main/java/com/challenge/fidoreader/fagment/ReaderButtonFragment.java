@@ -1,6 +1,7 @@
 package com.challenge.fidoreader.fagment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -77,8 +78,20 @@ public class ReaderButtonFragment extends Fragment {
             public void onClick(View view) {
                 Log.v(TAG, "onClick");
                 try{
-                    GoogleTranslate googleTranslate = new GoogleTranslate();
-                    googleTranslate.execute();
+                    InputPINFragment inputPINFragment = new InputPINFragment(mainActivity, "Credential");
+                    inputPINFragment.show(getFragmentManager(), "dialog");
+                    inputPINFragment.setCancelable(false);
+                    inputPINFragment.setDialogResult(new InputPINFragment.OnDialogResult() {
+                        @Override
+                        public void finish(String result) {
+                            if(result.equals("OK")){
+                                GoogleTranslate googleTranslate = new GoogleTranslate();
+                                googleTranslate.execute();
+                            }
+                        }
+                    });
+
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -147,8 +160,21 @@ public class ReaderButtonFragment extends Fragment {
             public void onClick(View view) {
                 Log.v(TAG, "onClick");
                 try{
-                    GetEnrollInformation googleTranslate = new GetEnrollInformation();
-                    googleTranslate.execute();
+                    InputPINFragment inputPINFragment = new InputPINFragment(mainActivity, "Fingerprint");
+                    inputPINFragment.show(getFragmentManager(), "dialog");
+                    inputPINFragment.setCancelable(false);
+
+                    inputPINFragment.setDialogResult(new InputPINFragment.OnDialogResult() {
+                        @Override
+                        public void finish(String result) {
+                            if(result.equals("OK")){
+                                GetEnrollInformation googleTranslate = new GetEnrollInformation();
+                                googleTranslate.execute();
+                            }
+                        }
+                    });
+
+
                 }catch (Exception e){
                     e.printStackTrace();
                 }

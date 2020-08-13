@@ -21,11 +21,9 @@ import androidx.fragment.app.DialogFragment;
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
 import com.challenge.fidoreader.Util.Util;
-import com.challenge.fidoreader.fidoReader.GetEnrollInformation;
-import com.challenge.fidoreader.fidoReader.GoogleTranslate;
-
-
 public class InputPINFragment extends DialogFragment {
+
+    OnDialogResult mresult;
 
     public String clientPIN = "";
     private MainActivity activity;
@@ -35,8 +33,6 @@ public class InputPINFragment extends DialogFragment {
 
     private Button okbtn;
     private ImageView cancelbtn;
-
-    ProgressBar mProgressBar;
 
     private String buttonType = "";
 
@@ -57,6 +53,10 @@ public class InputPINFragment extends DialogFragment {
 
     }
 
+    public void setDialogResult(OnDialogResult mresult){
+       this.mresult = mresult;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -68,7 +68,6 @@ public class InputPINFragment extends DialogFragment {
         password1 = (EditText)view.findViewById(R.id.userPINEditText);
         okbtn = (Button)view.findViewById(R.id.OKBtn);
 
-        mProgressBar = (ProgressBar)view.findViewById(R.id.h_progressbar2);
         // mProgressBar.setVisibility(View.INVISIBLE);
         okbtn.setOnClickListener(new View.OnClickListener(){
 
@@ -81,14 +80,20 @@ public class InputPINFragment extends DialogFragment {
                     // getDialog().dismiss();
                     AsyncTask<Object, Object, Object> asyncTask;
                     if(buttonType.equals("Credential")) {
-                        asyncTask = new GoogleTranslate(mProgressBar);
+                        /*asyncTask = new GoogleTranslate(mProgressBar);
                         asyncTask.execute(activity.authenticator);
-                        activity.onChangeFragmentToList(asyncTask);
+                        activity.onChangeFragmentToList(asyncTask);*/
+                        if(mresult != null){
+                            mresult.finish("OK");
+                        }
                     }
                     else if(buttonType.equals("Fingerprint")) {
-                        asyncTask = new GetEnrollInformation(mProgressBar);
+                        /*asyncTask = new GetEnrollInformation(mProgressBar);
                         asyncTask.execute(activity.authenticator);
-                        activity.onChangeFragmentToList2(asyncTask);
+                        activity.onChangeFragmentToList2(asyncTask);*/
+                        if(mresult != null){
+                            mresult.finish("OK");
+                        }
                     }
 
                     getDialog().dismiss();
@@ -103,6 +108,9 @@ public class InputPINFragment extends DialogFragment {
         cancelbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mresult != null){
+                    mresult.finish("NO");
+                }
                 try{
                     Toast.makeText(activity.getApplicationContext(), "PIN 입력을 취소하였습니다.", Toast.LENGTH_LONG).show();
                     getDialog().dismiss();
@@ -118,6 +126,10 @@ public class InputPINFragment extends DialogFragment {
         getDialog().show();
 
         return view;
+    }
+
+    interface OnDialogResult{
+       void finish(String result);
     }
 
 }
