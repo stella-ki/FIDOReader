@@ -44,6 +44,7 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 isCancel = true;
+                Log.v("setOnClickListener", isCancel + "");
                 //dismiss();
             }
         });
@@ -54,6 +55,7 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
                 try{
                     Log.v("setOnShowListener", isVisible() + "");
                     MainActivity.authenticator.setTag(MainActivity.cardReader.myTag);
+
                     EnrollFingerPrintClass test = new EnrollFingerPrintClass();
                     AsyncTask<Object, Object, Object> asyncTask = test.execute(MainActivity.authenticator);
                     FingerItem list = (FingerItem)asyncTask.get();
@@ -65,8 +67,6 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
                 }finally {
 
                 }
-
-
             }
         });
         return v;

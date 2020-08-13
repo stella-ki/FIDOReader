@@ -39,6 +39,17 @@ public class EnrollManageActivty extends AppCompatActivity implements FingerMana
         sa = new singerAdapter(list);
         listView = findViewById(R.id.listfinger);
         listView.setAdapter(sa);
+
+
+        FloatingActionButton fab = findViewById(R.id.fab_enroll);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheet2 = new FingerEnrollBottomSheetDialog();
+                bottomSheet2.show(getSupportFragmentManager(), "exampleBottomSheet");
+            }
+        });
+
     }
 
     @Override
@@ -89,10 +100,7 @@ public class EnrollManageActivty extends AppCompatActivity implements FingerMana
     public void onButtonClicked(FingerItem list) {
         Log.v(TAG, "onButtonClicked : ");
         if(list != null){
-            FingerItem last = (FingerItem)sa.getItem(sa.getCount() - 1);
-            sa.deleteItem(last);
             sa.addItem(list);
-            sa.addItem(last);
             sa.notifyDataSetChanged();
         }
         bottomSheet2.dismiss();
@@ -144,15 +152,9 @@ public class EnrollManageActivty extends AppCompatActivity implements FingerMana
             iff.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(cii.getFingerName().equals("+")){
-                        bottomSheet2 = new FingerEnrollBottomSheetDialog();
-                        bottomSheet2.show(getSupportFragmentManager(), "exampleBottomSheet");
-                    }else{
-                        //rmfja mainActivity.onChangeFragmentToDelete(cii);
-                        bottomSheet = new FingerManageBottomSheetDialog(cii);
-                        bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
-                    }
-
+                    //rmfja mainActivity.onChangeFragmentToDelete(cii);
+                    bottomSheet = new FingerManageBottomSheetDialog(cii);
+                    bottomSheet.show(getSupportFragmentManager(), "exampleBottomSheet");
                 }
             });
 

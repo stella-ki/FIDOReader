@@ -1,6 +1,7 @@
 package com.challenge.fidoreader.fagment;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -22,13 +24,13 @@ import android.widget.TextView;
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
 import com.challenge.fidoreader.Util.Util;
+import com.challenge.fidoreader.fidoReader.Authenticator;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import com.fasterxml.jackson.dataformat.cbor.CBORParser;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -36,14 +38,16 @@ import java.util.Map;
 public class ReaderButtonFragment extends Fragment {
     public final static String TAG = "ReaderButtonFragment";
 
+    private ProgressBar pgsBar;
 
     ImageView imageView;
     TextView txtView2;
     TextView txtView3;
-    Button btn;
+
+    Button getCredListbtn;
     Button getInfobtn;
-//    TextView getInfoText;
     Button clientpinbtn;
+    Button enrollManageBtn;
 
     boolean hasclientPIN = false;
 
@@ -66,15 +70,20 @@ public class ReaderButtonFragment extends Fragment {
 
         final View view = inflater.inflate(R.layout.fragment_reader_button, container, false);
 
-        btn = (Button)view.findViewById(R.id.readerActivationBtn);
-        btn.setOnClickListener(new View.OnClickListener() {
+        getCredListbtn = (Button)view.findViewById(R.id.readerActivationBtn);
+        getCredListbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.onChangeFragmentToList();
-
+                Log.v(TAG, "onClick");
+                try{
+                    GoogleTranslate googleTranslate = new GoogleTranslate();
+                    googleTranslate.execute();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
-        btn.setEnabled(false);
+        getCredListbtn.setEnabled(false);
 
         getInfobtn = (Button)view.findViewById(R.id.KonaBIOPASSGetInfoBtn);
         clientpinbtn = (Button)view.findViewById(R.id.KonaBIOPASSPINBtn);
@@ -130,19 +139,34 @@ public class ReaderButtonFragment extends Fragment {
         txtView2 = (TextView)view.findViewById(R.id.readerActivationText2);
         txtView3 = (TextView)view.findViewById(R.id.readerActivationText3);
 
-        Button enrollManageBtn = view.findViewById(R.id.EnrollBtn);
+        enrollManageBtn = view.findViewById(R.id.EnrollBtn);
 
         enrollManageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.onChangeFragmentToList2();
+                Log.v(TAG, "onClick");
+                try{
+                    GetEnrollInformation googleTranslate = new GetEnrollInformation();
+                    googleTranslate.execute();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         });
 
-        setResult(MainActivity.cardReader.result_image,
-                MainActivity.cardReader.result1_str,
-                MainActivity.cardReader.result2_str,
-                MainActivity.cardReader.result);
+        pgsBar = (ProgressBar) view.findViewById(R.id.h_progressbar);
+        //pgsBar.setIndeterminate(true);
+        pgsBar.setVisibility(View.GONE);
+
+        try {
+            setResult(MainActivity.cardReader.result_image,
+                    MainActivity.cardReader.result1_str,
+                    MainActivity.cardReader.result2_str,
+                    MainActivity.cardReader.result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return view;
     }
 
@@ -156,9 +180,9 @@ public class ReaderButtonFragment extends Fragment {
     }
 
 
-    public void setEnabled(){
+    public void setEnabled() throws Exception {
         Log.v(TAG, "setEnabled");
-        btn.setEnabled(true);
+        getCredListbtn.setEnabled(true);
 
         getInfo();
         getInfobtn.setEnabled(true);
@@ -171,7 +195,7 @@ public class ReaderButtonFragment extends Fragment {
     }
 
 
-    public void setResult(int resource, String str1, String str2, boolean result){
+    public void setResult(int resource, String str1, String str2, boolean result) throws Exception {
         setResult(resource, str1, str2);
         if(result){
             setEnabled();
@@ -254,14 +278,11 @@ public class ReaderButtonFragment extends Fragment {
 
 
 
-    private Map<String, Object> getInfo(){
+    private Map<String, Object> getInfo() throws Exception {
         String result = null;
-        try {
-            mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
-            result = mainActivity.authenticator.getInfo();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
+        result = mainActivity.authenticator.getInfo();
 
         ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
 
@@ -269,18 +290,10 @@ public class ReaderButtonFragment extends Fragment {
         ObjectMapper mapper = new ObjectMapper(cf);
 
         CBORParser cborParser = null;
-        try {
-            cborParser = cf.createParser(bais);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        cborParser = cf.createParser(bais);
         Map<String, Object> responseMap = null;
-        try {
-            responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
+        });
 
         for (String key : responseMap.keySet()) {
             if (key.equals("4")) {
@@ -452,4 +465,90 @@ public class ReaderButtonFragment extends Fragment {
 
 
 
+    class GoogleTranslate extends AsyncTask<Object, Object, Object> {
+        ArrayList<CredentialItem> list = null;
+
+        @Override
+        protected Object doInBackground(Object... params) {
+            Log.v("translate", "doInBackground");
+
+            try {
+                Authenticator authenticator = mainActivity.authenticator;
+                authenticator.setTag(mainActivity.cardReader.myTag);
+                list = authenticator.getCredentialList();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            return list;
+        }
+
+        @Override
+        protected void onProgressUpdate(Object... values) {
+            super.onProgressUpdate(values);
+            Log.v("translate", "\n"+values[0].toString()+"번 count했습니다.");
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v("translate", "onPreExecute");
+            pgsBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Object s) {
+            super.onPostExecute(s);
+            Log.v("translate", "onPostExecute");
+            pgsBar.setVisibility(View.GONE);
+            if(list != null){
+                mainActivity.onChangeFragmentToList(list);
+            }
+        }
+
+    }
+
+    class GetEnrollInformation extends AsyncTask<Object, Object, Object> {
+
+        ArrayList<FingerItem> list = null;
+        @Override
+        protected Object doInBackground(Object... params) {
+            Log.v("GetEnrollInformation", "doInBackground");
+            try {
+                Authenticator authenticator = mainActivity.authenticator;
+                authenticator.setTag(mainActivity.cardReader.myTag);
+                list = authenticator.readEnrollInformation();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            return list;
+        }
+
+        @Override
+        protected void onProgressUpdate(Object... values) {
+            super.onProgressUpdate(values);
+            Log.v("translate", "\n"+values[0].toString()+"번 count했습니다.");
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v("translate", "onPreExecute");
+            pgsBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Object s) {
+            super.onPostExecute(s);
+            Log.v("translate", "onPostExecute");
+            pgsBar.setVisibility(View.GONE);
+            if(list != null){
+                mainActivity.onChangeFragmentToList2(list);
+            }
+        }
+
+    }
 }

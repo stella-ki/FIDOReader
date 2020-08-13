@@ -5,8 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,8 +17,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.challenge.fidoreader.Util.Code;
 import com.challenge.fidoreader.fagment.FingerItem;
 import com.challenge.fidoreader.fidoReader.CardReader;
-import com.challenge.fidoreader.fidoReader.GetEnrollInformation;
-import com.challenge.fidoreader.fidoReader.GoogleTranslate;
 import com.google.android.material.tabs.TabLayout;
 import com.challenge.fidoreader.fagment.CredentialItem;
 import com.challenge.fidoreader.fagment.ReaderButtonFragment;
@@ -31,7 +29,7 @@ import java.util.ArrayList;
 public class MainActivity  extends AppCompatActivity {
     public final static String TAG = "MainActivity";
 
-    private ProgressBar pgsBar;
+    ArrayList<String> titles = new ArrayList<>();
     Fragment[] pages;
 
     ReaderButtonFragment page1_1;
@@ -39,9 +37,6 @@ public class MainActivity  extends AppCompatActivity {
 
     public static Authenticator authenticator;
     public static CardReader cardReader;
-
-    ViewPager2 viewPager2;
-    ArrayList<String> titles = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +62,7 @@ public class MainActivity  extends AppCompatActivity {
         titles.add("Authenticators");
         titles.add("FIDO2 Reader");
 
-        viewPager2 = findViewById(R.id.view_pager);
-
+        ViewPager2 viewPager2 = findViewById(R.id.view_pager);
         viewPager2.setAdapter(new ViewPagerAdapter(this, pages));
         new TabLayoutMediator(tabs, viewPager2,
                 new TabLayoutMediator.TabConfigurationStrategy() {
@@ -78,13 +72,9 @@ public class MainActivity  extends AppCompatActivity {
                     }
                 }).attach();
 
-        pgsBar = (ProgressBar) findViewById(R.id.h_progressbar);
-        //pgsBar.setIndeterminate(true);
-        pgsBar.setVisibility(View.GONE);
 
         cardReader = new CardReader(this, getIntent());
         authenticator = new Authenticator();
-
 
 
     }
@@ -107,9 +97,13 @@ public class MainActivity  extends AppCompatActivity {
         super.onResume();
         Log.v(TAG, "onResume");
 
-        cardReader.onResume(this);
-        if(page1_1.isReady()){
-            page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+        try {
+            cardReader.onResume(this);
+            if(page1_1.isReady()){
+                page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -118,9 +112,13 @@ public class MainActivity  extends AppCompatActivity {
         super.onPause();
         Log.v(TAG, "onPause");
 
-        cardReader.onPause(this);
-        if(page1_1.isReady()){
-            page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+        try {
+            cardReader.onPause(this);
+            if(page1_1.isReady()){
+                page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -128,22 +126,20 @@ public class MainActivity  extends AppCompatActivity {
     protected void onNewIntent(Intent intent){
         super.onNewIntent(intent);
         setIntent(intent);
-        cardReader.resolveIntent(intent);
+        try {
+            cardReader.resolveIntent(intent);
 
-        if(page1_1.isReady()){
-            page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+            if(page1_1.isReady()){
+                page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public void onChangeFragmentToList(){
+    public void onChangeFragmentToList(ArrayList<CredentialItem> list){
         Log.v(TAG, "onchangeFragment");
         try{
-            authenticator.setTag(cardReader.myTag);
-
-            //ArrayList<CredentialItem> list = authenticator.getCredentialList();
-            GoogleTranslate googleTranslate = new GoogleTranslate(pgsBar);
-            AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
-            ArrayList<CredentialItem> list = (ArrayList<CredentialItem>)asyncTask.get();
 
             Intent intent = new Intent(getApplicationContext(), CredListActivity.class);
             intent.putParcelableArrayListExtra("Credentiallist", list);
@@ -156,17 +152,9 @@ public class MainActivity  extends AppCompatActivity {
     }
 
 
-    public void onChangeFragmentToList2(){
+    public void onChangeFragmentToList2(ArrayList<FingerItem> list){
         Log.v(TAG, "onchangeFragment");
         try{
-            authenticator.setTag(cardReader.myTag);
-
-            GetEnrollInformation googleTranslate = new GetEnrollInformation(pgsBar);
-            AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
-            ArrayList<FingerItem> list = (ArrayList<FingerItem>)asyncTask.get();
-
-            list.add(new FingerItem("+"));
-
             Intent intent = new Intent(getApplicationContext(), EnrollManageActivty.class);
             intent.putParcelableArrayListExtra("fingerItem", list);
             startActivityForResult(intent, Code.requestCode);
@@ -176,6 +164,7 @@ public class MainActivity  extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
 }
 
