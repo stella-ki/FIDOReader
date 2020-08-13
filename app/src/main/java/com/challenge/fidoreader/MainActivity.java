@@ -1,12 +1,8 @@
 package com.challenge.fidoreader;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -63,6 +59,7 @@ public class MainActivity  extends AppCompatActivity {
         titles.add("FIDO2 Reader");
 
         ViewPager2 viewPager2 = findViewById(R.id.view_pager);
+
         viewPager2.setAdapter(new ViewPagerAdapter(this, pages));
         new TabLayoutMediator(tabs, viewPager2,
                 new TabLayoutMediator.TabConfigurationStrategy() {
@@ -129,13 +126,14 @@ public class MainActivity  extends AppCompatActivity {
         try {
             cardReader.resolveIntent(intent);
 
-            if(page1_1.isReady()){
+            if (page1_1.isReady()) {
                 page1_1.setResult(cardReader.result_image, cardReader.result1_str, cardReader.result2_str, cardReader.result);
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 
     public void onChangeFragmentToList(ArrayList<CredentialItem> list){
         Log.v(TAG, "onchangeFragment");
