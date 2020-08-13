@@ -165,17 +165,17 @@ public class Authenticator {
 
         printLog("deleteCredential");
 
-        bSendAPDU("00A4040008A0000006472F000100");
-        assertSW("9000");
-
-        getInfo();
-        assertSW("9000");
-
-        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
-        assertSW("9000");
-
-        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
-        assertSW("9000");
+//        bSendAPDU("00A4040008A0000006472F000100");
+//        assertSW("9000");
+//
+//        getInfo();
+//        assertSW("9000");
+//
+//        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+//        assertSW("9000");
+//
+//        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+//        assertSW("9000");
 
         String fido_result = BioEnrollment(BioEnrollment_API.be_sub_emurateEnrollments);
         if(!fido_result.equals("00")){
@@ -305,17 +305,17 @@ public class Authenticator {
         printLog("getCredentialList");
         ArrayList<CredentialItem> list = new ArrayList<CredentialItem>();
 
-        bSendAPDU("00A4040008A0000006472F000100");
-        assertSW("9000");
-
-        getInfo();
-        assertSW("9000");
-
-        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
-        assertSW("9000");
-
-        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
-        assertSW("9000");
+//        bSendAPDU("00A4040008A0000006472F000100");
+//        assertSW("9000");
+//
+//        getInfo();
+//        assertSW("9000");
+//
+//        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+//        assertSW("9000");
+//
+//        ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+//        assertSW("9000");
 
         int num = 0;
 
@@ -347,8 +347,22 @@ public class Authenticator {
         return list;
     }
 
-    public void setUserPIN(String userPIN){
+    public String setUserPIN(String userPIN) throws Exception {
         this.userPIN = userPIN;
+
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
+        getInfo();
+        assertSW("9000");
+
+        ClientPIN(Authenticator.cp_sub_getKeyAgreement);
+        assertSW("9000");
+
+        String result = ClientPIN(Authenticator.cp_sub_getPinUvAuthTokenUsingPin);
+        assertSW("9000");
+
+        return result;
     }
 
     public String setPIN(String clientPIN) throws Exception {

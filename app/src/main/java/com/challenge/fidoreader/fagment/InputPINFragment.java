@@ -74,8 +74,9 @@ public class InputPINFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 try {
+
                     clientPIN = Util.ascii(password1.getText().toString());
-                    activity.authenticator.setUserPIN(clientPIN);
+                    String result = activity.authenticator.setUserPIN(clientPIN);
 
                     // getDialog().dismiss();
                     AsyncTask<Object, Object, Object> asyncTask;
@@ -96,7 +97,19 @@ public class InputPINFragment extends DialogFragment {
                         }
                     }
 
-                    getDialog().dismiss();
+                    if(result.equals("31")){
+                        Toast.makeText(activity.getApplicationContext(), "PIN 정보가 올바르지 않습니다.", Toast.LENGTH_LONG).show();
+                    }
+                    else if(result.equals("00")) {
+                        getDialog().dismiss();
+                    }
+                    else{
+                        Toast.makeText(activity.getApplicationContext(), "List 정보를 읽어올 수 없습니다.", Toast.LENGTH_LONG).show();
+
+                        getDialog().dismiss();
+                    }
+
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
