@@ -25,8 +25,7 @@ public class InputNameFragment extends DialogFragment {
 
     OnDialogResult mresult;
 
-    public String clientPIN = "";
-    private MainActivity activity;
+   // private MainActivity activity;
 
     private View view;
     private EditText password1;
@@ -34,11 +33,11 @@ public class InputNameFragment extends DialogFragment {
     private Button okbtn;
     private ImageView cancelbtn;
 
-    private String buttonType = "";
+   public InputNameFragment(){
+    }
 
-   public InputNameFragment(MainActivity activity, String buttonType){
-        this.activity = activity;
-        this.buttonType = buttonType;
+    public InputNameFragment(MainActivity activity, String buttonType){
+       // this.activity = activity;
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -62,10 +61,10 @@ public class InputNameFragment extends DialogFragment {
 
         // Dialog Title 없애기
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
-        view = inflater.inflate(R.layout.inputpin_popup, null);
+        view = inflater.inflate(R.layout.inputname_popup, null);
         getDialog().setContentView(view);
 
-        password1 = (EditText)view.findViewById(R.id.userPINEditText);
+        password1 = (EditText)view.findViewById(R.id.newFingerName);
         okbtn = (Button)view.findViewById(R.id.OKBtn);
 
         // mProgressBar.setVisibility(View.INVISIBLE);
@@ -74,43 +73,10 @@ public class InputNameFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 try {
-
-                    clientPIN = Util.ascii(password1.getText().toString());
-                    String result = activity.authenticator.setUserPIN(clientPIN);
-
-                    // getDialog().dismiss();
-                    AsyncTask<Object, Object, Object> asyncTask;
-                    if(buttonType.equals("Credential")) {
-                        /*asyncTask = new GoogleTranslate(mProgressBar);
-                        asyncTask.execute(activity.authenticator);
-                        activity.onChangeFragmentToList(asyncTask);*/
-                        if(mresult != null){
-                            mresult.finish("OK");
-                        }
+                    if(mresult != null){
+                        mresult.finish(password1.getText().toString());
                     }
-                    else if(buttonType.equals("Fingerprint")) {
-                        /*asyncTask = new GetEnrollInformation(mProgressBar);
-                        asyncTask.execute(activity.authenticator);
-                        activity.onChangeFragmentToList2(asyncTask);*/
-                        if(mresult != null){
-                            mresult.finish("OK");
-                        }
-                    }
-
-                    if(result.equals("31")){
-                        Toast.makeText(activity.getApplicationContext(), "PIN 정보가 올바르지 않습니다.", Toast.LENGTH_LONG).show();
-                    }
-                    else if(result.equals("00")) {
-                        getDialog().dismiss();
-                    }
-                    else{
-                        Toast.makeText(activity.getApplicationContext(), "List 정보를 읽어올 수 없습니다.", Toast.LENGTH_LONG).show();
-
-                        getDialog().dismiss();
-                    }
-
-
-
+                    getDialog().dismiss();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -125,7 +91,7 @@ public class InputNameFragment extends DialogFragment {
                     mresult.finish("NO");
                 }
                 try{
-                    Toast.makeText(activity.getApplicationContext(), "PIN 입력을 취소하였습니다.", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(activity.getApplicationContext(), "PIN 입력을 취소하였습니다.", Toast.LENGTH_LONG).show();
                     getDialog().dismiss();
 
                 } catch (Exception e){

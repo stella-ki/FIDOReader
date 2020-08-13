@@ -4,7 +4,6 @@
     android:background="@android:color/transparent" >
 
     <LinearLayout
-        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -16,40 +15,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="13pt"
+            android:layout_gravity="center"
             android:layout_marginTop="45dp"
             android:layout_marginBottom="20dp"
-            android:layout_gravity="center"
-            android:text="PIN 설정하기"/>
+            android:text="지문 이름 변경"
+            android:textSize="13pt"
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/newPINView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New PIN" />
+            android:text="지문 이름" />
 
         <EditText
-            android:id="@+id/newPINEditText"
+            android:id="@+id/newFingerName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
-
-        <TextView
-            android:id="@+id/confrimPINView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirm PIN" />
-
-        <EditText
-            android:id="@+id/confrimPINEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
-
-        <TextView
-            android:id="@+id/resultSetView"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <Button
@@ -71,5 +51,6 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/closebuttonshare"
         android:src="@drawable/close_button" />
+
 
 </RelativeLayout>

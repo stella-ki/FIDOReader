@@ -9,8 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.OnLifecycleEvent;
 
 import com.challenge.fidoreader.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -31,15 +29,27 @@ public class FingerManageBottomSheetDialog extends BottomSheetDialogFragment {
 
         textViewID.setText(cii.fingerName);
 
-//        Button button1 = v.findViewById(R.id.btn_fp_name);
+        Button button1 = v.findViewById(R.id.btn_fp_name);
         Button button2 = v.findViewById(R.id.btn_fp_delete);
         Button button3 = v.findViewById(R.id.btn_fp_Cancel);
-        /*button1.setOnClickListener(new View.OnClickListener() {
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onChangeNameBtnClicked(cii);
+                InputNameFragment newNameFragment = new InputNameFragment();
+                newNameFragment.show(getFragmentManager(), "dialog");
+                newNameFragment.setCancelable(true);
+
+                newNameFragment.setDialogResult(new InputNameFragment.OnDialogResult() {
+                    @Override
+                    public void finish(String result) {
+                        if(!result.equals("NO") && !result.equals("")){
+                            mListener.onChangeNameBtnClicked(cii, result);
+                        }
+                    }
+                });
+
             }
-        });*/
+        });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +68,7 @@ public class FingerManageBottomSheetDialog extends BottomSheetDialogFragment {
     }
 
     public interface BottomSheetListener {
-        void onChangeNameBtnClicked(FingerItem cii);
+        void onChangeNameBtnClicked(FingerItem cii, String newName);
         void onDeleteBtnClicked(FingerItem cii);
        //void onButtonClicked(String str);
     }

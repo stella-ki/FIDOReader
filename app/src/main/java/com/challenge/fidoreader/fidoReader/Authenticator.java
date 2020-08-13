@@ -212,7 +212,7 @@ public class Authenticator {
     }
 
 
-    public boolean changeEnroll(String templateID, String new_name) throws Exception{
+    public boolean changeEnrollName(String templateID, String new_name) throws Exception{
         ArrayList<FingerItem> list = new ArrayList<>();//null;
 
         printLog("deleteEnroll");

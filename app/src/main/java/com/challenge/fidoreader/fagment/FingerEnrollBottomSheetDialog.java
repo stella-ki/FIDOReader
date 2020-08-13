@@ -57,10 +57,8 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
                     MainActivity.authenticator.setTag(MainActivity.cardReader.myTag);
 
                     EnrollFingerPrintClass test = new EnrollFingerPrintClass();
-                    AsyncTask<Object, Object, Object> asyncTask = test.execute(MainActivity.authenticator);
-                    FingerItem list = (FingerItem)asyncTask.get();
+                    test.execute(MainActivity.authenticator);
 
-                    mListener.onButtonClicked(list);
                 }catch (Exception e){
 
                     e.printStackTrace();
@@ -102,19 +100,24 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
 
     class EnrollFingerPrintClass extends AsyncTask<Object, Object, Object> {
         public static final String TAG = "EnrollFingerPrintClass";
+        FingerItem fingerItem = null;
         public EnrollFingerPrintClass() {
             super();
         }
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
             Log.v(TAG, "onPreExecute");
         }
 
         @Override
         protected void onPostExecute(Object s) {
+            super.onPostExecute(s);
             Log.v(TAG, "onPostExecute");
+
+            if(fingerItem != null){
+                mListener.onButtonClicked(fingerItem);
+            }
         }
 
         @Override
@@ -130,7 +133,7 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
             Log.v(TAG, "doInBackground");
             Authenticator authenticator = (Authenticator)params[0];
 
-            FingerItem fingerItem = null;
+
             try {
                 authenticator.getPINToken();
                 String templateID = authenticator.enrollfinger();

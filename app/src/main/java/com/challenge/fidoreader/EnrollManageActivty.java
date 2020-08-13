@@ -53,7 +53,7 @@ public class EnrollManageActivty extends AppCompatActivity implements FingerMana
     }
 
     @Override
-    public void onChangeNameBtnClicked(FingerItem cii) {
+    public void onChangeNameBtnClicked(FingerItem cii, String newName) {
         if(cii == null){
             return;
         }
@@ -61,12 +61,12 @@ public class EnrollManageActivty extends AppCompatActivity implements FingerMana
 
         try{
             MainActivity.authenticator.setTag(MainActivity.cardReader.myTag);
-            MainActivity.authenticator.changeEnroll(cii.getTemplateID(), "");
+            MainActivity.authenticator.changeEnrollName(cii.getTemplateID(), newName);
             bottomSheet.dismiss();
-            sa.deleteItem(cii);
+            cii.setFingerName(newName);
             sa.notifyDataSetChanged();
 
-            Toast.makeText(this.getApplicationContext(),"Deletion is success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.getApplicationContext(),"Changing name is success", Toast.LENGTH_SHORT).show();
         }catch (Exception e){
             Toast.makeText(this.getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
