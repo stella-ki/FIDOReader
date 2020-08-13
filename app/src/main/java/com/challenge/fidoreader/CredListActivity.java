@@ -90,11 +90,13 @@ public class CredListActivity extends AppCompatActivity implements CredDeleteBot
 
 
     @Override
-    public void onButtonClicked(CredentialItem cii) {
+    public void onDeleteButtonClicked(CredentialItem cii) {
+        Log.v(TAG, "onDeleteButtonClicked");
         if(cii == null){
+            bottomSheet.dismiss();
             return;
         }
-        Log.v(TAG, "onButtopnclieck : " + cii.getCredential_id());
+        Log.v(TAG, "onDeleteButtonClicked : " + cii.getCredential_id());
 
         try{
             MainActivity.authenticator.setTag(MainActivity.cardReader.myTag);

@@ -2,6 +2,8 @@ package com.challenge.fidoreader.fagment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -23,6 +25,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.challenge.fidoreader.Exception.UserException;
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
 import com.challenge.fidoreader.Util.Util;
@@ -303,10 +306,12 @@ public class ReaderButtonFragment extends Fragment {
         TableRow row = new TableRow(getActivity());
         TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
         row.setLayoutParams(layoutParams);
+        row.setBackgroundColor(Color.parseColor("#FF9898"));
 
         TextView functionRow = new TextView(getActivity());
         functionRow.setGravity(Gravity.CENTER);
         functionRow.setText("기능");
+
         row.addView(functionRow);
 
         TextView supported = new TextView(getActivity());
@@ -356,6 +361,33 @@ public class ReaderButtonFragment extends Fragment {
         return responseMap;
     }
 
+    private TableRow generateRow(String key, String value, boolean isOdd) {
+        TableRow tr = new TableRow((getActivity()));
+        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+        if (isOdd) {
+            tr.setBackgroundColor(getResources().getColor(R.color.test));
+        }
+        TextView keyView = new TextView((getActivity()));
+        TextView valueView = new TextView((getActivity()));
+
+        keyView.setTypeface(null, Typeface.BOLD);
+        keyView.setPadding(30, 20, 30, 20);
+        //keyView.setTextSize(15);
+        keyView.setText(key);
+        valueView.setText(value);
+        valueView.setSingleLine(false);
+        valueView.setMaxLines(20);
+        valueView.setPadding(0, 20, 30, 20);
+        tr.addView(keyView);
+
+        // Set width to zero and weight to 1
+        tr.addView(valueView,new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT, 1f));
+
+        return tr;
+    }
+
     private void getInfoPrint(TableLayout getInfoTable) throws Exception {
         try {
             // JsonNode jnode = mapper.readValue(bais, JsonNode.class);
@@ -368,19 +400,22 @@ public class ReaderButtonFragment extends Fragment {
             byte[] aaguid;
             LinkedHashMap<String, Boolean> options;
             ArrayList<Integer> pinUvAuthProtocol;
-
+            boolean seq = true;
             for (String key : responseMap.keySet()) {
 //            System.out.println("key : " + key);
-                TableRow tableRow = new TableRow((getActivity()));
-                TextView functionRow = new TextView(getActivity());
-                TextView valuewRow = new TextView(getActivity());
-                valuewRow.setWidth(600);
+                //TableRow tableRow = new TableRow((getActivity()));
+                //TextView functionRow = new TextView(getActivity());
+                //TextView valuewRow = new TextView(getActivity());
+                //valuewRow.setWidth(600);
+                String menu = "";
+                String value = "";
 
                 switch (key) {
                     case "1":
                         version = (ArrayList<String>) responseMap.get(key);
                         // resultData += "Version : \n";
-                        functionRow.setText("Version");
+                        //functionRow.setText("Version");
+                        menu = "Version";
                         result = "";
                         for(int index = 0 ; index < version.size() ; index++){
                             // resultData += "\t[" + version.get(index) + "]\n";
@@ -391,7 +426,8 @@ public class ReaderButtonFragment extends Fragment {
                     case "2":
                         extensions = (ArrayList<String>) responseMap.get(key);
                         // resultData += "Extensions : \n";
-                        functionRow.setText("Exnesions");
+                        //functionRow.setText("Exnesions");
+                        menu = "Exnesions";
                         result = "";
                         for(int index = 0 ; index < extensions.size() ; index++){
                             // resultData += "\t[" + extensions.get(index) + "]\n";
@@ -402,14 +438,15 @@ public class ReaderButtonFragment extends Fragment {
                         aaguid = (byte[]) responseMap.get(key);
                         // resultData += "AAGUID : \n";
                         // resultData += "\t[" + Util.getHexString(aaguid) + "]\n";
-                        functionRow.setText("AAGUID");
+                        //functionRow.setText("AAGUID");
+                        menu = "AAGUID";
                         result = Util.getHexString(aaguid);
                         break;
                     case "4":
                         options = (LinkedHashMap<String, Boolean>) responseMap.get(key);
                         // resultData += "Opionts : \n";
-                        functionRow.setText("Options");
-
+                        //functionRow.setText("Options");
+                        menu = "Options";
                         result = "";
                         if(options.get("rk")){
                             // resultData += "\t[Resident Key] : [지원]\n";
@@ -473,8 +510,8 @@ public class ReaderButtonFragment extends Fragment {
                     case "6":
                         pinUvAuthProtocol = (ArrayList<Integer>) responseMap.get(key);
                         // resultData += "PinUvAuthProtocol : \n";
-                        functionRow.setText("PinUvAuthProtocol");
-
+                        //functionRow.setText("PinUvAuthProtocol");
+                        menu = "PinUvAuthProtocol";
                         result = "";
                         for(int index = 0 ; index < pinUvAuthProtocol.size() ; index++){
                             // resultData += "\t[" + pinUvAuthProtocol.get(index) + "]\n";
@@ -483,22 +520,26 @@ public class ReaderButtonFragment extends Fragment {
                         break;
                     case "7":
                         // resultData += "지원가능한 Credential 수 : \n";
-                        functionRow.setText("지원 가능한 Credential 수");
-
+                        //functionRow.setText("지원 가능한\nCredential 수");
+                        menu = "지원 가능한\nCredential 수";
                         // resultData += "\t[" + (Integer) responseMap.get(key) + " bytes]\n";
                         result = ((Integer) responseMap.get(key)).toString();
                         break;
                     case "8":
                         // resultData += "CredentialID 길이 : \n";
-                        functionRow.setText("CredentialID 길이");
+                        //functionRow.setText("CredentialID 길이");
+                        menu = "CredentialID 길이";
                         // resultData += "\t[" + (Integer) responseMap.get(key) + "]\n";
                         result = ((Integer) responseMap.get(key)).toString();
                         break;
                 }
-                tableRow.addView(functionRow);
+                //tableRow.addView(functionRow);
 
-                valuewRow.setText(result);
-                tableRow.addView(valuewRow);
+                //valuewRow.setText(result);
+                //tableRow.addView(valuewRow);
+
+                TableRow tableRow = generateRow(menu, result, seq);
+                seq = !seq;
                 getInfoTable.addView(tableRow);
             }
 
@@ -523,6 +564,9 @@ public class ReaderButtonFragment extends Fragment {
                 list = authenticator.getCredentialList();
             }
             catch (Exception e) {
+                if(e.getMessage().equals("2E")){
+                    list = new ArrayList<CredentialItem>();
+                }
                 e.printStackTrace();
             }
             return list;
@@ -547,9 +591,7 @@ public class ReaderButtonFragment extends Fragment {
             super.onPostExecute(s);
             Log.v("translate", "onPostExecute");
             pgsBar.setVisibility(View.GONE);
-            if(list != null){
-                mainActivity.onChangeFragmentToList(list);
-            }
+            mainActivity.onChangeFragmentToList(list);
         }
 
     }
@@ -566,6 +608,10 @@ public class ReaderButtonFragment extends Fragment {
                 list = authenticator.readEnrollInformation();
             }
             catch (Exception e) {
+                Log.v("GetEnrollInformation", "" + e.getMessage());
+                if(e.getMessage().equals("2C")){
+                    list = new ArrayList<FingerItem>();
+                }
                 e.printStackTrace();
             }
             return list;
@@ -590,9 +636,8 @@ public class ReaderButtonFragment extends Fragment {
             super.onPostExecute(s);
             Log.v("translate", "onPostExecute");
             pgsBar.setVisibility(View.GONE);
-            if(list != null){
-                mainActivity.onChangeFragmentToList2(list);
-            }
+            mainActivity.onChangeFragmentToList2(list);
+
         }
 
     }

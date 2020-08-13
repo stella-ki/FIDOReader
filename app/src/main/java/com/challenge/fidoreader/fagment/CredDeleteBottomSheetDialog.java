@@ -36,20 +36,20 @@ public class CredDeleteBottomSheetDialog extends BottomSheetDialogFragment {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onButtonClicked(cii);
+                mListener.onDeleteButtonClicked(cii);
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onButtonClicked(null);
+                mListener.onDeleteButtonClicked(null);
                 dismiss();
             }
         });
         return v;
     }
     public interface BottomSheetListener {
-        void onButtonClicked(CredentialItem cii);
+        void onDeleteButtonClicked(CredentialItem cii);
        //void onButtonClicked(String str);
     }
     @Override

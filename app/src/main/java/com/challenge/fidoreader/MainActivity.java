@@ -137,6 +137,14 @@ public class MainActivity  extends AppCompatActivity {
 
     public void onChangeFragmentToList(ArrayList<CredentialItem> list){
         Log.v(TAG, "onchangeFragment");
+        if(list == null){
+            Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
+            return;
+        }else if(list.size() == 0){
+            Toast.makeText(this.getApplicationContext(),"Credential is not exist", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         try{
 
             Intent intent = new Intent(getApplicationContext(), CredListActivity.class);
@@ -152,6 +160,13 @@ public class MainActivity  extends AppCompatActivity {
 
     public void onChangeFragmentToList2(ArrayList<FingerItem> list){
         Log.v(TAG, "onchangeFragment");
+        if(list == null){
+            Toast.makeText(this.getApplicationContext(),"Error 발생", Toast.LENGTH_SHORT).show();
+            return;
+        }/*else if(list.size() == 0){
+            Toast.makeText(this.getApplicationContext(),"Fingerprint is not exist", Toast.LENGTH_SHORT).show();
+        }*/
+
         try{
             Intent intent = new Intent(getApplicationContext(), EnrollManageActivty.class);
             intent.putParcelableArrayListExtra("fingerItem", list);

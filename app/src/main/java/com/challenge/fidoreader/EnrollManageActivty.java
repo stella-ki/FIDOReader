@@ -97,11 +97,13 @@ public class EnrollManageActivty extends AppCompatActivity implements FingerMana
     }
 
     @Override
-    public void onButtonClicked(FingerItem list) {
-        Log.v(TAG, "onButtonClicked : ");
+    public void onUpdateFingerEnrollResult(FingerItem list) {
+        Log.v(TAG, "onUpdateFingerEnrollResult : ");
         if(list != null){
             sa.addItem(list);
             sa.notifyDataSetChanged();
+        }else{
+            Toast.makeText(this.getApplicationContext(),"Enrollment is not successful", Toast.LENGTH_SHORT).show();
         }
         bottomSheet2.dismiss();
     }

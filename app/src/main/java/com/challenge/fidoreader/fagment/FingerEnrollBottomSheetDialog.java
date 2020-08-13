@@ -83,7 +83,7 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
     }
 
     public interface BottomSheetListener {
-        void onButtonClicked(FingerItem list);
+        void onUpdateFingerEnrollResult(FingerItem list);
     }
 
     @Override
@@ -115,9 +115,7 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
             super.onPostExecute(s);
             Log.v(TAG, "onPostExecute");
 
-            if(fingerItem != null){
-                mListener.onButtonClicked(fingerItem);
-            }
+            mListener.onUpdateFingerEnrollResult(fingerItem);
         }
 
         @Override
@@ -132,7 +130,6 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
         protected Object doInBackground(Object... params) {
             Log.v(TAG, "doInBackground");
             Authenticator authenticator = (Authenticator)params[0];
-
 
             try {
                 authenticator.getPINToken();
@@ -154,6 +151,7 @@ public class FingerEnrollBottomSheetDialog extends BottomSheetDialogFragment {
                 fingerItem = new FingerItem(templateID, "finger" + templateID,0);
             }
             catch (Exception e) {
+                fingerItem = null;
                 e.printStackTrace();
             }
             return fingerItem;

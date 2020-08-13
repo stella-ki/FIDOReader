@@ -101,6 +101,8 @@ public class BioEnrollment_API extends FIDO2_API  {
                 templateID = params[0].replaceAll("\"","");
                 templateFriendlyName = params[1].replaceAll("\"","");
                 templateFriendlyName = Util.convertTohex(templateFriendlyName);
+                printLog("Send BioEnrollment : "+"setFriendlyName : " + templateFriendlyName);
+
                 
                 templateID = "01" + "41" + templateID;
                 templateFriendlyName = "02" + (60 + templateFriendlyName.length()/2) + templateFriendlyName;
@@ -183,6 +185,7 @@ public class BioEnrollment_API extends FIDO2_API  {
                 
                 break;
             case be_sub_emurateEnrollments :
+                fingerList.clear();
                 JsonNode list = jnode.get("7");
                 int cntFP = jnode.get("7").size();
 

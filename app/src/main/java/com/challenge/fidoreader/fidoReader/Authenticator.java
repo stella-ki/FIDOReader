@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.nfc.tech.IsoDep;
 import android.util.Log;
 
+import com.challenge.fidoreader.Exception.APDUException;
 import com.challenge.fidoreader.Exception.UserException;
 import com.challenge.fidoreader.Util.Util;
 import com.challenge.fidoreader.fagment.CredentialItem;
@@ -133,7 +134,7 @@ public class Authenticator {
 
     public void assertSW(String sw) throws Exception{
         if(!sw.equals(getSW())){
-            throw new Exception("Excepted SW [ " + sw + " ], and return SW [ " + getSW() + " ]");
+            throw new APDUException("Excepted SW [ " + sw + " ], and return SW [ " + getSW() + " ]");
         }
     }
 
@@ -190,9 +191,15 @@ public class Authenticator {
 //        assertSW("9000");
 
         String fido_result = BioEnrollment(BioEnrollment_API.be_sub_emurateEnrollments);
-        if(!fido_result.equals("00") || !fido_result.equals("2C")){
+
+        if(fido_result.equals("2C")){
+            throw new UserException("2C");
+        }
+
+        if(!fido_result.equals("00")){
             throw new UserException("BioEnrollment is failed");
         }
+
 
         return bio_api.fingerList;
     }
@@ -273,6 +280,7 @@ public class Authenticator {
         printLog("enrollfinger");
 
         String fido_result = BioEnrollment(BioEnrollment_API.be_sub_enrollBegin, "4E20");
+        assertSW("9000");
         if(!fido_result.equals("00")){
             throw new UserException("BioEnrollment is failed");
         }
@@ -289,6 +297,7 @@ public class Authenticator {
         printLog("enrollCaptureNextSample");
 
         String fido_result = BioEnrollment(BioEnrollment_API.be_sub_enrollCaptureNextSample, "4E20", templateID);
+        assertSW("9000");
         if(!fido_result.equals("00")){
             throw new UserException("BioEnrollment is failed");
         }
@@ -332,9 +341,11 @@ public class Authenticator {
         int num = 0;
 
         String fido_result = CredentialManagement(CredentialManagement_API.cm_sub_enumerateRPsBegin);
+
         if(fido_result.equals("2E")){
-            throw new UserException("Credential is not exist");
+            throw new UserException("2E");
         }
+
         for (; num < credMg.getRps().expectedSize(); num++){
             CredentialManagement(CredentialManagement_API.cm_sub_enumerateRPsGetNextRP);
         }
@@ -542,8 +553,10 @@ public class Authenticator {
         String cmd = credMg.commands(sub, param);
 
         String result = makeCommand(cmd);
+        if(result.length() >= 2 ){
+            fido_result = result.substring(0,2);
+        }
 
-        fido_result = result.substring(0,2);
         if(fido_result.equals("00")){
             credMg.responses(sub, result, param);
         }else{
@@ -562,8 +575,10 @@ public class Authenticator {
         String cmd = bio_api.commands(sub, param);
 
         String result = makeCommand(cmd);
+        if(result.length() >= 2 ){
+            fido_result = result.substring(0,2);
+        }
 
-        fido_result = result.substring(0,2);
         if(fido_result.equals("00")){
             bio_api.responses(sub, result, param);
         }else{
