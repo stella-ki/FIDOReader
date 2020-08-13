@@ -135,14 +135,14 @@ public class MainActivity  extends AppCompatActivity {
         }
     }
 
-    public void onChangeFragmentToList(GoogleTranslate googleTranslate){
+    public void onChangeFragmentToList(AsyncTask<Object, Object, Object> asyncTask){
         Log.v(TAG, "onchangeFragment");
         try{
             authenticator.setTag(cardReader.myTag);
 
-            //ArrayList<CredentialItem> list = authenticator.getCredentialList();
+            // ArrayList<CredentialItem> list = authenticator.getCredentialList();
             // GoogleTranslate googleTranslate = new GoogleTranslate(pgsBar);
-            AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
+            // AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
             ArrayList<CredentialItem> list = (ArrayList<CredentialItem>)asyncTask.get();
 
             Intent intent = new Intent(getApplicationContext(), CredListActivity.class);
@@ -156,14 +156,15 @@ public class MainActivity  extends AppCompatActivity {
     }
 
 
-    public void onChangeFragmentToList2(){
+    public void onChangeFragmentToList2(AsyncTask<Object, Object, Object> asyncTask){
         Log.v(TAG, "onchangeFragment");
         try{
             authenticator.setTag(cardReader.myTag);
 
-            GetEnrollInformation googleTranslate = new GetEnrollInformation(pgsBar);
-            AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
+            // GetEnrollInformation googleTranslate = new GetEnrollInformation(pgsBar);
+//            AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
             ArrayList<FingerItem> list = (ArrayList<FingerItem>)asyncTask.get();
+            // ArrayList<FingerItem> list = authenticator.readEnrollInformation();
 
             list.add(new FingerItem("+"));
 
@@ -176,6 +177,8 @@ public class MainActivity  extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 
 }
 

@@ -70,7 +70,7 @@ public class ReaderButtonFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InputPINFragment inputPINFragment = new InputPINFragment(mainActivity);
+                InputPINFragment inputPINFragment = new InputPINFragment(mainActivity, "Credential");
                 inputPINFragment.show(getFragmentManager(), "dialog");
                 inputPINFragment.setCancelable(false);
 
@@ -139,7 +139,10 @@ public class ReaderButtonFragment extends Fragment {
         enrollManageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.onChangeFragmentToList2();
+                InputPINFragment inputPINFragment = new InputPINFragment(mainActivity, "Fingerprint");
+                inputPINFragment.show(getFragmentManager(), "dialog");
+                inputPINFragment.setCancelable(false);
+//                mainActivity.onChangeFragmentToList2();
             }
         });
 

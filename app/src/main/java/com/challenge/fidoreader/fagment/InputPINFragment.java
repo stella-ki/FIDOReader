@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import androidx.fragment.app.DialogFragment;
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
 import com.challenge.fidoreader.Util.Util;
+import com.challenge.fidoreader.fidoReader.GetEnrollInformation;
 import com.challenge.fidoreader.fidoReader.GoogleTranslate;
 
 
@@ -36,8 +38,11 @@ public class InputPINFragment extends DialogFragment {
 
     ProgressBar mProgressBar;
 
-    public InputPINFragment(MainActivity activity){
+    private String buttonType = "";
+
+   public InputPINFragment(MainActivity activity, String buttonType){
         this.activity = activity;
+        this.buttonType = buttonType;
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -64,6 +69,7 @@ public class InputPINFragment extends DialogFragment {
         okbtn = (Button)view.findViewById(R.id.OKBtn);
 
         mProgressBar = (ProgressBar)view.findViewById(R.id.h_progressbar2);
+        // mProgressBar.setVisibility(View.INVISIBLE);
         okbtn.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -73,9 +79,19 @@ public class InputPINFragment extends DialogFragment {
                     activity.authenticator.setUserPIN(clientPIN);
 
                     // getDialog().dismiss();
+                    AsyncTask<Object, Object, Object> asyncTask;
+                    if(buttonType.equals("Credential")) {
+                        asyncTask = new GoogleTranslate(mProgressBar);
+                        asyncTask.execute(activity.authenticator);
+                        activity.onChangeFragmentToList(asyncTask);
+                    }
+                    else if(buttonType.equals("Fingerprint")) {
+                        asyncTask = new GetEnrollInformation(mProgressBar);
+                        asyncTask.execute(activity.authenticator);
+                        activity.onChangeFragmentToList2(asyncTask);
+                    }
 
-                    GoogleTranslate googleTranslate = new GoogleTranslate(mProgressBar);
-                    activity.onChangeFragmentToList(googleTranslate);
+                    getDialog().dismiss();
 
                 } catch (Exception e) {
                     e.printStackTrace();
