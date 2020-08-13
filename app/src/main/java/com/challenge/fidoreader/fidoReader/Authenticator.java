@@ -137,6 +137,18 @@ public class Authenticator {
         }
     }
 
+    public boolean reset() throws Exception{
+        printLog("reset");
+
+        bSendAPDU("00A4040008A0000006472F000100");
+        assertSW("9000");
+
+        bSendAPDU("80100000010700");
+        assertSW("9000");
+
+        return true;
+    }
+
     public boolean deleteCredential(String cred_id) throws Exception{
         printLog("deleteCredential");
 

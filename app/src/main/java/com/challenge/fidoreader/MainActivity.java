@@ -55,8 +55,8 @@ public class MainActivity  extends AppCompatActivity {
 
         //탭 레이아웃 호출 후 탭 추가
         TabLayout tabs = (TabLayout) findViewById(R.id.tabLayout);
-        titles.add("Authenticators");
         titles.add("FIDO2 Reader");
+        titles.add("Authenticators");
 
         ViewPager2 viewPager2 = findViewById(R.id.view_pager);
 

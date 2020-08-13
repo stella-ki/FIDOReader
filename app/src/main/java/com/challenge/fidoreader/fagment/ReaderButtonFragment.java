@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.challenge.fidoreader.MainActivity;
 import com.challenge.fidoreader.R;
@@ -50,6 +51,7 @@ public class ReaderButtonFragment extends Fragment {
     Button getInfobtn;
     Button clientpinbtn;
     Button enrollManageBtn;
+    Button resetBtn;
 
     boolean hasclientPIN = false;
 
@@ -174,6 +176,22 @@ public class ReaderButtonFragment extends Fragment {
                         }
                     });
 
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        resetBtn = view.findViewById(R.id.resetBtn);
+
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.v(TAG, "resetBtn");
+                try{
+                    ResetProcess googleTranslate = new ResetProcess();
+                    googleTranslate.execute();
 
                 }catch (Exception e){
                     e.printStackTrace();
@@ -575,6 +593,48 @@ public class ReaderButtonFragment extends Fragment {
             if(list != null){
                 mainActivity.onChangeFragmentToList2(list);
             }
+        }
+
+    }
+
+
+    class ResetProcess extends AsyncTask<Object, Object, Object> {
+
+        boolean result = true;
+        @Override
+        protected Object doInBackground(Object... params) {
+            Log.v("ResetProcess", "doInBackground");
+            try {
+                Authenticator authenticator = mainActivity.authenticator;
+                authenticator.setTag(mainActivity.cardReader.myTag);
+                result = authenticator.reset();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @Override
+        protected void onProgressUpdate(Object... values) {
+            super.onProgressUpdate(values);
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.v("ResetProcess", "onPreExecute");
+            pgsBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected void onPostExecute(Object s) {
+            super.onPostExecute(s);
+            Log.v("ResetProcess", "onPostExecute");
+            pgsBar.setVisibility(View.GONE);
+            Toast.makeText(mainActivity,"정상종료", Toast.LENGTH_SHORT).show();
+
         }
 
     }

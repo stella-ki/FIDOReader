@@ -100,7 +100,7 @@ public class BioEnrollment_API extends FIDO2_API  {
                 subparam = "";
                 templateID = params[0].replaceAll("\"","");
                 templateFriendlyName = params[1].replaceAll("\"","");
-                templateFriendlyName = Util.ascii(templateFriendlyName);
+                templateFriendlyName = Util.convertTohex(templateFriendlyName);
                 
                 templateID = "01" + "41" + templateID;
                 templateFriendlyName = "02" + (60 + templateFriendlyName.length()/2) + templateFriendlyName;
