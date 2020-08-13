@@ -190,7 +190,7 @@ public class Authenticator {
 //        assertSW("9000");
 
         String fido_result = BioEnrollment(BioEnrollment_API.be_sub_emurateEnrollments);
-        if(!fido_result.equals("00")){
+        if(!fido_result.equals("00") || !fido_result.equals("2C")){
             throw new UserException("BioEnrollment is failed");
         }
 
