@@ -135,13 +135,13 @@ public class MainActivity  extends AppCompatActivity {
         }
     }
 
-    public void onChangeFragmentToList(){
+    public void onChangeFragmentToList(GoogleTranslate googleTranslate){
         Log.v(TAG, "onchangeFragment");
         try{
             authenticator.setTag(cardReader.myTag);
 
             //ArrayList<CredentialItem> list = authenticator.getCredentialList();
-            GoogleTranslate googleTranslate = new GoogleTranslate(pgsBar);
+            // GoogleTranslate googleTranslate = new GoogleTranslate(pgsBar);
             AsyncTask<Object, Object, Object> asyncTask = googleTranslate.execute(authenticator);
             ArrayList<CredentialItem> list = (ArrayList<CredentialItem>)asyncTask.get();
 

@@ -43,6 +43,8 @@ public class Authenticator {
     CredentialManagement_API credMg;
     BioEnrollment_API bio_api;
 
+    String userPIN = "";
+
     public Authenticator(){
         sso = new SharedSecretObject();
         pinUvAuthToken = "";
@@ -345,6 +347,10 @@ public class Authenticator {
         return list;
     }
 
+    public void setUserPIN(String userPIN){
+        this.userPIN = userPIN;
+    }
+
     public String setPIN(String clientPIN) throws Exception {
         bSendAPDU("00A4040008A0000006472F000100");
         assertSW("9000");
@@ -433,7 +439,8 @@ public class Authenticator {
             case cp_sub_getPinUvAuthTokenUsingPin  :
                 printLog("Send Client PIN : " + "getPinUvAuthTokenUsingPin");
                 keyAgreement = "A5010203262001215820" + sso.getPublickey().substring(0,64) + "225820" + sso.getPublickey().substring(64);
-                String sha = Util.sha_256("30303030").substring(0, 16 * 2);
+//                String sha = Util.sha_256("30303030").substring(0, 16 * 2);
+                String sha = Util.sha_256(userPIN).substring(0, 16 * 2);
                 printLog("sha : " + sha);
                 pinHashEnc = Util.aes_cbc(sso.getSharedSecret(), sha);
                 printLog("pinHashEnc : " + pinHashEnc);

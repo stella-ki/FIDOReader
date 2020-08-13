@@ -70,7 +70,11 @@ public class ReaderButtonFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.onChangeFragmentToList();
+                InputPINFragment inputPINFragment = new InputPINFragment(mainActivity);
+                inputPINFragment.show(getFragmentManager(), "dialog");
+                inputPINFragment.setCancelable(false);
+
+                // mainActivity.onChangeFragmentToList();
 
             }
         });
