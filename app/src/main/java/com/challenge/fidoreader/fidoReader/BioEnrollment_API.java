@@ -105,7 +105,7 @@ public class BioEnrollment_API extends FIDO2_API  {
 
                 
                 templateID = "01" + "41" + templateID;
-                templateFriendlyName = "02" + (60 + templateFriendlyName.length()/2) + templateFriendlyName;
+                templateFriendlyName = "02" + Util.getLengthUTFString(templateFriendlyName.length()/2) + templateFriendlyName;
                 subparam = "A2" + templateID + templateFriendlyName;
                     
                 pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "01" + "05" + subparam).substring(0, 16*2);

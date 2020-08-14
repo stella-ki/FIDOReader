@@ -258,4 +258,13 @@ public class Util
 
         return sb.toString().toUpperCase();
     }
+
+
+    public static String getLengthUTFString(int length){
+        if(length > 0x17){
+            return "78" + toHex(length);
+        }else{
+            return toHex(0x60 + length);
+        }
+    }
 }

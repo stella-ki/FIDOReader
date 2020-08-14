@@ -40,14 +40,14 @@ public class CredListActivity extends AppCompatActivity implements CredDeleteBot
         listView.setAdapter(sa);
 
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        /*FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //mainActivity.onChangeFragmentToMain();
                 sa.reset();
             }
-        });
+        });*/
 
     }
 
