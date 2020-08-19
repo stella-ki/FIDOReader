@@ -42,9 +42,12 @@ public class GetInfoResponseBottomSheetDialog extends BottomSheetDialogFragment 
 
     private MainActivity mainActivity;
 
-    public GetInfoResponseBottomSheetDialog(Button clientpinbtn, MainActivity mainActivity){
+    private Map<String, Object> getInfoResponse;
+
+    public GetInfoResponseBottomSheetDialog(Button clientpinbtn, MainActivity mainActivity, Map<String, Object> getInfoResponse){
         this.clientpinbtn = clientpinbtn;
         this.mainActivity = mainActivity;
+        this.getInfoResponse = getInfoResponse;
     }
 
     @Nullable
@@ -53,7 +56,6 @@ public class GetInfoResponseBottomSheetDialog extends BottomSheetDialogFragment 
         View view = inflater.inflate(R.layout.dialog_btm_getinfo_sheet_layout, container, false);
 
         try {
-
             initTable(view);
 
             if(hasclientPIN){
@@ -124,39 +126,6 @@ public class GetInfoResponseBottomSheetDialog extends BottomSheetDialogFragment 
         getInfoPrint(getInfoTable);
     }
 
-    private Map<String, Object> getInfo() throws Exception {
-        String result = null;
-
-        mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
-        result = mainActivity.authenticator.getInfo();
-
-        ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
-
-        CBORFactory cf = new CBORFactory();
-        ObjectMapper mapper = new ObjectMapper(cf);
-
-        CBORParser cborParser = null;
-        cborParser = cf.createParser(bais);
-        Map<String, Object> responseMap = null;
-        responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
-        });
-
-        for (String key : responseMap.keySet()) {
-            if (key.equals("4")) {
-                LinkedHashMap<String, Boolean> options = (LinkedHashMap<String, Boolean>) responseMap.get(key);
-
-                if(options.get("clientPin")){
-                    clientpinbtn.setText("Change PIN");
-                }
-                else{
-                    clientpinbtn.setText("Set New PIN");
-                }
-            }
-        }
-
-        return responseMap;
-    }
-
     private TableRow generateRow(String key, String value, boolean isOdd) {
         TableRow tr = new TableRow((getActivity()));
         tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
@@ -188,7 +157,7 @@ public class GetInfoResponseBottomSheetDialog extends BottomSheetDialogFragment 
         try {
             // JsonNode jnode = mapper.readValue(bais, JsonNode.class);
 
-            Map<String, Object> responseMap = getInfo();
+            Map<String, Object> responseMap = getInfoResponse;
             String result = "";
 
             ArrayList<String> version;

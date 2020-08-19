@@ -58,12 +58,10 @@ public class ReaderButtonFragment extends Fragment {
     Button resetBtn;
 
     GetInfoResponseBottomSheetDialog getinfoSheet;
-
-    boolean hasclientPIN = false;
+    Map<String, Object> getInfoResponse;
 
     MainActivity mainActivity;
     private ReaderButtonViewModel mViewModel;
-
 
     public static ReaderButtonFragment newInstance() {
         return new ReaderButtonFragment();
@@ -115,7 +113,7 @@ public class ReaderButtonFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                getinfoSheet = new GetInfoResponseBottomSheetDialog(clientpinbtn, mainActivity);
+                getinfoSheet = new GetInfoResponseBottomSheetDialog(clientpinbtn, mainActivity, getInfoResponse);
                 getinfoSheet.show(getActivity().getSupportFragmentManager(), "exampleBottomSheet");
 
             }
@@ -225,6 +223,7 @@ public class ReaderButtonFragment extends Fragment {
         getCredListbtn.setEnabled(true);
 
         getInfobtn.setEnabled(true);
+        getInfoResponse = getInfo();
         clientpinbtn.setEnabled(true);
     }
     public void setResult(int resource, String str1, String str2){
@@ -421,5 +420,40 @@ public class ReaderButtonFragment extends Fragment {
 
         }
 
+    }
+
+
+
+    private Map<String, Object> getInfo() throws Exception {
+        String result = null;
+
+        mainActivity.authenticator.setTag(mainActivity.cardReader.myTag);
+        result = mainActivity.authenticator.getInfo();
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(Util.atohex(result));
+
+        CBORFactory cf = new CBORFactory();
+        ObjectMapper mapper = new ObjectMapper(cf);
+
+        CBORParser cborParser = null;
+        cborParser = cf.createParser(bais);
+        Map<String, Object> responseMap = null;
+        responseMap = mapper.readValue(cborParser, new TypeReference<Map<String, Object>>() {
+        });
+
+        for (String key : responseMap.keySet()) {
+            if (key.equals("4")) {
+                LinkedHashMap<String, Boolean> options = (LinkedHashMap<String, Boolean>) responseMap.get(key);
+
+                if(options.get("clientPin")){
+                    clientpinbtn.setText("Change PIN");
+                }
+                else{
+                    clientpinbtn.setText("Set New PIN");
+                }
+            }
+        }
+
+        return responseMap;
     }
 }
