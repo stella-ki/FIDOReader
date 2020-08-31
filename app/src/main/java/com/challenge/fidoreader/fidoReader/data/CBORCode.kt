@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fidoReader
+package com.challenge.fidoreader.fidoReader.data
 
 const val CBOR_CODE_CTAP1_ERR_SUCCESS       			  = "00"	//Indicates successful response.
 const val CBOR_CODE_CTAP1_ERR_INVALID_COMMAND			  = "01"	//The command is not a valid CTAP command.

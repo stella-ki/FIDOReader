@@ -12,8 +12,8 @@ import android.widget.Button
 import android.widget.ImageView
 import com.challenge.fidoreader.MainActivity
 import com.challenge.fidoreader.R
+import com.challenge.fidoreader.fagment.data.FingerItem
 import com.challenge.fidoreader.fidoReader.Authenticator
-import com.challenge.fidoreader.reader.CardReader
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 

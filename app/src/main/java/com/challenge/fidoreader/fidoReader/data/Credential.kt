@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fidoReader
+package com.challenge.fidoreader.fidoReader.data
 
 class Credential(var user:String, var credentialID:String, var publickey:String) {
 

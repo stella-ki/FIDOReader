@@ -1,6 +1,8 @@
 package com.challenge.fidoreader.fidoReader
 
 import com.challenge.fidoreader.Util.*
+import com.challenge.fidoreader.fidoReader.data.Credential
+import com.challenge.fidoreader.fidoReader.data.RPs
 import com.fasterxml.jackson.databind.JsonNode
 
 class CredentialManagement_API: FIDO2_API(){
@@ -109,7 +111,7 @@ class CredentialManagement_API: FIDO2_API(){
         var CredentialID = ""
         var publicKey = ""
 
-        var tmpRPs:RPs?
+        var tmpRPs: RPs?
 
         when(sub){
             cm_sub_getCredsMetadata->{

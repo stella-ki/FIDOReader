@@ -17,8 +17,8 @@ import com.challenge.fidoreader.Util.atohex
 import com.challenge.fidoreader.Util.cardReader
 import com.challenge.fidoreader.fagment.InputPINFragment.OnDialogResult
 import com.challenge.fidoreader.fidoReader.Authenticator
-import com.challenge.fidoreader.fidoReader.CBOR_CODE_CTAP2_ERR_INVALID_OPTION
-import com.challenge.fidoreader.fidoReader.CBOR_CODE_CTAP2_ERR_NO_CREDENTIALS
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_INVALID_OPTION
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_NO_CREDENTIALS
 import com.challenge.fidoreader.reader.CardReader
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper

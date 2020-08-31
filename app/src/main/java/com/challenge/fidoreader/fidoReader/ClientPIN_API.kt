@@ -1,11 +1,12 @@
 package com.challenge.fidoreader.fidoReader
 
 import com.challenge.fidoreader.Util.*
+import com.challenge.fidoreader.fidoReader.data.SharedSecretObject
 
 class ClientPIN_API: FIDO2_API(){
     override var TAG:String = "ClientPIN_API"
 
-    var sso:SharedSecretObject = SharedSecretObject()
+    var sso: SharedSecretObject = SharedSecretObject()
     var clientPIN:String = ""
     var originPIN:String = ""
     var PIN :String = ""

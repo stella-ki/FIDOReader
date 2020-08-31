@@ -1,20 +1,14 @@
 package com.challenge.fidoreader.fidoReader
 
-import android.nfc.tech.IsoDep
 import android.util.Log
 import com.challenge.fidoreader.Exception.UserException
-import com.challenge.fidoreader.Util.atohex
-import com.challenge.fidoreader.Util.getHexString
-import com.challenge.fidoreader.Util.toHex
-import com.challenge.fidoreader.fagment.CredentialItem
-import com.challenge.fidoreader.fagment.FingerItem
-import com.challenge.fidoreader.reader.NFCSender
+import com.challenge.fidoreader.fagment.data.CredentialItem
+import com.challenge.fidoreader.fagment.data.FingerItem
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP1_ERR_SUCCESS
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_INVALID_OPTION
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_NO_CREDENTIALS
+import com.challenge.fidoreader.fidoReader.data.RPs
 import com.challenge.fidoreader.reader.Sender
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory
-import java.io.ByteArrayInputStream
-import java.io.IOException
 import java.util.*
 
 

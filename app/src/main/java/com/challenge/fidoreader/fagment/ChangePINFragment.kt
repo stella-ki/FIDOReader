@@ -1,7 +1,5 @@
 package com.challenge.fidoreader.fagment
 
-import android.app.AlertDialog
-import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -16,8 +14,8 @@ import androidx.fragment.app.DialogFragment
 import com.challenge.fidoreader.MainActivity
 import com.challenge.fidoreader.R
 import com.challenge.fidoreader.Util.ascii
-import com.challenge.fidoreader.fidoReader.CBOR_CODE_CTAP1_ERR_SUCCESS
-import com.challenge.fidoreader.fidoReader.CBOR_CODE_CTAP2_ERR_PIN_INVALID
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP1_ERR_SUCCESS
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_PIN_INVALID
 
 
 class ChangePINFragment(val activity: MainActivity) : DialogFragment() {

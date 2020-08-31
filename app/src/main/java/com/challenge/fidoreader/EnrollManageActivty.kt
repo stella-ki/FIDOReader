@@ -10,10 +10,9 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.challenge.fidoreader.fagment.FingerEnrollBottomSheetDialog
-import com.challenge.fidoreader.fagment.FingerItem
+import com.challenge.fidoreader.fagment.data.FingerItem
 import com.challenge.fidoreader.fagment.FingerItemFragment
 import com.challenge.fidoreader.fagment.FingerManageBottomSheetDialog
-import com.challenge.fidoreader.reader.CardReader
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
@@ -39,7 +38,7 @@ class EnrollManageActivty : AppCompatActivity(), FingerManageBottomSheetDialog.B
         }
     }
 
-    override fun onChangeNameBtnClicked(cii: FingerItem,  newName: String) {
+    override fun onChangeNameBtnClicked(cii: FingerItem, newName: String) {
         if (cii == null) {
             return
         }

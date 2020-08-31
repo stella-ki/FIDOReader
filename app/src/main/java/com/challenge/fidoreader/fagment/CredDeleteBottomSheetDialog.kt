@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.challenge.fidoreader.R
+import com.challenge.fidoreader.fagment.data.CredentialItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class CredDeleteBottomSheetDialog(var cii: CredentialItem): BottomSheetDialogFragment() {

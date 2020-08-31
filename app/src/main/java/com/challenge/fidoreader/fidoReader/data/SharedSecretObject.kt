@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fidoReader
+package com.challenge.fidoreader.fidoReader.data
 
 import com.challenge.fidoreader.Util.byteArrayToHexString
 import com.challenge.fidoreader.Util.sha_256
