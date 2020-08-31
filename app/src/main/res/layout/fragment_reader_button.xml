@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
     tools:context=".fagment.ReaderButtonFragment">
+
+
+    <ProgressBar
+        android:id="@+id/h_progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_weight="0"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/background"
+        android:layerType="none" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,7 +99,34 @@
         android:shadowRadius="0"
         android:text="ClientPIN"
         android:textColor="#FFFFFF" />
-    <ScrollView
+
+    <Button
+        android:id="@+id/EnrollBtn"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="0"
+        android:text="Manage Fingerprint"
+        android:textColor="#FFFFFF" />
+    <Button
+        android:id="@+id/resetBtn"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="5dp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="0"
+        android:text="Reset"
+        android:textColor="#FFFFFF" />
+    <!--<ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -95,6 +134,7 @@
             android:id="@+id/KonaBIOPASSGetInfoTable"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:padding="3dp"
             android:stretchColumns="*">
             <View
                 android:layout_width="match_parent"
@@ -103,6 +143,5 @@
         </TableLayout>
 
     </ScrollView>
-
+-->
 </LinearLayout>
-

@@ -15,11 +15,11 @@ class RPs (var rp:String, var rpIDHash: String){
     }
 
     fun setCredentialExpectedCnt(num: Int) {
-        credentials.expectedCount = num
+        credentials.expectedCountNum = num
     }
 
     fun getCredentialExpectedCnt(): Int {
-        return credentials.expectedCount
+        return credentials.expectedCountNum
     }
 
     override fun toString(): String {

@@ -1,48 +1,47 @@
 package com.challenge.fidoreader.fidoReader
 
-import com.challenge.fidoreader.Util.MapList
-import com.challenge.fidoreader.Util.Util
+import com.challenge.fidoreader.Util.*
 import com.fasterxml.jackson.databind.JsonNode
 
 class CredentialManagement_API: FIDO2_API(){
     override var TAG:String = "CredentialManagement_API"
 
     companion object{
-        val cm_sub_getCredsMetadata = "1"
-        val cm_sub_enumerateRPsBegin = "2"
-        val cm_sub_enumerateRPsGetNextRP = "3"
-        val cm_sub_enumerateCredentialsBegin = "4"
-        val cm_sub_enumerateCredentialsGetNextCredential = "5"
-        val cm_sub_deleteCredential = "6"
+        const val cm_sub_getCredsMetadata = "1"
+        const val cm_sub_enumerateRPsBegin = "2"
+        const val cm_sub_enumerateRPsGetNextRP = "3"
+        const val cm_sub_enumerateCredentialsBegin = "4"
+        const val cm_sub_enumerateCredentialsGetNextCredential = "5"
+        const val cm_sub_deleteCredential = "6"
     }
 
     var rps: MapList<String, RPs> = MapList()
 
     override fun commands(sub: String, params: ArrayList<String>):String? {
-        var pinUvAuthParam:String = ""
-        var cmd:String = ""
-        var rp:String = ""
-        var rpIDHash:String = ""
+        var pinUvAuthParam= ""
+        var cmd= ""
+        var rp= ""
+        var rpIDHash= ""
 
         when(sub){
             cm_sub_getCredsMetadata ->{
                 printLog("Send Credential Management : " + "getCredsMetadata")
-                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "01").substring(0, 16 * 2)
+                pinUvAuthParam = HMACSHA256(pinUvAuthToken, "01").toString().substring(0, 16 * 2)
                 cmd = ("A3"
                         + "01" + "01" //subcommand index
                         + "03" + "01" // pinUvAuthProtocol
-                        + "04" + "58" + Util.toHex(pinUvAuthParam.length / 2) + pinUvAuthParam) //pinUvAuthParam
+                        + "04" + "58" + (pinUvAuthParam.length / 2).toHex() + pinUvAuthParam) //pinUvAuthParam
 
                 cmd = "41$cmd"
 
             }
             cm_sub_enumerateRPsBegin ->{
                 printLog("Send Credential Management : " + "enumerateRPsBegin")
-                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "02").substring(0, 16 * 2)
+                pinUvAuthParam = HMACSHA256(pinUvAuthToken, "02").toString().substring(0, 16 * 2)
                 cmd = ("A3"
                         + "01" + "02" //subcommand index
                         + "03" + "01" // pinUvAuthProtocol
-                        + "04" + "58" + Util.toHex(pinUvAuthParam.length / 2) + pinUvAuthParam) //pinUvAuthParam
+                        + "04" + "58" + (pinUvAuthParam.length / 2).toHex() + pinUvAuthParam) //pinUvAuthParam
 
                 cmd = "41$cmd"
             }
@@ -56,16 +55,16 @@ class CredentialManagement_API: FIDO2_API(){
             cm_sub_enumerateCredentialsBegin ->{
                 printLog("Send Credential Management : " + "enumerateCredentialsBegin")
                 rp = params[0]
-                rp = Util.convertTohex(rp)
-                rpIDHash = Util.sha_256(rp)
-                rpIDHash = "A10158" + Util.toHex(rpIDHash.length / 2) + rpIDHash
-                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "04$rpIDHash").substring(0, 16 * 2)
+                rp = rp.ascii()
+                rpIDHash = rp.sha_256()
+                rpIDHash = "A10158" + (rpIDHash.length / 2).toHex() + rpIDHash
+                pinUvAuthParam = HMACSHA256(pinUvAuthToken, "04$rpIDHash").toString().substring(0, 16 * 2)
 
                 cmd = ("A4"
                         + "01" + "04" //subcommand index
                         + "02" + rpIDHash //subcommand params
                         + "03" + "01" // pinUvAuthProtocol
-                        + "04" + "58" + Util.toHex(pinUvAuthParam.length / 2) + pinUvAuthParam) //pinUvAuthParam
+                        + "04" + "58" + (pinUvAuthParam.length / 2).toHex() + pinUvAuthParam) //pinUvAuthParam
 
 
                 cmd = "41$cmd"
@@ -81,14 +80,14 @@ class CredentialManagement_API: FIDO2_API(){
                 printLog("Send Credential Management : " + "deleteCredential " + params[0])
                 var credentialID = params[0].replace("\"".toRegex(), "")
                 // = Util.convertTohex(credentialID);
-                credentialID = "A1" + "02" + "A2" + "64" + "74797065" + "6A" + "7075626C69632D6B6579" + "62" + "6964" + "58" + Util.toHex(credentialID.length / 2) + credentialID
-                pinUvAuthParam = Util.HMACSHA256(pinUvAuthToken, "06$credentialID").substring(0, 16 * 2)
+                credentialID = "A1" + "02" + "A2" + "64" + "74797065" + "6A" + "7075626C69632D6B6579" + "62" + "6964" + "58" + (credentialID.length / 2).toHex() + credentialID
+                pinUvAuthParam = HMACSHA256(pinUvAuthToken, "06$credentialID").toString().substring(0, 16 * 2)
 
                 cmd = ("A4"
                         + "01" + "06" //subcommand index
                         + "02" + credentialID //subcommand params
                         + "03" + "01" // pinUvAuthProtocol
-                        + "04" + "58" + Util.toHex(pinUvAuthParam.length / 2) + pinUvAuthParam) //pinUvAuthParam
+                        + "04" + "58" + (pinUvAuthParam.length / 2).toHex() + pinUvAuthParam) //pinUvAuthParam
 
                 cmd = "41$cmd"
             }else -> {
@@ -104,13 +103,13 @@ class CredentialManagement_API: FIDO2_API(){
     override fun responses(sub: String, res: String, params: ArrayList<String>):String? {
         var jnode: JsonNode? = getCBORDataFromResponse(res) ?: return null
 
-        var rp: String = ""
-        var rpIDHash: String = ""
-        var user: String = ""
-        var CredentialID: String = ""
-        var publicKey: String = ""
+        var rp = ""
+        var rpIDHash = ""
+        var user = ""
+        var CredentialID = ""
+        var publicKey = ""
 
-        var tmpRPs:RPs? = null
+        var tmpRPs:RPs?
 
         when(sub){
             cm_sub_getCredsMetadata->{
@@ -131,9 +130,9 @@ class CredentialManagement_API: FIDO2_API(){
             }
             cm_sub_enumerateCredentialsBegin->{
                 rp = params[0]
-                tmpRPs = rps[rp]
+                tmpRPs = rps[rp] as RPs
                 user = jnode!!["6"]["name"].toString()
-                CredentialID = Util.getHexString(jnode["7"]["id"].binaryValue())
+                CredentialID = jnode["7"]["id"].binaryValue().getHexString()
                 publicKey = jnode["8"].toString()
                 val totalcredCount = jnode["9"].toString().toInt()
                 tmpRPs.setCredentialExpectedCnt(totalcredCount - 1)
@@ -141,9 +140,9 @@ class CredentialManagement_API: FIDO2_API(){
             }
             cm_sub_enumerateCredentialsGetNextCredential->{
                 rp = params[0]
-                tmpRPs = rps[rp]
+                tmpRPs = rps[rp] as RPs
                 user = jnode!!["6"]["name"].toString()
-                CredentialID = Util.getHexString(jnode["7"]["id"].binaryValue())
+                CredentialID = jnode["7"]["id"].binaryValue().getHexString()
                 publicKey = jnode["8"].toString()
                 tmpRPs.addCredential(Credential(user, CredentialID, publicKey))
             }

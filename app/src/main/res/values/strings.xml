@@ -9,4 +9,10 @@
     <string name="txt_NFC_TAP">PLEASE TAP CARD</string>
     <string name="txt_NFC_enable">NFC ENABLED</string>
     <string name="txt_NFC_no">NO READER DETECTED</string>
+
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

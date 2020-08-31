@@ -1,6 +1,7 @@
 package com.challenge.fidoreader.fidoReader
 
-import com.challenge.fidoreader.Util.Util
+import com.challenge.fidoreader.Util.byteArrayToHexString
+import com.challenge.fidoreader.Util.sha_256
 import org.spongycastle.jce.ECNamedCurveTable
 import org.spongycastle.jce.spec.ECPublicKeySpec
 import java.math.BigInteger
@@ -52,8 +53,8 @@ class SharedSecretObject {
         var outPriK: ByteArray = kp.private.encoded
 
         //platform public key and private key
-        publickey = Util.byteArrayToHexString(outPubK).substring(54)
-        privatekey = Util.byteArrayToHexString(outPriK)
+        publickey = outPubK.byteArrayToHexString().substring(54)
+        privatekey = outPriK.byteArrayToHexString()
 
         Security.insertProviderAt(org.spongycastle.jce.provider.BouncyCastleProvider(), 1)
         var keyFactory: KeyFactory = KeyFactory.getInstance("ECDSA")
@@ -69,8 +70,7 @@ class SharedSecretObject {
 
         var b_sharedSecret:ByteArray = ka.generateSecret()
 
-        shareSecret = Util.byteArrayToHexString(Util.sha_256(b_sharedSecret))
-
+        shareSecret = b_sharedSecret.sha_256().byteArrayToHexString()
         isSharedSecretReady = true
 
     }

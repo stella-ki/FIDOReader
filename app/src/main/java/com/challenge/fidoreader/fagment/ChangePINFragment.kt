@@ -15,13 +15,14 @@ import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.challenge.fidoreader.MainActivity
 import com.challenge.fidoreader.R
-import com.challenge.fidoreader.Util.Util
+import com.challenge.fidoreader.Util.ascii
+import com.challenge.fidoreader.fidoReader.CBOR_CODE_CTAP1_ERR_SUCCESS
+import com.challenge.fidoreader.fidoReader.CBOR_CODE_CTAP2_ERR_PIN_INVALID
 
 
 class ChangePINFragment(val activity: MainActivity) : DialogFragment() {
-    var originPIN = ""
-    var clientPIN = ""
 
+/*
     lateinit var mainView: View
     lateinit var originPINText: EditText
     lateinit var password1: EditText
@@ -32,6 +33,7 @@ class ChangePINFragment(val activity: MainActivity) : DialogFragment() {
     lateinit var okbtn: Button
     lateinit var cancelbtn: ImageView
 
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(getActivity())
         val inflater = getActivity()!!.layoutInflater
@@ -40,21 +42,23 @@ class ChangePINFragment(val activity: MainActivity) : DialogFragment() {
         builder.setView(mainView)
         return builder.create()
     }
+*/
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        var mainView: View = inflater.inflate(R.layout.changepin_popup, null)
 
         // Dialog Title 없애기
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        mainView = inflater.inflate(R.layout.changepin_popup, null)
         dialog!!.setContentView(mainView)
 
-        originPINText = mainView.findViewById(R.id.beforePINEditText)
-        password1 = mainView.findViewById(R.id.newPINEditText)
-        password2 = mainView.findViewById(R.id.confrimPINEditText)
+        var originPINText = mainView.findViewById<EditText>(R.id.beforePINEditText)
+        var password1 = mainView.findViewById<EditText>(R.id.newPINEditText)
+        var password2 = mainView.findViewById<EditText>(R.id.confrimPINEditText)
 
-        resultView = mainView.findViewById(R.id.resultSetView)
+        var resultView = mainView.findViewById<TextView>(R.id.resultSetView)
 
         password2.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (password1.text.toString() == password2.text.toString()) {
@@ -65,22 +69,24 @@ class ChangePINFragment(val activity: MainActivity) : DialogFragment() {
                     resultView.text = "Not Matched Password"
                 }
             }
-
-            override fun afterTextChanged(s: Editable) {}
         })
-        okbtn = mainView.findViewById(R.id.OKBtn)
+
+        var originPIN = ""
+        var clientPIN = ""
+
+        var okbtn = mainView.findViewById<Button>(R.id.OKBtn)
         okbtn.setOnClickListener {
             if (originPINText.text.toString().isNotEmpty()) {
                 try {
-                    originPIN = Util.ascii(originPINText.text.toString())
-                    clientPIN = Util.ascii(password1.text.toString())
-                    val result = activity.authenticator.changePin(originPIN, clientPIN)
+                    originPIN = originPINText.text.toString().ascii()
+                    clientPIN = password1.text.toString().ascii()
+                    val result = MainActivity.authenticator.changePin(originPIN, clientPIN)
                     when(result){
-                        "00" ->{
+                        CBOR_CODE_CTAP1_ERR_SUCCESS ->{
                             Toast.makeText(activity.applicationContext, "PIN 변경이 완료되었습니다.", Toast.LENGTH_LONG).show()
                             dialog!!.dismiss()
                         }
-                        "31" ->{
+                        CBOR_CODE_CTAP2_ERR_PIN_INVALID ->{
                             Toast.makeText(activity.applicationContext, "기존 PIN 정보가 올바르지 않습니다.", Toast.LENGTH_LONG).show()
                         }
                         else ->{
@@ -94,7 +100,7 @@ class ChangePINFragment(val activity: MainActivity) : DialogFragment() {
             }
         }
 
-        cancelbtn = mainView.findViewById<View>(R.id.CancelBtn) as ImageView
+        var cancelbtn = mainView.findViewById<ImageView>(R.id.CancelBtn)
         cancelbtn.setOnClickListener {
             try {
                 Toast.makeText(activity.applicationContext, "PIN 변경을 취소하였습니다.", Toast.LENGTH_LONG).show()

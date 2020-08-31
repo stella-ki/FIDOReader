@@ -15,7 +15,6 @@ class CredItemFragment : LinearLayout{
     var textview3: TextView
     var imageView: ImageView
 
-
     constructor(context: Context) : super(context) {
         var inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         inflater.inflate(R.layout.fragment_item_list, this, true)

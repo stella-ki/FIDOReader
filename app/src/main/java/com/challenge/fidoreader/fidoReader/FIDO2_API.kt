@@ -1,7 +1,7 @@
 package com.challenge.fidoreader.fidoReader
 
 import android.util.Log
-import com.challenge.fidoreader.Util.Util
+import com.challenge.fidoreader.Util.atohex
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory
@@ -23,7 +23,7 @@ abstract class FIDO2_API{
 
     var pinUvAuthToken:String = ""
 
-    fun printLog(str: Object?){
+    fun printLog(str: Any?){
         printLog(str.toString())
     }
 
@@ -46,7 +46,7 @@ abstract class FIDO2_API{
     }
 
     fun getCBORData(res:String): JsonNode?{
-        var bais: ByteArrayInputStream = ByteArrayInputStream(Util.atohex(res))
+        var bais: ByteArrayInputStream = ByteArrayInputStream(res.atohex())
         var cf : CBORFactory = CBORFactory()
         var mapper = ObjectMapper(cf)
         val jnode = mapper.readValue(bais, JsonNode::class.java)

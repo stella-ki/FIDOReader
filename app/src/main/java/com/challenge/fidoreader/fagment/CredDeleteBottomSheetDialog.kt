@@ -21,16 +21,16 @@ class CredDeleteBottomSheetDialog(var cii: CredentialItem): BottomSheetDialogFra
         textViewID.text = cii.rpid
         textViewKey.text = cii.credential_id
 
-        mainView.findViewById<Button>(R.id.btn_cred_delete).setOnClickListener { mListener!!.onButtonClicked(cii) }
+        mainView.findViewById<Button>(R.id.btn_cred_delete).setOnClickListener { mListener!!.onDeleteButtonClicked(cii) }
         mainView.findViewById<Button>(R.id.btn_cred_Cancel).setOnClickListener {
-            mListener!!.onButtonClicked(null)
+            mListener!!.onDeleteButtonClicked(null)
             dismiss()
         }
         return mainView
     }
 
     interface BottomSheetListener {
-        fun onButtonClicked(cii: CredentialItem?)
+        fun onDeleteButtonClicked(cii: CredentialItem?)
     }
 
     override fun onAttach(context: Context) {
