@@ -11,87 +11,93 @@
 9-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml
 10
 11    <uses-permission android:name="android.permission.NFC" />
-11-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:5:5-61
+11-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:5:5-62
 11-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:5:22-59
 12
 13    <uses-feature
-13-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:6:5-81
+13-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:7:5-9:35
 14        android:name="android.hardware.nfc"
-14-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:6:19-54
+14-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:8:9-44
 15        android:required="true" />
-15-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:6:55-78
+15-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:9:9-32
 16
 17    <application
-17-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:8:5-35:19
+17-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:11:5-38:19
 18        android:allowBackup="true"
-18-->[com.roger.catloadinglibrary:catloadinglibrary:1.0.5] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\612d8f78ce25293dcb8a9da4a48898f7\catloadinglibrary-1.0.5\AndroidManifest.xml:12:9-35
+18-->[com.roger.catloadinglibrary:catloadinglibrary:1.0.5] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\9487eccbcd2d4188d0c58147b89a33e6\catloadinglibrary-1.0.5\AndroidManifest.xml:12:9-35
 19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-19-->[androidx.core:core:1.1.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\e9dab9c67c1ee3668e0bbf86c6d8cbd8\core-1.1.0\AndroidManifest.xml:24:18-86
+19-->[androidx.core:core:1.5.0-alpha02] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\83828ff77ce7223aba9a42b75e41acb8\core-1.5.0-alpha02\AndroidManifest.xml:24:18-86
 20        android:debuggable="true"
 21        android:icon="@drawable/ic_main_icon"
-21-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:10:9-46
+21-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:12:9-46
 22        android:label="@string/app_name"
-22-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:11:9-41
+22-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:13:9-41
 23        android:supportsRtl="true"
-23-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:12:9-35
+23-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:14:9-35
 24        android:testOnly="true"
-25        android:theme="@android:style/Theme.Holo.Light" >
-25-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:9:9-56
+25        android:theme="@style/AppTheme" >
+25-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:15:9-40
 26        <activity
-26-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:13:9-16:25
-27            android:name="com.challenge.fidoreader.CredListActivity"
-27-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:14:13-69
-28            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-28-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:15:13-69
+26-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:16:9-17:68
+27            android:name="com.challenge.fidoreader.EnrollManageActivty"
+27-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:16:19-54
+28            android:theme="@style/AppTheme.NoActionBar" />
+28-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:17:13-56
 29        <activity
-29-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:18:9-33:20
-30            android:name="com.challenge.fidoreader.MainActivity"
-30-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:19:13-65
-31            android:label="@string/app_name"
-31-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:21:13-45
-32            android:screenOrientation="portrait"
-32-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:22:13-49
-33            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
-33-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:20:13-69
-34            <intent-filter>
-34-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:23:13-26:29
-35                <action android:name="android.intent.action.MAIN" />
-35-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:24:17-69
-35-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:24:25-66
-36
-37                <category android:name="android.intent.category.LAUNCHER" />
-37-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:25:17-77
-37-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:25:27-74
-38            </intent-filter>
-39            <intent-filter>
-39-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:27:13-30:29
-40                <action android:name="android.nfc.action.TAG_DISCOVERED" />
-40-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:28:17-75
-40-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:28:25-73
-41
-42                <category android:name="android.intent.category.DEFAULT" />
-42-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:29:17-76
-42-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:29:27-73
-43            </intent-filter>
+29-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:18:9-20:59
+30            android:name="com.challenge.fidoreader.CredListActivity"
+30-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:19:13-45
+31            android:theme="@style/AppTheme.NoActionBar" />
+31-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:20:13-56
+32        <activity
+32-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:21:9-37:20
+33            android:name="com.challenge.fidoreader.MainActivity"
+33-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:22:13-41
+34            android:label="@string/app_name"
+34-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:23:13-45
+35            android:screenOrientation="portrait"
+35-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:24:13-49
+36            android:theme="@style/AppTheme.NoActionBar" >
+36-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:25:13-56
+37            <intent-filter>
+37-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:26:13-29:29
+38                <action android:name="android.intent.action.MAIN" />
+38-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:27:17-69
+38-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:27:25-66
+39
+40                <category android:name="android.intent.category.LAUNCHER" />
+40-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:28:17-77
+40-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:28:27-74
+41            </intent-filter>
+42            <intent-filter>
+42-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:30:13-33:29
+43                <action android:name="android.nfc.action.TAG_DISCOVERED" />
+43-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:17-76
+43-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:25-73
 44
-45            <meta-data
-45-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:13-115
-46                android:name="android.nfc.action.TAG_DISCOVERED"
-46-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:24-72
-47                android:resource="@xml/nfc_tech_filter" />
-47-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:31:73-112
-48        </activity>
-49
-50        <provider
-50-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:23:9-27:43
-51            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-51-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:24:13-79
-52            android:authorities="com.syki.fidoreader.lifecycle-process"
-52-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:25:13-69
-53            android:exported="false"
-53-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:26:13-37
-54            android:multiprocess="true" />
-54-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\6fbf654d3db04d7d9e48eb73ccf59f45\lifecycle-process-2.0.0\AndroidManifest.xml:27:13-40
-55    </application>
-56
-57</manifest>
+45                <category android:name="android.intent.category.DEFAULT" />
+45-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:32:17-76
+45-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:32:27-73
+46            </intent-filter>
+47
+48            <meta-data
+48-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:34:13-36:59
+49                android:name="android.nfc.action.TAG_DISCOVERED"
+49-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:35:17-65
+50                android:resource="@xml/nfc_tech_filter" />
+50-->D:\AndroidStudioProjects\FIDOReader\app\src\main\AndroidManifest.xml:36:17-56
+51        </activity>
+52
+53        <provider
+53-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\94064be6316943264e15284092724adf\lifecycle-process-2.0.0\AndroidManifest.xml:23:9-27:43
+54            android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
+54-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\94064be6316943264e15284092724adf\lifecycle-process-2.0.0\AndroidManifest.xml:24:13-79
+55            android:authorities="com.syki.fidoreader.lifecycle-process"
+55-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\94064be6316943264e15284092724adf\lifecycle-process-2.0.0\AndroidManifest.xml:25:13-69
+56            android:exported="false"
+56-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\94064be6316943264e15284092724adf\lifecycle-process-2.0.0\AndroidManifest.xml:26:13-37
+57            android:multiprocess="true" />
+57-->[androidx.lifecycle:lifecycle-process:2.0.0] C:\Users\neato\.gradle\caches\transforms-2\files-2.1\94064be6316943264e15284092724adf\lifecycle-process-2.0.0\AndroidManifest.xml:27:13-40
+58    </application>
+59
+60</manifest>
