@@ -13,6 +13,7 @@ import com.challenge.fidoreader.fagment.FingerEnrollBottomSheetDialog
 import com.challenge.fidoreader.fagment.data.FingerItem
 import com.challenge.fidoreader.fagment.FingerItemFragment
 import com.challenge.fidoreader.fagment.FingerManageBottomSheetDialog
+import com.challenge.fidoreader.fagment.data.CredentialItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 
@@ -28,7 +29,7 @@ class EnrollManageActivty : AppCompatActivity(), FingerManageBottomSheetDialog.B
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_enroll_manage)
 
-        val list: ArrayList<FingerItem> = intent.getParcelableArrayListExtra("fingerItem")
+        var list = intent.getParcelableArrayListExtra<FingerItem>("fingerItem")
         ea = EnrollmentAdapter(list)
         findViewById<ListView>(R.id.listfinger).adapter = ea
 
@@ -112,7 +113,7 @@ class EnrollManageActivty : AppCompatActivity(), FingerManageBottomSheetDialog.B
             return position.toLong()
         }
 
-        override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             var iff = if (convertView == null) {
                 FingerItemFragment(applicationContext)
             } else {

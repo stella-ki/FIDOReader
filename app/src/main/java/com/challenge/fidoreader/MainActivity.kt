@@ -2,6 +2,7 @@ package com.challenge.fidoreader
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import com.challenge.fidoreader.reader.CardReader
 import com.challenge.fidoreader.reader.NFCSender
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(){
@@ -105,12 +107,12 @@ class MainActivity : AppCompatActivity(){
 
 
 
-    fun showActivityList(padata : ParcelableActivityData){
+    fun showActivityList(padata : ParcelableActivityData, list : ArrayList<Parcelable>?){
         Log.v(TAG, "onchangeFragment")
-        if(padata.list == null){
+        if(list == null){
             Toast.makeText(this.applicationContext,"Error 발생", Toast.LENGTH_SHORT).show();
             return;
-        }else if(padata.list.size == 0){
+        }else if(list.size == 0){
             Toast.makeText(this.applicationContext, padata.errormsg, Toast.LENGTH_SHORT).show();
             if(padata.isEnd){
                 return;
@@ -119,7 +121,7 @@ class MainActivity : AppCompatActivity(){
 
         try{
             val intent = Intent(applicationContext, padata.cls)
-            intent.putParcelableArrayListExtra(padata.listkeyword, padata.list)
+            intent.putParcelableArrayListExtra(padata.listkeyword, list)
             startActivityForResult(intent, Code.requestCode);
 
         }catch (e:Exception){

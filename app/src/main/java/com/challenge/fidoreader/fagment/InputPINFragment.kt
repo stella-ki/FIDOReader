@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +20,12 @@ import androidx.fragment.app.DialogFragment
 import com.challenge.fidoreader.MainActivity
 import com.challenge.fidoreader.R
 import com.challenge.fidoreader.Util.ascii
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP1_ERR_SUCCESS
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_ACTION_TIMEOUT
+import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_PIN_INVALID
 
 class InputPINFragment(private val activity: MainActivity, buttonType: String) : DialogFragment() {
+    val TAG = "InputPINFragment"
     var mresult: OnDialogResult? = null
     var clientPIN = ""
     lateinit var inputpin_popup: View
@@ -55,32 +60,22 @@ class InputPINFragment(private val activity: MainActivity, buttonType: String) :
                 clientPIN = password1!!.text.toString().ascii()
                 val result: String = MainActivity.authenticator.setUserPIN(clientPIN)
 
-                // getDialog().dismiss();
-                var asyncTask: AsyncTask<Any?, Any?, Any?>
-                if (buttonType == "Credential") {
-                    /*asyncTask = new GoogleTranslate(mProgressBar);
-                        asyncTask.execute(activity.authenticator);
-                        activity.onChangeFragmentToList(asyncTask);*/
-                    if (mresult != null) {
-                        mresult!!.finish("OK")
-                    }
-                } else if (buttonType == "Fingerprint") {
-                    /*asyncTask = new GetEnrollInformation(mProgressBar);
-                        asyncTask.execute(activity.authenticator);
-                        activity.onChangeFragmentToList2(asyncTask);*/
-                    if (mresult != null) {
-                        mresult!!.finish("OK")
-                    }
+                if (mresult != null) {
+                    mresult!!.finish("OK")
                 }
-                if (result == "31") {
+
+                Log.v(TAG, "setUserPIN result : " + result)
+                if (result == CBOR_CODE_CTAP2_ERR_PIN_INVALID) {
                     Toast.makeText(activity.applicationContext, "PIN 정보가 올바르지 않습니다.", Toast.LENGTH_LONG).show()
-                } else if (result == "00") {
+                } else if (result == CBOR_CODE_CTAP1_ERR_SUCCESS) {
                     dialog!!.dismiss()
                 } else {
                     Toast.makeText(activity.applicationContext, "List 정보를 읽어올 수 없습니다.", Toast.LENGTH_LONG).show()
                     dialog!!.dismiss()
                 }
             } catch (e: Exception) {
+                Toast.makeText(activity.applicationContext, "Communication Error", Toast.LENGTH_LONG).show()
+
                 e.printStackTrace()
             }
         }

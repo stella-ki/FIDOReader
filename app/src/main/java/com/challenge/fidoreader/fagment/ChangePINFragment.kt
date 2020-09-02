@@ -1,5 +1,7 @@
 package com.challenge.fidoreader.fagment
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -21,7 +23,7 @@ import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_PIN_INVALID
 class ChangePINFragment(val activity: MainActivity) : DialogFragment() {
 
 /*
-    lateinit var mainView: View
+
     lateinit var originPINText: EditText
     lateinit var password1: EditText
     lateinit var password2: EditText
@@ -32,18 +34,19 @@ class ChangePINFragment(val activity: MainActivity) : DialogFragment() {
     lateinit var cancelbtn: ImageView
 
 
+*/
+    lateinit var mainView: View
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(getActivity())
         val inflater = getActivity()!!.layoutInflater
         mainView = inflater.inflate(R.layout.changepin_popup, null)
-
         builder.setView(mainView)
         return builder.create()
     }
-*/
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var mainView: View = inflater.inflate(R.layout.changepin_popup, null)
+        mainView = inflater.inflate(R.layout.changepin_popup, null)
 
         // Dialog Title 없애기
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)

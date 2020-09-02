@@ -40,12 +40,14 @@ class Authenticator(var sender: Sender) {
 
     fun getInfo():String{
         printLog("getInfo")
+        sender.startFIDO()
 
         clintPIN.reset()
 
         //Get Info
         var result : String = sender.sendFIDO("04")
-        result = result.substring(2, result.length - 4)
+        result = result.substring(2, result.length)
+        printLog("getInfo :" + result)
 
         return result
     }
@@ -88,7 +90,7 @@ class Authenticator(var sender: Sender) {
         return true
     }
 
-    fun readEnrollInformation(): ArrayList<FingerItem> {
+    fun readEnrollInformation(): ArrayList<FingerItem>? {
         printLog("deleteCredential")
 
         val fido_result: String = BioEnrollment(BioEnrollment_API.be_sub_emurateEnrollments) as String

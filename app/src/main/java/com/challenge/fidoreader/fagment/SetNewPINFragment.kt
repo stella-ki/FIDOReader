@@ -1,5 +1,7 @@
 package com.challenge.fidoreader.fagment
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -25,21 +27,21 @@ class SetNewPINFragment(var mainActivity: MainActivity) : DialogFragment() {
     lateinit var resultView: TextView
     lateinit var okbtn: Button
     lateinit var cancelbtn: ImageView
+*/
+    lateinit var mainview: View
 
     override fun onCreateDialog(savedInstanceStage: Bundle?): Dialog{
         val builder = AlertDialog.Builder(activity)
         val inflater = activity!!.layoutInflater
         mainview = inflater.inflate(R.layout.setnewpin_popup, null)
-
         builder.setView(mainview)
-
         return builder.create()
-    }*/
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var mainview = inflater.inflate(R.layout.setnewpin_popup, null)
 
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        mainview = inflater.inflate(R.layout.setnewpin_popup, null)
         dialog!!.setContentView(mainview)
 
         var password1 = mainview.findViewById<EditText>(R.id.newPINEditText)
@@ -77,6 +79,7 @@ class SetNewPINFragment(var mainActivity: MainActivity) : DialogFragment() {
                         Toast.makeText(mainActivity.applicationContext, "PIN 설정을 정상적으로 완료하지 못하였습니다..", Toast.LENGTH_LONG).show()
                     }
                 }
+                dialog!!.dismiss()
             }catch (e: Exception){
                 e.printStackTrace()
             }

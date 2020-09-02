@@ -80,6 +80,8 @@ class ReaderButtonFragment : Fragment(){
                 inputPINFragment.isCancelable = false
                 inputPINFragment.setDialogResult(object : OnDialogResult {
                     override fun finish(result: String?) {
+                        Log.v(TAG, "inputPINFragment result : " + result)
+
                         if (result == "OK") {
                             val googleTranslate = GoogleTranslate()
                             googleTranslate.execute()
@@ -101,15 +103,13 @@ class ReaderButtonFragment : Fragment(){
         //getinfoBtn.isEnabled = false
 
         clientPinBtn.setOnClickListener {
-            var pinFragment:DialogFragment? = null
-
-            if(clientPinBtn.text.toString()=="Set New PIN"){
-                pinFragment = SetNewPINFragment(mainActivity)
-            }else if(clientPinBtn.text.toString()=="Change PIN"){
-                pinFragment = ChangePINFragment(mainActivity)
+            var pinFragment = if(clientPinBtn.text.toString()=="Set New PIN"){
+                SetNewPINFragment(mainActivity)
+            }else{
+                ChangePINFragment(mainActivity)
             }
 
-            pinFragment!!.show(fragmentManager!!, "dialog")
+            pinFragment.show(fragmentManager!!, "dialog")
             pinFragment.isCancelable = false
 
         }
@@ -239,11 +239,11 @@ class ReaderButtonFragment : Fragment(){
 
     abstract inner class AsyncTaskProcess  : AsyncTask<Any?, Any?, Any?>() {
         open var TAG = "AsyncTaskProcess"
-        lateinit var list : ArrayList<Any>
+        var list : ArrayList<Parcelable>? = null
         lateinit var errorcode :String
         lateinit var parcelableActivityData : ParcelableActivityData
 
-        abstract fun process(authenticator: Authenticator) : ArrayList<Any>
+        abstract fun process(authenticator: Authenticator) : ArrayList<Parcelable>
 
         override fun doInBackground(vararg params: Any?): Any? {
             Log.v(TAG, "doInBackground")
@@ -252,6 +252,7 @@ class ReaderButtonFragment : Fragment(){
                 //authenticator.myTag = CardReader.myTag
                 list = process(authenticator)
             } catch (e: java.lang.Exception) {
+                Log.d("AsyncTaskProcess : ", "Error : " + e.message)
                 if (e.message.equals(errorcode)) {
                     list = ArrayList()
                 }
@@ -275,7 +276,7 @@ class ReaderButtonFragment : Fragment(){
             super.onPostExecute(s)
             Log.v(TAG, "onPostExecute")
             pgsBar!!.visibility = View.GONE
-            mainActivity.showActivityList(parcelableActivityData)
+            mainActivity.showActivityList(parcelableActivityData, list)
         }
     }
 
@@ -287,14 +288,13 @@ class ReaderButtonFragment : Fragment(){
             parcelableActivityData =  ParcelableActivityData(
                     CredListActivity::class.java as Class<Any>,
                     true,
-                    list as ArrayList<Parcelable>,
                     "Credential is not exist",
                     "Credentiallist"
             )
         }
 
-        override fun process(authenticator: Authenticator): ArrayList<Any> {
-            return authenticator.getCredentialList() as ArrayList<Any>
+        override fun process(authenticator: Authenticator): ArrayList<Parcelable> {
+            return authenticator.getCredentialList() as ArrayList<Parcelable>
         }
     }
 
@@ -306,14 +306,13 @@ class ReaderButtonFragment : Fragment(){
             parcelableActivityData = ParcelableActivityData(
                     EnrollManageActivty::class.java as Class<Any>,
                     false,
-                    list as ArrayList<Parcelable>,
                     "Enrollment is not exist",
                     "fingerItem"
             )
         }
 
-        override fun process(authenticator: Authenticator): ArrayList<Any> {
-            return authenticator.readEnrollInformation() as ArrayList<Any>
+        override fun process(authenticator: Authenticator): ArrayList<Parcelable> {
+            return authenticator.readEnrollInformation() as ArrayList<Parcelable>
         }
     }
 

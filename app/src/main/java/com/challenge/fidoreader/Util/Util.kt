@@ -2,6 +2,10 @@ package com.challenge.fidoreader.Util
 
 import android.os.Parcelable
 import com.challenge.fidoreader.reader.CardReader
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.cbor.CBORFactory
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.security.MessageDigest
 import java.util.regex.Matcher
@@ -16,6 +20,26 @@ lateinit var cardReader: CardReader
 
 val ZERO = byteArrayOf(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
+
+
+fun getCBORDataFromResponse(res: String): JsonNode? {
+    //printLog(res);
+    var res = res
+    res = res.replace(" ".toRegex(), "")
+    res = res.substring(2)
+    return if (res == "") {
+        null
+    } else getCBORData(res)
+}
+
+fun getCBORData(res:String): JsonNode?{
+    var bais: ByteArrayInputStream = ByteArrayInputStream(res.atohex())
+    var cf : CBORFactory = CBORFactory()
+    var mapper = ObjectMapper(cf)
+    val jnode = mapper.readValue(bais, JsonNode::class.java)
+    return jnode
+}
+
 
 fun getATRLeString(data: ByteArray): String {
     return String.format("%02X", data.size or 0x80)
@@ -194,7 +218,6 @@ fun Int.toHex() : String {
 
 data class ParcelableActivityData(var cls : Class<Any>,
                                   var isEnd : Boolean,
-                                  var list : ArrayList<Parcelable>,
                                   var errormsg :String,
                                   var listkeyword : String){
 

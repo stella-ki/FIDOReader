@@ -35,24 +35,6 @@ abstract class FIDO2_API{
         }
     }
 
-    fun getCBORDataFromResponse(res: String): JsonNode? {
-        //printLog(res);
-        var res = res
-        res = res.replace(" ".toRegex(), "")
-        res = res.substring(2)
-        return if (res == "") {
-            null
-        } else getCBORData(res)
-    }
-
-    fun getCBORData(res:String): JsonNode?{
-        var bais: ByteArrayInputStream = ByteArrayInputStream(res.atohex())
-        var cf : CBORFactory = CBORFactory()
-        var mapper = ObjectMapper(cf)
-        val jnode = mapper.readValue(bais, JsonNode::class.java)
-        return jnode
-    }
-
 
 
 }
