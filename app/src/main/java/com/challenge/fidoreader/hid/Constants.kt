@@ -1,5 +1,7 @@
 package com.challenge.fidoreader.hid
 
+import com.challenge.fidoreader.Util.StatusWord
+
 const val HID_REPORT_SIZE = 62
 
 val HID_REPORT_DESC = byteArrayOf(
