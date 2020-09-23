@@ -2,8 +2,8 @@ package com.challenge.fidoreader.fidoReader
 
 import android.util.Log
 import com.challenge.fidoreader.Exception.UserException
-import com.challenge.fidoreader.fagment.data.CredentialItem
-import com.challenge.fidoreader.fagment.data.FingerItem
+import com.challenge.fidoreader.frag.data.CredentialItem
+import com.challenge.fidoreader.frag.data.FingerItem
 import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP1_ERR_SUCCESS
 import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_INVALID_OPTION
 import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_NO_CREDENTIALS

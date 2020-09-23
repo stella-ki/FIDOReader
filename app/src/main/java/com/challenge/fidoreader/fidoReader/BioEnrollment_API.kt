@@ -1,7 +1,7 @@
 package com.challenge.fidoreader.fidoReader
 
 import com.challenge.fidoreader.Util.*
-import com.challenge.fidoreader.fagment.data.FingerItem
+import com.challenge.fidoreader.frag.data.FingerItem
 import com.fasterxml.jackson.databind.JsonNode
 
 

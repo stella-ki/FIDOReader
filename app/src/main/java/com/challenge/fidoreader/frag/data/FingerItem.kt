@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fagment.data
+package com.challenge.fidoreader.frag.data
 
 
 import android.os.Parcel

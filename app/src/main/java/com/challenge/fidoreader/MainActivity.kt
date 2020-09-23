@@ -12,9 +12,10 @@ import androidx.viewpager2.widget.ViewPager2
 import com.challenge.fidoreader.Util.Code
 import com.challenge.fidoreader.Util.ParcelableActivityData
 import com.challenge.fidoreader.Util.cardReader
-import com.challenge.fidoreader.fagment.AuthenticatorFragment
-import com.challenge.fidoreader.fagment.ReaderButtonFragment
+import com.challenge.fidoreader.frag.reader.AuthenticatorFragment
+import com.challenge.fidoreader.frag.reader.ReaderButtonFragment
 import com.challenge.fidoreader.fidoReader.Authenticator
+import com.challenge.fidoreader.frag.auth.AuthPreferenceFragement
 import com.challenge.fidoreader.reader.CardReader
 import com.challenge.fidoreader.reader.NFCSender
 import com.google.android.material.tabs.TabLayout
@@ -26,7 +27,8 @@ class MainActivity : AppCompatActivity(){
     val TAG = "MainActivity"
 
     lateinit var readerButtonFragment : ReaderButtonFragment
-    lateinit var authenticatorFragment: AuthenticatorFragment
+    //lateinit var authenticatorFragment: AuthenticatorFragment
+    lateinit var authPreferenceFragement: AuthPreferenceFragement
 
     companion object{
         var authenticator: Authenticator = Authenticator(NFCSender())
@@ -41,9 +43,10 @@ class MainActivity : AppCompatActivity(){
         setSupportActionBar(toolbar)
 
         readerButtonFragment = ReaderButtonFragment()
-        authenticatorFragment = AuthenticatorFragment()
+        //authenticatorFragment = AuthenticatorFragment()
+        authPreferenceFragement = AuthPreferenceFragement()
 
-        var fraglist = mutableListOf<Fragment>(readerButtonFragment, authenticatorFragment)
+        var fraglist = mutableListOf<Fragment>(readerButtonFragment, authPreferenceFragement)
         var titles = mutableListOf<String>("FIDO2 Reader", "Authenticators")
 
         var tabs : TabLayout = findViewById(R.id.tabLayout)

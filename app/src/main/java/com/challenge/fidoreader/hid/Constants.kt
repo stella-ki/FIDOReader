@@ -92,4 +92,4 @@ internal data class CtapHidException(val error: CtapHidError, val channelId: UIn
 
 internal val U2F_LEGACY_VERSION_COMMAND_APDU = byteArrayOf(0x00, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
 @ExperimentalUnsignedTypes
-internal val U2F_LEGACY_VERSION_RESPONSE = "U2F_V2".toByteArray() + StatusWord.NO_ERROR.value.toByteArray()
+internal val U2F_LEGACY_VERSION_RESPONSE = "U2F_V2".toByteArray() + ubyteArrayOf(0x90u, 0x00u).toByteArray()

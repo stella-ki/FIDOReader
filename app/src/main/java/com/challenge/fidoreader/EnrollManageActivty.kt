@@ -9,11 +9,10 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.challenge.fidoreader.fagment.FingerEnrollBottomSheetDialog
-import com.challenge.fidoreader.fagment.data.FingerItem
-import com.challenge.fidoreader.fagment.FingerItemFragment
-import com.challenge.fidoreader.fagment.FingerManageBottomSheetDialog
-import com.challenge.fidoreader.fagment.data.CredentialItem
+import com.challenge.fidoreader.frag.reader.FingerEnrollBottomSheetDialog
+import com.challenge.fidoreader.frag.data.FingerItem
+import com.challenge.fidoreader.frag.reader.FingerItemFragment
+import com.challenge.fidoreader.frag.reader.FingerManageBottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.*
 

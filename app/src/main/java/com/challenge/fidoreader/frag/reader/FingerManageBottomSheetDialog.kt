@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fagment
+package com.challenge.fidoreader.frag.reader
 
 
 import android.content.Context
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.challenge.fidoreader.R
-import com.challenge.fidoreader.fagment.data.FingerItem
+import com.challenge.fidoreader.frag.data.FingerItem
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 

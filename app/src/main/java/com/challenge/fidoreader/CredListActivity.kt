@@ -8,9 +8,9 @@ import android.widget.BaseAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.challenge.fidoreader.fagment.CredDeleteBottomSheetDialog
-import com.challenge.fidoreader.fagment.CredItemFragment
-import com.challenge.fidoreader.fagment.data.CredentialItem
+import com.challenge.fidoreader.frag.reader.CredDeleteBottomSheetDialog
+import com.challenge.fidoreader.frag.reader.CredItemFragment
+import com.challenge.fidoreader.frag.data.CredentialItem
 
 class CredListActivity : AppCompatActivity(), CredDeleteBottomSheetDialog.BottomSheetListener{
     val TAG = "CredListActivity"

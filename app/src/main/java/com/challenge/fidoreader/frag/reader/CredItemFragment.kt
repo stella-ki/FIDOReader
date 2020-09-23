@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fagment
+package com.challenge.fidoreader.frag.reader
 
 import android.content.Context
 import android.util.AttributeSet

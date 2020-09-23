@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fagment
+package com.challenge.fidoreader.frag.reader
 
 import android.content.Context
 import android.os.AsyncTask
@@ -9,13 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.challenge.fidoreader.*
 import com.challenge.fidoreader.Util.ParcelableActivityData
 import com.challenge.fidoreader.Util.atohex
 import com.challenge.fidoreader.Util.cardReader
-import com.challenge.fidoreader.fagment.InputPINFragment.OnDialogResult
+import com.challenge.fidoreader.frag.reader.InputPINFragment.OnDialogResult
 import com.challenge.fidoreader.fidoReader.Authenticator
 import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_INVALID_OPTION
 import com.challenge.fidoreader.fidoReader.data.CBOR_CODE_CTAP2_ERR_NO_CREDENTIALS

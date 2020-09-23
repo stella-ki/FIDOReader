@@ -1,4 +1,4 @@
-package com.challenge.fidoreader.fagment
+package com.challenge.fidoreader.frag.reader
 
 
 import android.app.AlertDialog
@@ -18,7 +18,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.challenge.fidoreader.MainActivity
 import com.challenge.fidoreader.R
 import java.util.regex.Pattern
 
