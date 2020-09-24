@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:title="@string/preference_title">
+
+    <PreferenceCategory
+        android:order="@integer/order_device_list_bluetooth_category"
+        android:title="@string/preference_category_bluetooth_title">
+
+        <Preference
+            android:icon="@drawable/ic_btn_bluetooth"
+            android:key="@string/preference_bluetooth_settings_key"
+            android:order="@integer/order_device_list_bluetooth_settings"
+            android:persistent="false"
+            android:title="@string/preference_bluetooth_settings_title"
+            tools:summary="@string/status_bluetooth_tap_and_pair">
+            <intent android:action="android.settings.BLUETOOTH_SETTINGS" />
+        </Preference>
+
+        <SwitchPreference
+            android:key="@string/preference_discoverable_key"
+            android:order="@integer/order_device_list_discoverable"
+            android:persistent="false"
+            android:summaryOn="@string/preference_discoverable_summary_on"
+            android:summaryOff="@string/preference_discoverable_summary_off"
+            android:title="@string/preference_discoverable_title" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:order="@integer/order_device_list_more_category"
+        android:title="@string/preference_category_advanced_title">
+
+        <Preference
+            android:icon="@drawable/ic_btn_key"
+            android:key="@string/preference_credential_management_key"
+            android:order="@integer/order_device_list_credential_management"
+            android:title="@string/preference_credential_management_title"
+            android:enabled="false"
+            android:persistent="false" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
