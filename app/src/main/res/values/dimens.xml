@@ -5,4 +5,8 @@
     <dimen name="list_item_spacing_half">8dp</dimen>
     <dimen name="design_fab_size_normal" tools:override="true">58dp</dimen>
     <dimen name="design_fab_image_size" tools:override="true">58dp</dimen>
+    <dimen name="button_icon_margin">8dp</dimen>
+    <dimen name="button_icon_size">24dp</dimen>
+    <dimen name="text_horizontal_padding">0dp</dimen>
+    <dimen name="text_vertical_padding">0dp</dimen>
 </resources>

@@ -136,12 +136,12 @@ class NFCSender : Sender(){
         }
         try {
             printLog("")
-            printLog("ICC - " + ra.getHexString())
+            printLog("ICC - " + ra!!.getHexString())
         } catch (e1: Exception) {
             e1.printStackTrace()
         }
 
-        return ra
+        return ra!!
     }
 
 

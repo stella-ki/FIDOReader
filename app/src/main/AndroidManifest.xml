@@ -3,6 +3,10 @@
     package="com.challenge.fidoreader">
 
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <uses-feature android:name="android.hardware.bluetooth" />
 
     <uses-feature
         android:name="android.hardware.nfc"
