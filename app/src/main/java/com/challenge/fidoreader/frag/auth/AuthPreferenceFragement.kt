@@ -37,8 +37,7 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + SupervisorJob()
 
-    //private val bondedDeviceEntries = mutableSetOf<AuthenticatorHostDeviceEntry>()
-    private val bondedDeviceEntries = mutableSetOf<Preference>()
+    private val bondedDeviceEntries = mutableSetOf<AuthenticatorHostDeviceEntry>()
 
     private lateinit var hidDeviceProfile: HidDeviceProfile
 
@@ -167,24 +166,21 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
         Log.d(TAG, "addEntryForDevice - Device name : " + device.name + " , Device type : " + device.bluetoothClass + ",  Device  status : " + device.canUseAuthenticator)
         if (!device.canUseAuthenticator)
             return
-        /*AuthenticatorHostDeviceEntry(
+        AuthenticatorHostDeviceEntry(
                 activity!!,
                 device,
                 hidDeviceProfile
         ).let { entry ->
             bondedDeviceEntries.add(entry)
             preferenceScreen.addPreference(entry)
-        }*/
+        }
     }
 
-    //private fun findEntryForDevice(device: BluetoothDevice): AuthenticatorHostDeviceEntry? {
-    private fun findEntryForDevice(device: BluetoothDevice): Preference? {
-        //return findPreference<AuthenticatorHostDeviceEntry>(device.address)
-        return findPreference<Preference>(device.address)
+    private fun findEntryForDevice(device: BluetoothDevice): AuthenticatorHostDeviceEntry? {
+        return findPreference<AuthenticatorHostDeviceEntry>(device.address)
     }
 
-    //private fun removeEntry(entry: AuthenticatorHostDeviceEntry) {
-    private fun removeEntry(entry: Preference) {
+    private fun removeEntry(entry: AuthenticatorHostDeviceEntry) {
         preferenceScreen.removePreference(entry)
         bondedDeviceEntries.remove(entry)
     }
