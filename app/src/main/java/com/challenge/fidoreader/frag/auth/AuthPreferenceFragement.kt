@@ -9,12 +9,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.os.Handler
-import android.os.ResultReceiver
 import android.util.Log
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import com.challenge.fidoreader.AuthenticatorAttachedActivity
 import com.challenge.fidoreader.R
 import com.challenge.fidoreader.bthid.HidDataSender
 import com.challenge.fidoreader.bthid.HidDeviceProfile
@@ -47,21 +46,21 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
             if (!registered)
                 activity?.finish()
             for (entry in bondedDeviceEntries) {
-                //entry.updateProfileConnectionState()
+                entry.updateProfileConnectionState()
             }
         }
 
         override fun onConnectionStateChanged(device: BluetoothDevice, state: Int) {
             Log.i(TAG, "onDeviceStateChanged(${device.name}, $state)")
-            //findEntryForDevice(device)?.updateProfileConnectionState()
+            findEntryForDevice(device)?.updateProfileConnectionState()
             when (state) {
                 BluetoothProfile.STATE_CONNECTED -> {
-                    /*startActivityForResult(
+                    startActivityForResult(
                             Intent(
                                     this@AuthPreferenceFragement.context,
                                     AuthenticatorAttachedActivity::class.java
                             ), 1
-                    )*/
+                    )
                 }
             }
         }
@@ -69,7 +68,7 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
         override fun onServiceStateChanged(proxy: BluetoothProfile?) {
             Log.i(TAG, "onServiceStateChanged($proxy)")
             for (entry in bondedDeviceEntries) {
-                //entry.updateProfileConnectionState()
+                entry.updateProfileConnectionState()
             }
         }
     }
@@ -104,10 +103,10 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
                     }
                 }
                 BluetoothDevice.ACTION_CLASS_CHANGED -> {
-                    //findEntryForDevice(device)?.updateClass()
+                    findEntryForDevice(device)?.updateClass()
                 }
                 BluetoothDevice.ACTION_NAME_CHANGED -> {
-                    //findEntryForDevice(device)?.updateName()
+                    findEntryForDevice(device)?.updateName()
                 }
             }
         }

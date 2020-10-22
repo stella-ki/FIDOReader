@@ -19,6 +19,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".EnrollManageActivty"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AuthenticatorAttachedActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".CredListActivity"
             android:theme="@style/AppTheme.NoActionBar" />

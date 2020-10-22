@@ -1,6 +1,14 @@
 package com.challenge.fidoreader.Util
 
-import android.os.Parcelable
+import android.app.KeyguardManager
+import android.app.NotificationManager
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.PowerManager
+import android.os.Vibrator
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
 import com.challenge.fidoreader.reader.CardReader
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -222,3 +230,22 @@ data class ParcelableActivityData(var cls : Class<Any>,
                                   var listkeyword : String){
 
 }
+
+fun Context.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, message, duration).show()
+}
+
+val Context.keyguardManager
+    get() = ContextCompat.getSystemService(this, KeyguardManager::class.java)
+val Context.notificationManager
+    get() = ContextCompat.getSystemService(this, NotificationManager::class.java)
+val Context.powerManager
+    get() = ContextCompat.getSystemService(this, PowerManager::class.java)
+val Context.vibrator
+    get() = ContextCompat.getSystemService(this, Vibrator::class.java)
+
+val Context.defaultSharedPreferences: SharedPreferences
+    get() = PreferenceManager.getDefaultSharedPreferences(this)
+
+fun Context.sharedPreferences(name: String): SharedPreferences =
+        getSharedPreferences(name, Context.MODE_PRIVATE)
