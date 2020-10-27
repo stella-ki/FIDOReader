@@ -2,11 +2,14 @@ package com.challenge.fidoreader.frag.auth
 
 import android.app.Activity
 import android.content.DialogInterface
+import com.challenge.fidoreader.R
 import com.challenge.fidoreader.context.AuthenticatorContext
 //import com.challenge.fidoreader.context.AuthenticatorContext
 import com.challenge.fidoreader.context.AuthenticatorSpecialStatus
 import com.challenge.fidoreader.context.AuthenticatorStatus
 import com.challenge.fidoreader.context.RequestInfo
+import com.challenge.fidoreader.ctap2.breakAt
+import com.challenge.fidoreader.hid.HID_USER_PRESENCE_TIMEOUT_MS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -30,7 +33,7 @@ class HidAuthenticatorContext(private val activity: Activity) :  AuthenticatorCo
      * null if the confirmation dialog times out.
      */
     override suspend fun confirmRequestWithUser(info: RequestInfo): Boolean? {
-        return true;/*try {
+        return try {
             status = AuthenticatorStatus.WAITING_FOR_UP
             withContext(Dispatchers.Main) {
                 val dialog =
@@ -60,11 +63,11 @@ class HidAuthenticatorContext(private val activity: Activity) :  AuthenticatorCo
             }
         } finally {
             status = AuthenticatorStatus.PROCESSING
-        }*/
+        }
     }
 
     override suspend fun confirmTransactionWithUser(rpId: String, prompt: String): String? {
-        return "true";/*try {
+        return try {
             status = AuthenticatorStatus.WAITING_FOR_UP
             withContext(Dispatchers.Main) {
                 val dialog =
@@ -96,6 +99,6 @@ class HidAuthenticatorContext(private val activity: Activity) :  AuthenticatorCo
             }
         } finally {
             status = AuthenticatorStatus.PROCESSING
-        }*/
+        }
     }
 }

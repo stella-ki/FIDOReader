@@ -6,7 +6,69 @@ import com.challenge.fidoreader.context.*
 import com.challenge.fidoreader.ctap2.CtapError.*
 import com.challenge.fidoreader.context.AuthenticatorAction.*
 import kotlinx.coroutines.delay
+import java.security.KeyFactory
+import java.security.Signature
+import java.security.spec.PKCS8EncodedKeySpec
 import kotlin.experimental.or
+
+
+
+@ExperimentalUnsignedTypes
+val WEB_AUTHN_RAW_BASIC_ATTESTATION_CERT = ubyteArrayOf(
+        0x30u, 0x82u, 0x01u, 0xdbu, 0x30u, 0x82u, 0x01u, 0x7fu, 0xa0u, 0x03u, 0x02u, 0x01u, 0x02u,
+        0x02u, 0x01u, 0x01u, 0x30u, 0x0du, 0x06u, 0x09u, 0x2au, 0x86u, 0x48u, 0x86u, 0xf7u, 0x0du,
+        0x01u, 0x01u, 0x0bu, 0x05u, 0x00u, 0x30u, 0x61u, 0x31u, 0x0bu, 0x30u, 0x09u, 0x06u, 0x03u,
+        0x55u, 0x04u, 0x06u, 0x0cu, 0x02u, 0x44u, 0x45u, 0x31u, 0x12u, 0x30u, 0x10u, 0x06u, 0x03u,
+        0x55u, 0x04u, 0x0au, 0x0cu, 0x09u, 0x57u, 0x65u, 0x61u, 0x72u, 0x41u, 0x75u, 0x74u, 0x68u,
+        0x6eu, 0x31u, 0x22u, 0x30u, 0x20u, 0x06u, 0x03u, 0x55u, 0x04u, 0x0bu, 0x0cu, 0x19u, 0x41u,
+        0x75u, 0x74u, 0x68u, 0x65u, 0x6eu, 0x74u, 0x69u, 0x63u, 0x61u, 0x74u, 0x6fu, 0x72u, 0x20u,
+        0x41u, 0x74u, 0x74u, 0x65u, 0x73u, 0x74u, 0x61u, 0x74u, 0x69u, 0x6fu, 0x6eu, 0x31u, 0x1au,
+        0x30u, 0x18u, 0x06u, 0x03u, 0x55u, 0x04u, 0x03u, 0x0cu, 0x11u, 0x42u, 0x61u, 0x74u, 0x63u,
+        0x68u, 0x20u, 0x43u, 0x65u, 0x72u, 0x74u, 0x69u, 0x66u, 0x69u, 0x63u, 0x61u, 0x74u, 0x65u,
+        0x30u, 0x1eu, 0x17u, 0x0du, 0x32u, 0x30u, 0x30u, 0x31u, 0x30u, 0x31u, 0x30u, 0x30u, 0x30u,
+        0x30u, 0x30u, 0x30u, 0x5au, 0x17u, 0x0du, 0x34u, 0x39u, 0x30u, 0x31u, 0x30u, 0x31u, 0x30u,
+        0x30u, 0x30u, 0x30u, 0x30u, 0x30u, 0x5au, 0x30u, 0x61u, 0x31u, 0x0bu, 0x30u, 0x09u, 0x06u,
+        0x03u, 0x55u, 0x04u, 0x06u, 0x0cu, 0x02u, 0x44u, 0x45u, 0x31u, 0x12u, 0x30u, 0x10u, 0x06u,
+        0x03u, 0x55u, 0x04u, 0x0au, 0x0cu, 0x09u, 0x57u, 0x65u, 0x61u, 0x72u, 0x41u, 0x75u, 0x74u,
+        0x68u, 0x6eu, 0x31u, 0x22u, 0x30u, 0x20u, 0x06u, 0x03u, 0x55u, 0x04u, 0x0bu, 0x0cu, 0x19u,
+        0x41u, 0x75u, 0x74u, 0x68u, 0x65u, 0x6eu, 0x74u, 0x69u, 0x63u, 0x61u, 0x74u, 0x6fu, 0x72u,
+        0x20u, 0x41u, 0x74u, 0x74u, 0x65u, 0x73u, 0x74u, 0x61u, 0x74u, 0x69u, 0x6fu, 0x6eu, 0x31u,
+        0x1au, 0x30u, 0x18u, 0x06u, 0x03u, 0x55u, 0x04u, 0x03u, 0x0cu, 0x11u, 0x42u, 0x61u, 0x74u,
+        0x63u, 0x68u, 0x20u, 0x43u, 0x65u, 0x72u, 0x74u, 0x69u, 0x66u, 0x69u, 0x63u, 0x61u, 0x74u,
+        0x65u, 0x30u, 0x59u, 0x30u, 0x13u, 0x06u, 0x07u, 0x2au, 0x86u, 0x48u, 0xceu, 0x3du, 0x02u,
+        0x01u, 0x06u, 0x08u, 0x2au, 0x86u, 0x48u, 0xceu, 0x3du, 0x03u, 0x01u, 0x07u, 0x03u, 0x42u,
+        0x00u, 0x04u, 0x8du, 0x61u, 0x7eu, 0x65u, 0xc9u, 0x50u, 0x8eu, 0x64u, 0xbcu, 0xc5u, 0x67u,
+        0x3au, 0xc8u, 0x2au, 0x67u, 0x99u, 0xdau, 0x3cu, 0x14u, 0x46u, 0x68u, 0x2cu, 0x25u, 0x8cu,
+        0x46u, 0x3fu, 0xffu, 0xdfu, 0x58u, 0xdfu, 0xd2u, 0xfau, 0x3eu, 0x6cu, 0x37u, 0x8bu, 0x53u,
+        0xd7u, 0x95u, 0xc4u, 0xa4u, 0xdfu, 0xfbu, 0x41u, 0x99u, 0xedu, 0xd7u, 0x86u, 0x2fu, 0x23u,
+        0xabu, 0xafu, 0x02u, 0x03u, 0xb4u, 0xb8u, 0x91u, 0x1bu, 0xa0u, 0x56u, 0x99u, 0x94u, 0xe1u,
+        0x01u, 0xa3u, 0x25u, 0x30u, 0x23u, 0x30u, 0x13u, 0x06u, 0x0bu, 0x2bu, 0x06u, 0x01u, 0x04u,
+        0x01u, 0x82u, 0xe5u, 0x1cu, 0x02u, 0x01u, 0x01u, 0x04u, 0x04u, 0x03u, 0x02u, 0x04u, 0x30u,
+        0x30u, 0x0cu, 0x06u, 0x03u, 0x55u, 0x1du, 0x13u, 0x01u, 0x01u, 0xffu, 0x04u, 0x02u, 0x30u,
+        0x00u, 0x30u, 0x0du, 0x06u, 0x09u, 0x2au, 0x86u, 0x48u, 0x86u, 0xf7u, 0x0du, 0x01u, 0x01u,
+        0x0bu, 0x05u, 0x00u, 0x03u, 0x47u, 0x00u, 0x30u, 0x44u, 0x02u, 0x20u, 0x45u, 0xd3u, 0x70u,
+        0x50u, 0xafu, 0xb5u, 0xb0u, 0xeeu, 0x06u, 0x84u, 0x0cu, 0x78u, 0xe5u, 0x3au, 0x36u, 0x54u,
+        0xdcu, 0x67u, 0x0cu, 0xf7u, 0x98u, 0x60u, 0x8cu, 0xb7u, 0x91u, 0x2bu, 0xf1u, 0x00u, 0xc6u,
+        0x0fu, 0x47u, 0xb4u, 0x02u, 0x20u, 0x7bu, 0xb3u, 0x73u, 0x94u, 0x22u, 0xb1u, 0xafu, 0xb8u,
+        0x31u, 0x44u, 0xd4u, 0x3au, 0x49u, 0x75u, 0x1du, 0x8du, 0xd9u, 0xacu, 0xd3u, 0xfdu, 0x1cu,
+        0x26u, 0xbbu, 0x01u, 0x90u, 0x86u, 0xacu, 0x6au, 0x1au, 0x5au, 0xd3u, 0xadu
+).toByteArray()
+
+
+@ExperimentalUnsignedTypes
+private val WEB_AUTHN_RAW_BASIC_ATTESTATION_KEY = ubyteArrayOf(
+        0x30u, 0x81u, 0x87u, 0x02u, 0x01u, 0x00u, 0x30u, 0x13u, 0x06u, 0x07u, 0x2au, 0x86u, 0x48u,
+        0xceu, 0x3du, 0x02u, 0x01u, 0x06u, 0x08u, 0x2au, 0x86u, 0x48u, 0xceu, 0x3du, 0x03u, 0x01u,
+        0x07u, 0x04u, 0x6du, 0x30u, 0x6bu, 0x02u, 0x01u, 0x01u, 0x04u, 0x20u, 0xf3u, 0xfcu, 0xccu,
+        0x0du, 0x00u, 0xd8u, 0x03u, 0x19u, 0x54u, 0xf9u, 0x08u, 0x64u, 0xd4u, 0x3cu, 0x24u, 0x7fu,
+        0x4bu, 0xf5u, 0xf0u, 0x66u, 0x5cu, 0x6bu, 0x50u, 0xccu, 0x17u, 0x74u, 0x9au, 0x27u, 0xd1u,
+        0xcfu, 0x76u, 0x64u, 0xa1u, 0x44u, 0x03u, 0x42u, 0x00u, 0x04u, 0x8du, 0x61u, 0x7eu, 0x65u,
+        0xc9u, 0x50u, 0x8eu, 0x64u, 0xbcu, 0xc5u, 0x67u, 0x3au, 0xc8u, 0x2au, 0x67u, 0x99u, 0xdau,
+        0x3cu, 0x14u, 0x46u, 0x68u, 0x2cu, 0x25u, 0x8cu, 0x46u, 0x3fu, 0xffu, 0xdfu, 0x58u, 0xdfu,
+        0xd2u, 0xfau, 0x3eu, 0x6cu, 0x37u, 0x8bu, 0x53u, 0xd7u, 0x95u, 0xc4u, 0xa4u, 0xdfu, 0xfbu,
+        0x41u, 0x99u, 0xedu, 0xd7u, 0x86u, 0x2fu, 0x23u, 0xabu, 0xafu, 0x02u, 0x03u, 0xb4u, 0xb8u,
+        0x91u, 0x1bu, 0xa0u, 0x56u, 0x99u, 0x94u, 0xe1u, 0x01u
+).toByteArray()
 
 @ExperimentalUnsignedTypes
 object Authenticator {
@@ -28,9 +90,7 @@ object Authenticator {
                     Log.i(TAG, "MakeCredential called")
                     val params = fromCBORToEnd(rawRequestIterator)
                         ?: CTAP_ERR(InvalidCbor, "Invalid CBOR in MakeCredential request")
-                    //handleMakeCredential(context, params)
-                    //TODO to be deleted
-                    test(context)
+                    handleMakeCredential(context, params)
                 }
                 RequestCommand.GetAssertion -> {
                     Log.i(TAG, "GetAssertion called")
@@ -83,7 +143,6 @@ object Authenticator {
             context.status = AuthenticatorStatus.IDLE
         }
     }
-/*
 
     private suspend fun handleMakeCredential(
         context: AuthenticatorContext,
@@ -120,12 +179,8 @@ object Authenticator {
         // correct device or to prevent websites from verifying the availability of a given
         // credential without user interaction.
         // https://cs.chromium.org/chromium/src/device/fido/make_credential_task.cc?l=66&rcl=eb40dba9a062951578292de39424d7479f723463
-        if ((rpId == ".dummy" && userName == "dummy") */
-/* Chrome *//*
- ||
-                (rpId == "SelectDevice" && userName == "SelectDevice") */
-/* Windows Hello *//*
-) {
+        if ((rpId == ".dummy" && userName == "dummy")/*Chrome*/||
+                (rpId == "SelectDevice" && userName == "SelectDevice")/* Windows Hello*/) {
             val requestInfo = context.makeCtap2RequestInfo(PLATFORM_GET_TOUCH, rpId)
             val followUpInClient = context.confirmRequestWithUser(requestInfo) == true
             if (followUpInClient)
@@ -264,7 +319,7 @@ object Authenticator {
             AttestationType.ANDROID_KEYSTORE -> ANDROID_KEYSTORE_ATTESTATION_AAGUID
         }
         val attestedCredentialData =
-            aaguid + credential.keyHandle.size.toUShort().bytes() + credential.keyHandle + credentialPublicKey.toCbor()
+            aaguid + credential.keyHandle.size.toUShort().bytes() + credential.keyHandle + credentialPublicKey.toCBOR()
 
         // At this point, if we have not returned CtapError.OperationDenied, the user has been
         // verified successfully if UV had been requested.
@@ -275,24 +330,24 @@ object Authenticator {
 
         val authenticatorData =
             rpIdHash + flags.bytes() + 0.toUInt().bytes() + attestedCredentialData +
-                    (extensionOutputs?.toCbor() ?: byteArrayOf())
+                    (extensionOutputs?.toCBOR() ?: byteArrayOf())
 
         context.initCounter(keyAlias)
 
         val attestationStatement = CborTextStringMap(
             when (attestationType) {
                 AttestationType.SELF -> mapOf(
-                    "alg" to CborLong(COSE_ID_ES256),
-                    "sig" to CborByteString(credential.sign(authenticatorData, clientDataHash))
+                    "alg" to CBORLong(COSE_ID_ES256),
+                    "sig" to CBORByteString(credential.sign(authenticatorData, clientDataHash))
                 )
                 AttestationType.BASIC -> mapOf(
-                    "alg" to CborLong(COSE_ID_ES256),
-                    "sig" to CborByteString(signWithWebAuthnBatchAttestationKey(authenticatorData, clientDataHash)),
-                    "x5c" to CborArray(arrayOf(CborByteString(WEB_AUTHN_RAW_BASIC_ATTESTATION_CERT)))
+                    "alg" to CBORLong(COSE_ID_ES256),
+                    "sig" to CBORByteString(signWithWebAuthnBatchAttestationKey(authenticatorData, clientDataHash)),
+                    "x5c" to CBORArray(arrayOf(CBORByteString(WEB_AUTHN_RAW_BASIC_ATTESTATION_CERT)))
                 )
                 AttestationType.ANDROID_KEYSTORE -> mapOf(
-                    "alg" to CborLong(COSE_ID_ES256),
-                    "sig" to CborByteString(credential.sign(authenticatorData, clientDataHash)),
+                    "alg" to CBORLong(COSE_ID_ES256),
+                    "sig" to CBORByteString(credential.sign(authenticatorData, clientDataHash)),
                     "x5c" to credential.androidKeystoreAttestation
                 )
             }
@@ -300,15 +355,14 @@ object Authenticator {
 
         context.notifyUser(requestInfo)
 
-        return CborLongMap(
+        return CBORLongMap(
             mapOf(
-                MAKE_CREDENTIAL_RESPONSE_AUTH_DATA to CborByteString(authenticatorData),
-                MAKE_CREDENTIAL_RESPONSE_FMT to CborTextString(attestationType.format),
+                MAKE_CREDENTIAL_RESPONSE_AUTH_DATA to CBORByteString(authenticatorData),
+                MAKE_CREDENTIAL_RESPONSE_FMT to CBORTextString(attestationType.format),
                 MAKE_CREDENTIAL_RESPONSE_ATT_STMT to attestationStatement
             )
         )
     }
-*/
 /*
 
     private suspend fun handleGetAssertion(
@@ -553,10 +607,10 @@ object Authenticator {
         context.getUserVerificationState()?.let { optionsMap["uv"] = CborBoolean(it) }
         return CborLongMap(
             mapOf(
-                GET_INFO_RESPONSE_VERSIONS to CborArray(
+                GET_INFO_RESPONSE_VERSIONS to CBORArray(
                     arrayOf(
-                        CborTextString("FIDO_2_0"),
-                        CborTextString("U2F_V2")
+                        CBORTextString("FIDO_2_0"),
+                        CBORTextString("U2F_V2")
                     )
                 ),
                 GET_INFO_RESPONSE_EXTENSIONS to
@@ -566,30 +620,30 @@ object Authenticator {
                             Extension.noDisplayIdentifiersAsCbor,
                 GET_INFO_RESPONSE_AAGUID to CborByteString(BASIC_ATTESTATION_AAGUID),
                 GET_INFO_RESPONSE_OPTIONS to CborTextStringMap(optionsMap),
-                GET_INFO_RESPONSE_MAX_MSG_SIZE to CborLong(MAX_CBOR_MSG_SIZE),
+                GET_INFO_RESPONSE_MAX_MSG_SIZE to CBORLong(MAX_CBOR_MSG_SIZE),
                 // This value is chosen such that most credential lists will fit into a single
                 // request while still staying well below the maximal message size when taking
                 // the maximal credential ID length into account.
-                GET_INFO_RESPONSE_MAX_CREDENTIAL_COUNT_IN_LIST to CborLong(5),
+                GET_INFO_RESPONSE_MAX_CREDENTIAL_COUNT_IN_LIST to CBORLong(5),
                 // Our credential IDs consist of
                 // * a signature (32 bytes)
                 // * a nonce (32 bytes)
                 // * a null byte (WebAuthn only)
                 // * the rpName truncated to 64 UTF-16 code units (every UTF-16 code unit can be
                 //   coded on at most three UTF-8 bytes)
-                GET_INFO_RESPONSE_MAX_CREDENTIAL_ID_LENGTH to CborLong(32 + 32 + 1 + 3 * 64),
-                GET_INFO_RESPONSE_TRANSPORTS to CborArray(
+                GET_INFO_RESPONSE_MAX_CREDENTIAL_ID_LENGTH to CBORLong(32 + 32 + 1 + 3 * 64),
+                GET_INFO_RESPONSE_TRANSPORTS to CBORArray(
                     arrayOf(
-                        CborTextString("nfc"),
-                        CborTextString("usb")
+                        CBORTextString("nfc"),
+                        CBORTextString("usb")
                     )
                 ),
-                GET_INFO_RESPONSE_ALGORITHMS to CborArray(
+                GET_INFO_RESPONSE_ALGORITHMS to CBORArray(
                     arrayOf(
                         CborTextStringMap(
                             mapOf(
-                                "alg" to CborLong(-7),
-                                "type" to CborTextString("public-key")
+                                "alg" to CBORLong(-7),
+                                "type" to CBORTextString("public-key")
                             )
                         )
                     )
@@ -645,7 +699,7 @@ object Authenticator {
             null -> CTAP_ERR(UserActionTimeout)
         }
     }
-/*
+
 
     private fun parseExtensionInputs(
         extensions: Map<String, CBORValue>?,
@@ -662,8 +716,8 @@ object Authenticator {
             Pair(extension, extension.parseInput(it.value, action, canUseDisplay))
         }.toMap()
     }
-*/
-/*
+
+
 
     private fun processExtensions(
         extensions: Map<Extension, ExtensionInput>,
@@ -688,8 +742,7 @@ object Authenticator {
         else
             CborTextStringMap(extensionOutputs.mapKeys { it.key.identifier })
     }
-*/
-/*
+    
     private fun processExtension(
         extension: Extension,
         input: ExtensionInput,
@@ -704,7 +757,7 @@ object Authenticator {
                 if (action == REGISTER) {
                     require(input is NoInput)
                     // hmac-secret has already been handled during credential creation
-                    CborBoolean(true)
+                    CBORBoolean(true)
                 } else {
                     require(input is HmacSecretAuthenticateInput)
                     require(credential is WebAuthnCredential)
@@ -729,7 +782,7 @@ object Authenticator {
                             check(it.size == 64)
                         }
                     }
-                    CborByteString(output)
+                    CBORByteString(output)
                 }
             }
             Extension.SupportedExtensions -> {
@@ -742,42 +795,59 @@ object Authenticator {
                 require(input is TxAuthSimpleAuthenticateInput)
                 // At this point, either we have returned an OperationDenied error or the user has
                 // confirmed the prompt (with added line breaks).
-                CborTextString(input.prompt)
+                CBORTextString(input.prompt)
             }
             Extension.UserVerificationMethod -> {
                 require(input is NoInput)
                 val keyProtectionType =
                     if (credential.isKeyMaterialInTEE) KEY_PROTECTION_HARDWARE or KEY_PROTECTION_TEE else KEY_PROTECTION_SOFTWARE
-                val methods = mutableListOf<CborArray>()
+                val methods = mutableListOf<CBORArray>()
                 if (userPresent) {
                     methods.add(
-                        CborArray(
+                        CBORArray(
                             arrayOf(
-                                CborLong(USER_VERIFY_PRESENCE),
-                                CborLong(keyProtectionType),
-                                CborLong(MATCHER_PROTECTION_SOFTWARE)
+                                CBORLong(USER_VERIFY_PRESENCE),
+                                CBORLong(keyProtectionType),
+                                CBORLong(MATCHER_PROTECTION_SOFTWARE)
                             )
                         )
                     )
                 }
                 if (userVerified) {
                     methods.add(
-                        CborArray(
+                        CBORArray(
                             arrayOf(
-                                CborLong(USER_VERIFY_PATTERN),
-                                CborLong(keyProtectionType),
-                                CborLong(MATCHER_PROTECTION_SOFTWARE)
+                                CBORLong(USER_VERIFY_PATTERN),
+                                CBORLong(keyProtectionType),
+                                CBORLong(MATCHER_PROTECTION_SOFTWARE)
                             )
                         )
                     )
                 }
-                CborArray(methods.toTypedArray())
+                CBORArray(methods.toTypedArray())
             }
         }
-    }*/
+    }
 
     private fun test(context: AuthenticatorContext): CBORValue {
         var temp = CBORTextString("tmp");
         return temp
     }
+}
+
+@ExperimentalUnsignedTypes
+private val WEB_AUTHN_BATCH_ATTESTATION_KEY by lazy {
+    KeyFactory.getInstance("EC").generatePrivate(
+            PKCS8EncodedKeySpec(WEB_AUTHN_RAW_BASIC_ATTESTATION_KEY)
+    )
+}
+
+@ExperimentalUnsignedTypes
+fun signWithWebAuthnBatchAttestationKey(vararg data: ByteArray): ByteArray {
+    val sign = Signature.getInstance("SHA256withECDSA")
+    sign.initSign(WEB_AUTHN_BATCH_ATTESTATION_KEY)
+    for (datum in data) {
+        sign.update(datum)
+    }
+    return sign.sign()
 }
