@@ -3,9 +3,9 @@ package com.challenge.fidoreader.bthid
 import com.challenge.fidoreader.hid.HID_REPORT_SIZE
 
 object Constants {
-    const val SDP_NAME = "WearAuthn"
+    const val SDP_NAME = "FIDO Android key"
     const val SDP_DESCRIPTION = "FIDO2/U2F Security Key"
-    const val SDP_PROVIDER = "WearAuthn"
+    const val SDP_PROVIDER = "FIDO Android key"
     const val QOS_TOKEN_RATE = 1000
     const val QOS_TOKEN_BUCKET_SIZE = HID_REPORT_SIZE + 1
     const val QOS_PEAK_BANDWIDTH = 2000

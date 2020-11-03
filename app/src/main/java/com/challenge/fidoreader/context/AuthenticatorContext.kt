@@ -13,9 +13,7 @@ import android.text.Spanned
 import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.core.content.edit
-import com.challenge.fidoreader.ConfirmDeviceCredentialActivity
-import com.challenge.fidoreader.EXTRA_CONFIRM_DEVICE_CREDENTIAL_RECEIVER
-import com.challenge.fidoreader.R
+import com.challenge.fidoreader.*
 import com.challenge.fidoreader.Util.defaultSharedPreferences
 import com.challenge.fidoreader.Util.keyguardManager
 import com.challenge.fidoreader.Util.sharedPreferences
@@ -25,7 +23,6 @@ import kotlin.coroutines.suspendCoroutine
 import com.challenge.fidoreader.context.AuthenticatorAction.*
 import com.challenge.fidoreader.ctap2.*
 import com.challenge.fidoreader.frag.auth.CredentialChooserDialog
-import me.henneke.wearauthn.fido.context.*
 
 private const val TAG = "AuthenticatorContext"
 

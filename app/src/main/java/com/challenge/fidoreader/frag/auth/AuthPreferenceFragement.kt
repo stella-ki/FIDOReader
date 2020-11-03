@@ -9,16 +9,21 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.os.Handler
+import android.os.ResultReceiver
 import android.util.Log
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.challenge.fidoreader.AuthenticatorAttachedActivity
+import com.challenge.fidoreader.ConfirmDeviceCredentialActivity
+import com.challenge.fidoreader.EXTRA_CONFIRM_DEVICE_CREDENTIAL_RECEIVER
 import com.challenge.fidoreader.R
 import com.challenge.fidoreader.bthid.HidDataSender
 import com.challenge.fidoreader.bthid.HidDeviceProfile
 import com.challenge.fidoreader.bthid.canUseAuthenticator
 import com.challenge.fidoreader.bthid.hasCompatibleBondedDevice
+import com.challenge.fidoreader.context.getUserVerificationState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -273,8 +278,8 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
     }
 
     private fun updateUserVerificationPreferencesState() {
-        //val userVerificationState = getUserVerificationState(context)
-        val userVerificationState = true
+        val userVerificationState = context?.let { getUserVerificationState(it) }
+        //val userVerificationState = true
         Log.v(TAG, "updateUserVerificationPreferencesState - userVerificationState : $userVerificationState")
 
         manageCredentialsPreference.apply {
@@ -287,7 +292,7 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
                 icon = null
                 summary = getString(R.string.preference_manage_credentials_summary_disabled)
             }
-            /*setOnPreferenceClickListener {
+            setOnPreferenceClickListener {
                 val intent =
                         Intent(
                                 context,
@@ -312,7 +317,7 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
                         }
                 context.startActivity(intent)
                 true
-            }*/
+            }
         }
     }
 

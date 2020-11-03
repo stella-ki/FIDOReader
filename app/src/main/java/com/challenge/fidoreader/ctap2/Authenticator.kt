@@ -96,9 +96,7 @@ object Authenticator {
                     Log.i(TAG, "GetAssertion called")
                     val params = fromCBORToEnd(rawRequestIterator)
                         ?: CTAP_ERR(InvalidCbor, "Invalid CBOR in GetAssertion request")
-                    //handleGetAssertion(context, params)
-                    //TODO to be deleted
-                    test(context)
+                    handleGetAssertion(context, params)
                 }
                 RequestCommand.GetNextAssertion -> {
                     Log.i(TAG, "GetNextAssertion called")
@@ -110,25 +108,19 @@ object Authenticator {
                     Log.i(TAG, "GetInfo called")
                     if (rawRequest.size != 1)
                         CTAP_ERR(InvalidLength, "Non-empty params for GetInfo")
-                    //handleGetInfo(context)
-                    //TODO to be deleted
-                    test(context)
+                    handleGetInfo(context)
                 }
                 RequestCommand.ClientPIN -> {
                     Log.i(TAG, "ClientPIN called")
                     val params = fromCBORToEnd(rawRequestIterator)
                         ?: CTAP_ERR(InvalidCbor, "Invalid CBOR in ClientPIN request")
-                    //handleClientPIN(params)
-                    //TODO to be deleted
-                    test(context)
+                    handleClientPIN(params)
                 }
                 RequestCommand.Reset -> {
                     Log.i(TAG, "Reset called")
                     if (rawRequest.size != 1)
                         CTAP_ERR(InvalidLength, "Non-empty params for Reset")
-                    //handleReset(context)
-                    //TODO to be deleted
-                    test(context)
+                    handleReset(context)
                 }
                 RequestCommand.Selection -> {
                     Log.i(TAG, "Selection called")
@@ -363,7 +355,7 @@ object Authenticator {
             )
         )
     }
-/*
+
 
     private suspend fun handleGetAssertion(
         context: AuthenticatorContext,
@@ -584,7 +576,7 @@ object Authenticator {
             )
         }
     }
-*/
+
 
     private fun handleGetNextAssertion(context: AuthenticatorContext): CBORValue {
         if (context.getNextAssertionBuffer?.hasNext() != true || context.getNextAssertionRequestInfo == null)
@@ -597,15 +589,15 @@ object Authenticator {
         }
         return nextAssertion
     }
-/*
+
     private fun handleGetInfo(context: AuthenticatorContext): CBORValue {
         val optionsMap = mutableMapOf(
             "plat" to CBORBoolean(false),
             "rk" to CBORBoolean(true),
             "up" to CBORBoolean(true)
         )
-        context.getUserVerificationState()?.let { optionsMap["uv"] = CborBoolean(it) }
-        return CborLongMap(
+        context.getUserVerificationState()?.let { optionsMap["uv"] = CBORBoolean(it) }
+        return CBORLongMap(
             mapOf(
                 GET_INFO_RESPONSE_VERSIONS to CBORArray(
                     arrayOf(
@@ -618,7 +610,7 @@ object Authenticator {
                             Extension.identifiersAsCbor
                         else
                             Extension.noDisplayIdentifiersAsCbor,
-                GET_INFO_RESPONSE_AAGUID to CborByteString(BASIC_ATTESTATION_AAGUID),
+                GET_INFO_RESPONSE_AAGUID to CBORByteString(BASIC_ATTESTATION_AAGUID),
                 GET_INFO_RESPONSE_OPTIONS to CborTextStringMap(optionsMap),
                 GET_INFO_RESPONSE_MAX_MSG_SIZE to CBORLong(MAX_CBOR_MSG_SIZE),
                 // This value is chosen such that most credential lists will fit into a single
@@ -650,8 +642,8 @@ object Authenticator {
                 )
             )
         )
-    }*/
-/*
+    }
+
 
     private fun handleClientPIN(params: CBORValue): CBORValue {
         val pinProtocol = params.getRequired(CLIENT_PIN_PIN_PROTOCOL).unbox<Long>()
@@ -662,14 +654,14 @@ object Authenticator {
         if (subCommand != CLIENT_PIN_SUB_COMMAND_GET_KEY_AGREEMENT)
             CTAP_ERR(InvalidCommand, "Unsupported ClientPIN subcommand: $subCommand")
 
-        return CborLongMap(
+        return CBORLongMap(
             mapOf(
                 CLIENT_PIN_GET_KEY_AGREEMENT_RESPONSE_KEY_AGREEMENT to authenticatorKeyAgreementKey
             )
         )
     }
-*/
-/*
+
+
     private suspend fun handleReset(context: AuthenticatorContext): Nothing? {
         // The FIDO conformance tests demand reset capabilities over any protocol. In order to test
         // the authenticator behavior with UV configured, the UV status also needs to be reenabled
@@ -689,7 +681,7 @@ object Authenticator {
             context.handleSpecialStatus(AuthenticatorSpecialStatus.RESET)
             CTAP_ERR(OperationDenied)
         }
-    }*/
+    }
 
     private suspend fun handleSelection(context: AuthenticatorContext): Nothing? {
         val info = context.makeCtap2RequestInfo(PLATFORM_GET_TOUCH, "")

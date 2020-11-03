@@ -104,6 +104,7 @@ class AuthenticatorAttachedActivity : AppCompatActivity(){
         if (hidDeviceProfile!!.connectedDevices.isEmpty() && intent.hasExtra(EXTRA_DEVICE)) {
             val device = intent.getParcelableExtra<BluetoothDevice>(EXTRA_DEVICE)
             if (device == null || device !in defaultAdapter.bondedDevices) {
+                //TODO
                 //startActivity(Intent(this, AuthenticatorActivity::class.java))
                 finish()
                 return

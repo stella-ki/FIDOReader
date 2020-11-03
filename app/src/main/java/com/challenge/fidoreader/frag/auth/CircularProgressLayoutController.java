@@ -11,8 +11,7 @@ import androidx.annotation.VisibleForTesting;
 class CircularProgressLayoutController {
 
     private final CircularProgressLayout mLayout;
-    @VisibleForTesting
-    CountDownTimer mTimer;
+    @VisibleForTesting CountDownTimer mTimer;
     private boolean mIsIndeterminate;
     private boolean mIsTimerRunning;
 
