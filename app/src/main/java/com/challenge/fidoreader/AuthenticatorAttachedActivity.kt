@@ -9,6 +9,7 @@ import android.text.Html
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.challenge.fidoreader.Util.byteArrayToHexString
@@ -26,6 +27,7 @@ class AuthenticatorAttachedActivity : AppCompatActivity(){
 
     private lateinit var viewsToHideOnAmbient: List<View>
     lateinit var connectedToDeviceView: TextView
+    lateinit var setupOpenOnPhoneButton: ImageButton
 
     private val hidIntrDataListener = object : HidIntrDataListener {
         override fun onIntrData(
@@ -86,6 +88,10 @@ class AuthenticatorAttachedActivity : AppCompatActivity(){
         authenticatorContext = HidAuthenticatorContext(this)
         hidDeviceProfile = HidDataSender.register(this, hidProfileListener, hidIntrDataListener)
         connectedToDeviceView = findViewById(R.id.connectedToDeviceView)
+        setupOpenOnPhoneButton = findViewById(R.id.setupOpenOnPhoneButton)
+        setupOpenOnPhoneButton.setOnClickListener {
+            super.onBackPressed();
+        }
     }
 
     override fun onStart() {

@@ -20,11 +20,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".EnrollManageActivty"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".AuthenticatorAttachedActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".CredListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.challenge.fidoreader.frag.auth.ResidentCredentialsList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.challenge.fidoreader.ConfirmDeviceCredentialActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"

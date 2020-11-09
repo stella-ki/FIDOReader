@@ -30,6 +30,13 @@
         android:order="@integer/order_device_list_more_category"
         android:title="@string/preference_category_advanced_title">
 
+        <SwitchPreference
+            android:key="@string/preference_single_factor_mode_key"
+            android:order="@integer/order_device_list_single_factor_mode"
+            android:title="@string/preference_single_factor_mode_title"
+            android:enabled="false"
+            android:persistent="false" />
+
         <Preference
             android:icon="@drawable/ic_btn_key"
             android:key="@string/preference_credential_management_key"

@@ -11,7 +11,9 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.ResultReceiver
+import android.text.Html
 import android.util.Log
+import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
@@ -23,6 +25,8 @@ import com.challenge.fidoreader.bthid.HidDataSender
 import com.challenge.fidoreader.bthid.HidDeviceProfile
 import com.challenge.fidoreader.bthid.canUseAuthenticator
 import com.challenge.fidoreader.bthid.hasCompatibleBondedDevice
+import com.challenge.fidoreader.context.AuthenticatorContext
+import com.challenge.fidoreader.context.armUserVerificationFuse
 import com.challenge.fidoreader.context.getUserVerificationState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +38,7 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
     private lateinit var bluetoothSettingsPreference: Preference
     private lateinit var discoverableSwitchPreference: SwitchPreference
     private lateinit var manageCredentialsPreference: Preference
+    private lateinit var singleFactorModeSwitchPreference: SwitchPreference
 
     private val REQUEST_CODE_ENABLE_BLUETOOTH = 1
     private val REQUEST_CODE_MAKE_DISCOVERABLE = 2
@@ -122,6 +127,7 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
         bluetoothSettingsPreference = findPreference(getText(R.string.preference_bluetooth_settings_key))!!
         discoverableSwitchPreference = findPreference(getText(R.string.preference_discoverable_key))!!
         manageCredentialsPreference = findPreference(getText(R.string.preference_credential_management_key))!!
+        singleFactorModeSwitchPreference = findPreference(getText(R.string.preference_single_factor_mode_key))!!
     }
 
     override fun onAttach(context: Context) {
@@ -282,6 +288,67 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
         //val userVerificationState = true
         Log.v(TAG, "updateUserVerificationPreferencesState - userVerificationState : $userVerificationState")
 
+        singleFactorModeSwitchPreference.apply {
+            when (userVerificationState) {
+                true -> {
+                    isEnabled = false
+                    isChecked = true
+                    setSummary(R.string.preference_single_factor_mode_summary_active)
+                }
+                false -> {
+                    isChecked = false
+                    if (AuthenticatorContext.isScreenLockEnabled(context)) {
+                        isEnabled = true
+                        setSummary(R.string.preference_single_factor_mode_summary_available)
+                        setOnPreferenceChangeListener { _, _ ->
+                            isEnabled = false
+                            AcceptDenyDialog(context).run {
+                                setTitle(R.string.prompt_single_factor_mode_title)
+                                setMessage(
+                                        Html.fromHtml(
+                                                getString(R.string.prompt_single_factor_mode_message),
+                                                Html.FROM_HTML_MODE_LEGACY
+                                        )
+                                )
+                                setPositiveButton { _, _ ->
+                                    val intent =
+                                            Intent(
+                                                    context,
+                                                    ConfirmDeviceCredentialActivity::class.java
+                                            ).apply {
+                                                putExtra(
+                                                        EXTRA_CONFIRM_DEVICE_CREDENTIAL_RECEIVER,
+                                                        object : ResultReceiver(Handler()) {
+                                                            override fun onReceiveResult(
+                                                                    resultCode: Int,
+                                                                    resultData: Bundle?
+                                                            ) {
+                                                                if (resultCode == Activity.RESULT_OK)
+                                                                    armUserVerificationFuse(context)
+                                                            }
+                                                        })
+                                            }
+                                    context.startActivity(intent)
+                                }
+                                setNegativeButton { _, _ -> updateUserVerificationPreferencesState() }
+                                setOnCancelListener { updateUserVerificationPreferencesState() }
+                                show()
+                            }
+                            false
+                        }
+                    } else {
+                        isEnabled = false
+                        setSummary(R.string.preference_single_factor_mode_summary_enable_lock)
+                    }
+                }
+                null -> {
+                    isEnabled = false
+                    isChecked = false
+                    setSummary(R.string.preference_single_factor_mode_summary_disabled)
+                }
+            }
+        }
+
         manageCredentialsPreference.apply {
             if (userVerificationState != false) {
                 isEnabled = true
@@ -305,13 +372,32 @@ class AuthPreferenceFragement : PreferenceFragmentCompat(), CoroutineScope {
                                                 resultCode: Int,
                                                 resultData: Bundle?
                                         ) {
-                                            if (resultCode == Activity.RESULT_OK)
-                                                context.startActivity(
-                                                        Intent(
-                                                                context,
-                                                                ResidentCredentialsList::class.java
-                                                        )
-                                                )
+                                            if (resultCode == Activity.RESULT_OK) {
+                                                var count = 0
+                                                val credentialsPerRp = context?.let { AuthenticatorContext.getAllResidentCredentials(it) }
+                                                if (credentialsPerRp != null) {
+                                                    for ((rpId, credentials) in credentialsPerRp) {
+                                                        if (!credentials.isEmpty()) {
+                                                            for ((index, credential) in credentials.withIndex()) {
+                                                                count++
+                                                            }
+                                                        }else{
+                                                            continue
+                                                        }
+                                                    }
+                                                }
+
+                                                if(count > 0){
+                                                    context.startActivity(
+                                                            Intent(
+                                                                    context,
+                                                                    ResidentCredentialsList::class.java
+                                                            )
+                                                    )
+                                                }else{
+                                                    Toast.makeText(context,"There are no resident credential", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
                                         }
                                     })
                         }
